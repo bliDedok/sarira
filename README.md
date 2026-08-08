@@ -1,8 +1,8 @@
-# SARIRA — Phase 3 Real Onboarding
+# SARIRA — Phase 5 Real Nutrition Engine
 
-SARIRA Phase 3 connects the Active Balance UI to a real onboarding domain: account/session, profile and age group, role, versioned consent, guardian consent, deterministic safety, goal eligibility, versioned questionnaire, program preference, resumable progress, backend completion validation, and audit events.
+SARIRA Phase 5 extends the real onboarding and 14-day baseline with a deterministic, versioned nutrition domain: a traceable food database, food-specific servings, nutrient calculations, stable meal snapshots, daily aggregation, age- and safety-aware targets, indicators, allergen warnings, history, ownership, consent enforcement, and audit events.
 
-Starter Journey and post-onboarding health features remain clearly labeled Demo. AI, RAG, nutrition calculation, wearable sync, Motion Coach, and Pattern Map are not implemented.
+Nutrition calculations and indicators are real application paths. Development foods and policies are explicitly synthetic and require expert validation. Guided Meal recommendations, Flex Kitchen recommendations, AI/RAG, Pattern Map, Weekly Action, food vision, barcode production, wearables, Motion Coach, growth analysis, and digestive analysis remain clearly labeled Demo or out of scope.
 
 ## Prerequisites
 
@@ -52,7 +52,7 @@ pnpm migration:check
 
 ## Environment modes
 
-Mock mode is the safe local default and uses the same Phase 3 API contract. Set `EXPO_PUBLIC_USE_MOCK_DATA=false` and `USE_MOCK_DATA=false` only after Supabase/database variables are configured. Public client values use `EXPO_PUBLIC_*` or `NEXT_PUBLIC_*`; service-role keys and database URLs are server-only.
+Mock infrastructure is the safe local default and uses the same Phase 5 API contract and deterministic nutrition engine. Set `EXPO_PUBLIC_USE_MOCK_DATA=false` and `USE_MOCK_DATA=false` only after Supabase/database variables are configured. Public client values use `EXPO_PUBLIC_*` or `NEXT_PUBLIC_*`; service-role keys and database URLs are server-only.
 
 Templates live in `infrastructure/environments`. Do not commit populated `.env` files.
 
@@ -62,6 +62,8 @@ Templates live in `infrastructure/environments`. Do not commit populated `.env` 
 - Phase 1 design handoff: `docs/design`
 - Phase 2 architecture: `docs/architecture`
 - Phase 3 implementation, decisions, and final report: `docs/phase-3`
+- Phase 4 baseline implementation and final report: `docs/phase-4`
+- Phase 5 nutrition architecture, provenance, policy, tests, and final report: `docs/phase-5`
 - API contract: `docs/api`
 - Database model/migrations: `docs/database`
 - Historical Phase 2 report: `PHASE_2_FINAL_REPORT.md`

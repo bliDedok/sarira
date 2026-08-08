@@ -1,8 +1,12 @@
 # SARIRA Documentation Index
 
-**Versi implementasi:** Phase 3 · **Tanggal pembaruan:** 8 Agustus 2026 · **Status:** siap review pemilik produk
+**Versi implementasi:** Phase 5 · **Tanggal pembaruan:** 8 Agustus 2026 · **Status:** siap review pemilik produk dan ahli nutrisi
 
-Dokumen Phase 0 tetap menjadi sumber prinsip produk dan safety. Folder `design`, `architecture`, `api`, `database`, dan `phase-3` mendokumentasikan implementasi yang dibangun pada fase berikutnya.
+Dokumen Phase 0 tetap menjadi sumber prinsip produk dan safety. Folder `design`, `architecture`, `api`, `database`, serta `phase-3` sampai `phase-5` mendokumentasikan implementasi bertahap.
+
+## Phase 5
+
+Mulai dari `phase-5/PHASE_5_OVERVIEW.md`, lalu review `FOOD_DATA_PROVENANCE.md`, `NUTRITION_ENGINE.md`, `NUTRITION_POLICY.md`, `MOCK_VS_REAL.md`, dan `PHASE_5_FINAL_REPORT.md`. Kalkulasi dan persistence nutrisi sudah nyata; dataset dan policy development tetap memerlukan validasi ahli.
 
 ## Phase 3
 
