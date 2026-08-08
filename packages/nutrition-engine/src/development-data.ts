@@ -47,26 +47,26 @@ export const DEVELOPMENT_FOODS: FoodSeed[] = [
   { code: 'DEV-AIR', name: 'Air putih', alternateNames: ['air minum'], category: 'BEVERAGE', servingLabel: '1 gelas', servingUnit: 'CUP', gramEquivalent: 240, nutrients: n(0, 0, 0, 0, 0, 0, 0, 0), tags: [{ code: 'VEGAN', status: 'VERIFIED' }] },
 ];
 
-export const DEVELOPMENT_POLICIES: Array<{ code: string; version: string; ageMin: number; ageMax: number; targets: NutritionTarget[] }> = [
-  { code: 'TEEN_GENERAL', version: 'phase5-dev-v1', ageMin: 12, ageMax: 17, targets: [
+export const DEVELOPMENT_POLICIES: Array<{ code: string; version: string; ageMin: number; ageMax: number; goalEnergyAdjustmentKcal: number; targets: NutritionTarget[] }> = [
+  { code: 'TEEN_GENERAL', version: 'phase5-dev-v1', ageMin: 12, ageMax: 17, goalEnergyAdjustmentKcal: 0, targets: [
     { nutrientCode: 'ENERGY_KCAL', type: 'RANGE', minimum: 1800, maximum: 2200, unit: 'kcal' },
     { nutrientCode: 'PROTEIN_G', type: 'MINIMUM', minimum: 50, unit: 'g' }, { nutrientCode: 'CARBOHYDRATE_G', type: 'RANGE', minimum: 220, maximum: 320, unit: 'g' },
     { nutrientCode: 'FAT_G', type: 'RANGE', minimum: 50, maximum: 80, unit: 'g' }, { nutrientCode: 'FIBER_G', type: 'MINIMUM', minimum: 25, unit: 'g' },
     { nutrientCode: 'SUGAR_G', type: 'UPPER_LIMIT', maximum: 50, unit: 'g' }, { nutrientCode: 'SODIUM_MG', type: 'UPPER_LIMIT', maximum: 2000, unit: 'mg' }, { nutrientCode: 'SATURATED_FAT_G', type: 'UPPER_LIMIT', maximum: 20, unit: 'g' },
   ] },
-  { code: 'YOUNG_ADULT_GENERAL', version: 'phase5-dev-v1', ageMin: 18, ageMax: 25, targets: [
+  { code: 'YOUNG_ADULT_GENERAL', version: 'phase5-dev-v1', ageMin: 18, ageMax: 25, goalEnergyAdjustmentKcal: 150, targets: [
     { nutrientCode: 'ENERGY_KCAL', type: 'RANGE', minimum: 1800, maximum: 2200, unit: 'kcal' }, { nutrientCode: 'PROTEIN_G', type: 'MINIMUM', minimum: 60, unit: 'g' },
     { nutrientCode: 'CARBOHYDRATE_G', type: 'RANGE', minimum: 225, maximum: 330, unit: 'g' }, { nutrientCode: 'FAT_G', type: 'RANGE', minimum: 50, maximum: 80, unit: 'g' },
     { nutrientCode: 'FIBER_G', type: 'MINIMUM', minimum: 28, unit: 'g' }, { nutrientCode: 'SUGAR_G', type: 'UPPER_LIMIT', maximum: 50, unit: 'g' },
     { nutrientCode: 'SODIUM_MG', type: 'UPPER_LIMIT', maximum: 2000, unit: 'mg' }, { nutrientCode: 'SATURATED_FAT_G', type: 'UPPER_LIMIT', maximum: 20, unit: 'g' },
   ] },
-  { code: 'ADULT_GENERAL', version: 'phase5-dev-v1', ageMin: 26, ageMax: 59, targets: [
+  { code: 'ADULT_GENERAL', version: 'phase5-dev-v1', ageMin: 26, ageMax: 59, goalEnergyAdjustmentKcal: 150, targets: [
     { nutrientCode: 'ENERGY_KCAL', type: 'RANGE', minimum: 1750, maximum: 2150, unit: 'kcal' }, { nutrientCode: 'PROTEIN_G', type: 'MINIMUM', minimum: 60, unit: 'g' },
     { nutrientCode: 'CARBOHYDRATE_G', type: 'RANGE', minimum: 220, maximum: 320, unit: 'g' }, { nutrientCode: 'FAT_G', type: 'RANGE', minimum: 50, maximum: 75, unit: 'g' },
     { nutrientCode: 'FIBER_G', type: 'MINIMUM', minimum: 28, unit: 'g' }, { nutrientCode: 'SUGAR_G', type: 'UPPER_LIMIT', maximum: 50, unit: 'g' },
     { nutrientCode: 'SODIUM_MG', type: 'UPPER_LIMIT', maximum: 2000, unit: 'mg' }, { nutrientCode: 'SATURATED_FAT_G', type: 'UPPER_LIMIT', maximum: 20, unit: 'g' },
   ] },
-  { code: 'HEALTHY_AGING_GENERAL', version: 'phase5-dev-v1', ageMin: 60, ageMax: 75, targets: [
+  { code: 'HEALTHY_AGING_GENERAL', version: 'phase5-dev-v1', ageMin: 60, ageMax: 75, goalEnergyAdjustmentKcal: 0, targets: [
     { nutrientCode: 'ENERGY_KCAL', type: 'RANGE', minimum: 1700, maximum: 2100, unit: 'kcal' }, { nutrientCode: 'PROTEIN_G', type: 'MINIMUM', minimum: 65, unit: 'g' },
     { nutrientCode: 'CARBOHYDRATE_G', type: 'RANGE', minimum: 210, maximum: 310, unit: 'g' }, { nutrientCode: 'FAT_G', type: 'RANGE', minimum: 50, maximum: 75, unit: 'g' },
     { nutrientCode: 'FIBER_G', type: 'MINIMUM', minimum: 28, unit: 'g' }, { nutrientCode: 'SUGAR_G', type: 'UPPER_LIMIT', maximum: 45, unit: 'g' },

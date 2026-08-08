@@ -71,7 +71,7 @@ describe('Phase 3 domain rules', () => {
   });
 });
 
-describe('SARIRA API v1 Phase 4', () => {
+describe('SARIRA API v1 Phase 5', () => {
   let app: FastifyInstance;
   beforeAll(async () => { app = await buildApp({ env: { APP_ENV: 'test', NODE_ENV: 'test', USE_MOCK_DATA: 'true', LOG_LEVEL: 'silent' }, logger: false }); await app.ready(); });
   afterAll(async () => app.close());
@@ -81,6 +81,7 @@ describe('SARIRA API v1 Phase 4', () => {
     expect((await app.inject({ method: 'GET', url: '/api/v1/version' })).json().data).toMatchObject({ apiVersion: 'v1', phase: 5, status: 'nutrition-engine-real' });
     const denied = await app.inject({ method: 'GET', url: '/api/v1/me' });
     expect(denied.statusCode).toBe(401);
+    expect((await app.inject({ method: 'GET', url: '/api/v1/foods' })).statusCode).toBe(401);
     const accepted = await app.inject({ method: 'GET', url: '/api/v1/me', headers: { authorization: 'Bearer mock-user-token' } });
     expect(accepted.json().data).toMatchObject({ onboardingCompleted: false, currentStep: 'role-selection' });
   });

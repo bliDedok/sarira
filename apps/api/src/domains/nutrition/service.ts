@@ -126,6 +126,11 @@ function targetConfig(policy: NutritionPolicyRecord): NutritionTargetEntry[] {
   return targets.map((item) => ({ ...(item as NutritionTargetEntry) }));
 }
 
+function goalEnergyAdjustment(policy: NutritionPolicyRecord): number {
+  const value = policy.targetConfiguration.goalEnergyAdjustmentKcal;
+  return typeof value === 'number' && Number.isFinite(value) && value >= 0 ? value : 0;
+}
+
 function policyFor(profile: ProfileRecord, policies: NutritionPolicyRecord[]) {
   if (profile.age === undefined || !profile.ageGroup) throw new TargetUnavailableError('Tanggal lahir dan kelompok usia diperlukan.');
   const policy = policies.find((item) => profile.age! >= item.ageMin && profile.age! <= item.ageMax && (!item.applicableSex || item.applicableSex === profile.gender));
@@ -147,7 +152,8 @@ export async function recalculateTarget(repositories: DataRepositories, clock: C
   if (profile.ageGroup === 'HEALTHY_AGING') restrictionReasons.push('HEALTHY_AGING_NO_AUTOMATIC_DEFICIT');
   const adultAdjustable = ['YOUNG_ADULT', 'ADULT_BALANCE'].includes(profile.ageGroup) && safety.status === 'GREEN';
   if (adultAdjustable && ['LOSE_WEIGHT', 'GAIN_WEIGHT'].includes(goal.code)) {
-    const delta = goal.code === 'LOSE_WEIGHT' ? -150 : 150;
+    const configuredAdjustment = goalEnergyAdjustment(policy);
+    const delta = goal.code === 'LOSE_WEIGHT' ? -configuredAdjustment : configuredAdjustment;
     targets = targets.map((target) => target.nutrientCode === 'ENERGY_KCAL' ? { ...target, minimum: Math.max(1500, (target.minimum ?? 0) + delta), maximum: Math.max(1700, (target.maximum ?? 0) + delta) } : target);
   }
   const calculatedAt = clock.now().toISOString();
@@ -160,7 +166,16 @@ export async function currentTarget(repositories: DataRepositories, clock: Clock
   await assertNutritionConsent(repositories, userId);
   const profile = await getProfileOrThrow(repositories, userId);
   const localDate = localDateAt(clock.now(), profile.timezone);
-  return (await repositories.nutrition.getCurrentTarget(profile.id, localDate)) ?? recalculateTarget(repositories, clock, userId, 'INITIAL_TARGET');
+  const [existing, goal, safety, policies] = await Promise.all([
+    repositories.nutrition.getCurrentTarget(profile.id, localDate),
+    repositories.goals.get(profile.id),
+    repositories.safety.latestCompleted(profile.id),
+    repositories.nutrition.getActivePolicies(),
+  ]);
+  if (!goal || !safety || !profile.ageGroup) throw new TargetUnavailableError('Goal, safety, dan kelompok usia harus tersedia.');
+  const policy = policyFor(profile, policies);
+  if (existing && existing.goal === goal.code && existing.safetyStatus === safety.status && existing.ageGroup === profile.ageGroup && existing.policyCode === policy.code && existing.policyVersion === policy.version) return existing;
+  return recalculateTarget(repositories, clock, userId, existing ? 'PROFILE_SAFETY_GOAL_OR_POLICY_CHANGED' : 'INITIAL_TARGET');
 }
 
 export async function dailyNutrition(repositories: DataRepositories, clock: Clock, userId: string, localDate: string): Promise<DailyNutritionSummaryRecord> {
@@ -168,7 +183,10 @@ export async function dailyNutrition(repositories: DataRepositories, clock: Cloc
   const profile = await getProfileOrThrow(repositories, userId);
   const items = await repositories.nutrition.listItemsForDate(profile.id, localDate);
   let target: NutritionTargetProfileRecord | undefined;
-  try { target = (await repositories.nutrition.getCurrentTarget(profile.id, localDate)) ?? await recalculateTarget(repositories, clock, userId, 'INITIAL_TARGET'); } catch (error) { if (!(error instanceof TargetUnavailableError || error instanceof PolicyNotAvailableError)) throw error; }
+  try {
+    const latestTarget = await currentTarget(repositories, clock, userId);
+    target = (await repositories.nutrition.getCurrentTarget(profile.id, localDate)) ?? latestTarget;
+  } catch (error) { if (!(error instanceof TargetUnavailableError || error instanceof PolicyNotAvailableError)) throw error; }
   const raw = items.length ? aggregateNutrition(items.map((item) => item.snapshot.nutrients)) : emptyNutrients();
   const totals = Object.fromEntries(nutrientCodes.map((code) => [code, roundNutrient(code, raw[code])])) as typeof raw;
   const indicators: NutritionIndicatorRecord[] = nutrientCodes.map((code) => {

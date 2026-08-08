@@ -103,9 +103,13 @@ describe('Phase 5 nutrition E2E', () => {
   });
 
   it('Safety RED menghasilkan target restricted tanpa angka', async () => {
-    const account = await completeOnboarding('red'); const current = (await app.inject({ method: 'GET', url: '/api/v1/safety-screening/current', headers: account.headers })).json().data;
+    const account = await completeOnboarding('red');
+    expect((await app.inject({ method: 'GET', url: '/api/v1/nutrition/targets/current', headers: account.headers })).json().data.safetyStatus).toBe('GREEN');
+    const current = (await app.inject({ method: 'GET', url: '/api/v1/safety-screening/current', headers: account.headers })).json().data;
     const session = (await app.inject({ method: 'POST', url: '/api/v1/safety-screening/sessions', headers: account.headers })).json().data;
     await app.inject({ method: 'PUT', url: `/api/v1/safety-screening/sessions/${session.id as string}/answers`, headers: account.headers, payload: { answers: (current.template.questions as Array<{ id: string; code: string }>).map((question) => ({ questionId: question.id, answerCode: question.code === 'professional_restriction' ? 'YES' : 'NO' })) } });
-    expect((await app.inject({ method: 'POST', url: `/api/v1/safety-screening/sessions/${session.id as string}/complete`, headers: account.headers })).json().data.status).toBe('RED'); const target = await app.inject({ method: 'POST', url: '/api/v1/nutrition/targets/recalculate', headers: account.headers }); expect(target.json().data).toMatchObject({ safetyStatus: 'RED', restricted: true, targets: [] });
+    expect((await app.inject({ method: 'POST', url: `/api/v1/safety-screening/sessions/${session.id as string}/complete`, headers: account.headers })).json().data.status).toBe('RED');
+    const target = await app.inject({ method: 'GET', url: '/api/v1/nutrition/targets/current', headers: account.headers });
+    expect(target.json().data).toMatchObject({ safetyStatus: 'RED', restricted: true, targets: [], calculationReason: 'PROFILE_SAFETY_GOAL_OR_POLICY_CHANGED' });
   });
 });
