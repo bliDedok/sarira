@@ -103,6 +103,9 @@ describe('Phase 4 E2E scenarios A–J', () => {
     const readiness = await app.inject({ method: 'GET', url: `/api/v1/baseline/${baseline.id}/readiness`, headers: account.headers });
     expect(readiness.json().data).toMatchObject({ status: 'READY', totalDays: 14, completedDays: 11 });
     expect(JSON.stringify(readiness.json().data)).not.toMatch(/patternMap/i);
+    const completed = await app.inject({ method: 'POST', url: `/api/v1/baseline/${baseline.id}/complete`, headers: account.headers });
+    expect(completed.statusCode).toBe(200);
+    expect(completed.json().data).toMatchObject({ status: 'COMPLETED', readinessStatus: 'READY' });
   });
 
   it('SCENARIO F — Day 14 dengan data minim menjadi INSUFFICIENT_DATA', async () => {
@@ -111,6 +114,8 @@ describe('Phase 4 E2E scenarios A–J', () => {
     const readiness = await app.inject({ method: 'GET', url: `/api/v1/baseline/${baseline.id}/readiness`, headers: account.headers });
     expect(readiness.json().data).toMatchObject({ status: 'INSUFFICIENT_DATA' });
     expect(readiness.json().data.recommendation).toMatch(/melanjutkan pencatatan/i);
+    const prematureCompletion = await app.inject({ method: 'POST', url: `/api/v1/baseline/${baseline.id}/complete`, headers: account.headers });
+    expect(prematureCompletion.statusCode).toBe(409);
   });
 
   it('SCENARIO G — batas tengah malam Asia/Makassar mengubah Day 1 ke Day 2', async () => {

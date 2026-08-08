@@ -35,7 +35,7 @@ export default function HomeScreen() {
       ) : <>
         <View style={styles.heroGrid}>
           <Card tone="dark" style={styles.weeklyCard} accessibilityLabel="Weekly Action masih Demo">
-            <View style={styles.rowBetween}><View><AppText variant="eyebrow" style={styles.limeText}>WEEKLY ACTION</AppText><AppText variant="caption" style={styles.muted}>Aktif setelah analisis pola pada fase berikutnya</AppText></View><SimulatedBadge label="DEMO" /></View>
+            <View style={styles.rowBetween}><View style={styles.flex}><AppText variant="eyebrow" style={styles.limeText}>WEEKLY ACTION</AppText><AppText variant="caption" style={styles.muted}>Aktif setelah analisis pola pada fase berikutnya</AppText></View><SimulatedBadge label="DEMO" /></View>
             <AppText variant="h2" style={styles.white}>Kenali pola dulu, action menyusul.</AppText>
             <AppText variant="body" style={styles.muted}>Selama baseline, cukup catat kondisi sebenarnya. SARIRA belum membuat kesimpulan sebab-akibat.</AppText>
             <Button label="Isi check-in hari ini" icon={ChevronRight} variant="lime" onPress={() => router.push('/daily-check-in' as never)} />
@@ -71,7 +71,7 @@ export default function HomeScreen() {
         </View>
 
         <Card tone="cream" style={styles.demoCard} accessibilityLabel="Ringkasan nutrisi Demo">
-          <View style={styles.rowBetween}><View><AppText variant="eyebrow">NUTRITION RECOMMENDATION</AppText><AppText variant="h3">Perhitungan nutrisi belum aktif</AppText></View><SimulatedBadge label="DEMO" /></View>
+          <View style={styles.rowBetween}><View style={styles.flex}><AppText variant="eyebrow">NUTRITION RECOMMENDATION</AppText><AppText variant="h3">Perhitungan nutrisi belum aktif</AppText></View><SimulatedBadge label="DEMO" /></View>
           <AppText variant="body">Food log dasar sudah nyata, tetapi kalori, makro, natrium, rekomendasi Guided Meal, dan Flex Kitchen tetap Demo sampai fase berikutnya.</AppText>
         </Card>
       </>}
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   heroGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
   weeklyCard: { flex: 1.5, minWidth: 300, minHeight: 300, justifyContent: 'space-between', gap: spacing.lg, padding: spacing.xl, borderColor: colors.primaryDark },
   baselineCard: { flex: 0.9, minWidth: 280, minHeight: 300, justifyContent: 'space-between', gap: spacing.md },
-  rowBetween: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm },
+  rowBetween: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm, flexWrap: 'wrap' },
   white: { color: colors.white }, limeText: { color: colors.lime }, muted: { color: '#C8D6CC' },
   roundIcon: { width: 46, height: 46, borderRadius: 16, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center' },
   startCard: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: spacing.md, minHeight: 160 },

@@ -32,7 +32,7 @@ describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–4 integration', 
 
   it('menjalankan onboarding → baseline → daily tracking → completeness pada database nyata', async () => {
     const registration = await app.inject({ method: 'POST', url: '/api/v1/auth/register', payload: { name: 'Integration Phase 3', email, password: 'StrongPassword1' } });
-    expect(registration.statusCode).toBe(201);
+    expect(registration.statusCode, registration.body).toBe(201);
     userId = registration.json().data.user.id as string;
     const headers = { authorization: `Bearer ${registration.json().data.accessToken as string}` };
 
