@@ -195,6 +195,161 @@ export const DeviceSessionStatus = {
 export type DeviceSessionStatus = (typeof DeviceSessionStatus)[keyof typeof DeviceSessionStatus]
 
 
+export const BaselineStatus = {
+  ACTIVE: 'ACTIVE',
+  DAY_7_REVIEW_AVAILABLE: 'DAY_7_REVIEW_AVAILABLE',
+  DAY_14_REVIEW_AVAILABLE: 'DAY_14_REVIEW_AVAILABLE',
+  DATA_INSUFFICIENT: 'DATA_INSUFFICIENT',
+  COMPLETED: 'COMPLETED',
+  PAUSED: 'PAUSED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type BaselineStatus = (typeof BaselineStatus)[keyof typeof BaselineStatus]
+
+
+export const BaselineReadinessStatus = {
+  PENDING: 'PENDING',
+  READY: 'READY',
+  PARTIALLY_READY: 'PARTIALLY_READY',
+  INSUFFICIENT_DATA: 'INSUFFICIENT_DATA'
+} as const
+
+export type BaselineReadinessStatus = (typeof BaselineReadinessStatus)[keyof typeof BaselineReadinessStatus]
+
+
+export const DailyCompletenessStatus = {
+  COMPLETE: 'COMPLETE',
+  PARTIAL: 'PARTIAL',
+  MISSING: 'MISSING'
+} as const
+
+export type DailyCompletenessStatus = (typeof DailyCompletenessStatus)[keyof typeof DailyCompletenessStatus]
+
+
+export const MoodLevel = {
+  VERY_LOW: 'VERY_LOW',
+  LOW: 'LOW',
+  NEUTRAL: 'NEUTRAL',
+  GOOD: 'GOOD',
+  VERY_GOOD: 'VERY_GOOD'
+} as const
+
+export type MoodLevel = (typeof MoodLevel)[keyof typeof MoodLevel]
+
+
+export const BarrierCode = {
+  BUSY: 'BUSY',
+  FORGOT: 'FORGOT',
+  FOOD_UNAVAILABLE: 'FOOD_UNAVAILABLE',
+  LACK_OF_SLEEP: 'LACK_OF_SLEEP',
+  NO_TIME_FOR_ACTIVITY: 'NO_TIME_FOR_ACTIVITY',
+  NONE: 'NONE',
+  OTHER: 'OTHER'
+} as const
+
+export type BarrierCode = (typeof BarrierCode)[keyof typeof BarrierCode]
+
+
+export const TrackingSource = {
+  MANUAL: 'MANUAL',
+  APPLE_HEALTH: 'APPLE_HEALTH',
+  HEALTH_CONNECT: 'HEALTH_CONNECT',
+  GARMIN: 'GARMIN',
+  FITBIT: 'FITBIT',
+  SAMSUNG: 'SAMSUNG',
+  HUAWEI: 'HUAWEI',
+  OURA: 'OURA',
+  OTHER: 'OTHER'
+} as const
+
+export type TrackingSource = (typeof TrackingSource)[keyof typeof TrackingSource]
+
+
+export const MealType = {
+  BREAKFAST: 'BREAKFAST',
+  LUNCH: 'LUNCH',
+  DINNER: 'DINNER',
+  SNACK: 'SNACK',
+  OTHER: 'OTHER'
+} as const
+
+export type MealType = (typeof MealType)[keyof typeof MealType]
+
+
+export const SleepQuality = {
+  POOR: 'POOR',
+  FAIR: 'FAIR',
+  GOOD: 'GOOD',
+  VERY_GOOD: 'VERY_GOOD'
+} as const
+
+export type SleepQuality = (typeof SleepQuality)[keyof typeof SleepQuality]
+
+
+export const ActivityType = {
+  WALKING: 'WALKING',
+  RUNNING: 'RUNNING',
+  CYCLING: 'CYCLING',
+  STRENGTH: 'STRENGTH',
+  STRETCHING: 'STRETCHING',
+  SPORT: 'SPORT',
+  OTHER: 'OTHER'
+} as const
+
+export type ActivityType = (typeof ActivityType)[keyof typeof ActivityType]
+
+
+export const PerceivedIntensity = {
+  LIGHT: 'LIGHT',
+  MODERATE: 'MODERATE',
+  VIGOROUS: 'VIGOROUS'
+} as const
+
+export type PerceivedIntensity = (typeof PerceivedIntensity)[keyof typeof PerceivedIntensity]
+
+
+export const DigestiveSymptomType = {
+  BLOATING: 'BLOATING',
+  NAUSEA: 'NAUSEA',
+  ABDOMINAL_PAIN: 'ABDOMINAL_PAIN',
+  DIARRHEA: 'DIARRHEA',
+  CONSTIPATION: 'CONSTIPATION',
+  HEARTBURN: 'HEARTBURN',
+  LOW_APPETITE: 'LOW_APPETITE',
+  POST_MEAL_DISCOMFORT: 'POST_MEAL_DISCOMFORT',
+  OTHER: 'OTHER'
+} as const
+
+export type DigestiveSymptomType = (typeof DigestiveSymptomType)[keyof typeof DigestiveSymptomType]
+
+
+export const DailyTaskStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  SKIPPED: 'SKIPPED'
+} as const
+
+export type DailyTaskStatus = (typeof DailyTaskStatus)[keyof typeof DailyTaskStatus]
+
+
+export const DailyTaskSource = {
+  SYSTEM: 'SYSTEM',
+  USER: 'USER'
+} as const
+
+export type DailyTaskSource = (typeof DailyTaskSource)[keyof typeof DailyTaskSource]
+
+
+export const CompletenessScope = {
+  DAILY: 'DAILY',
+  OVERALL: 'OVERALL'
+} as const
+
+export type CompletenessScope = (typeof CompletenessScope)[keyof typeof CompletenessScope]
+
+
 export const AuditEvent = {
   USER_REGISTERED: 'USER_REGISTERED',
   USER_LOGGED_IN: 'USER_LOGGED_IN',
@@ -218,7 +373,23 @@ export const AuditEvent = {
   QUESTIONNAIRE_STARTED: 'QUESTIONNAIRE_STARTED',
   QUESTIONNAIRE_COMPLETED: 'QUESTIONNAIRE_COMPLETED',
   PROGRAM_PREFERENCE_SELECTED: 'PROGRAM_PREFERENCE_SELECTED',
-  ONBOARDING_COMPLETED: 'ONBOARDING_COMPLETED'
+  ONBOARDING_COMPLETED: 'ONBOARDING_COMPLETED',
+  BASELINE_STARTED: 'BASELINE_STARTED',
+  BASELINE_DAY_CREATED: 'BASELINE_DAY_CREATED',
+  DAILY_CHECKIN_UPDATED: 'DAILY_CHECKIN_UPDATED',
+  MEAL_LOG_CREATED: 'MEAL_LOG_CREATED',
+  MEAL_LOG_UPDATED: 'MEAL_LOG_UPDATED',
+  MEAL_LOG_DELETED: 'MEAL_LOG_DELETED',
+  SLEEP_LOG_CREATED: 'SLEEP_LOG_CREATED',
+  ACTIVITY_LOG_CREATED: 'ACTIVITY_LOG_CREATED',
+  STEP_RECORD_UPDATED: 'STEP_RECORD_UPDATED',
+  DIGESTIVE_LOG_CREATED: 'DIGESTIVE_LOG_CREATED',
+  DAY_7_CHECKPOINT_VIEWED: 'DAY_7_CHECKPOINT_VIEWED',
+  DAY_7_FEEDBACK_SUBMITTED: 'DAY_7_FEEDBACK_SUBMITTED',
+  BASELINE_DAY_14_REACHED: 'BASELINE_DAY_14_REACHED',
+  BASELINE_READY: 'BASELINE_READY',
+  BASELINE_DATA_INSUFFICIENT: 'BASELINE_DATA_INSUFFICIENT',
+  BASELINE_COMPLETED: 'BASELINE_COMPLETED'
 } as const
 
 export type AuditEvent = (typeof AuditEvent)[keyof typeof AuditEvent]

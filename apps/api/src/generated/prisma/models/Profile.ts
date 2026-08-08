@@ -256,6 +256,15 @@ export type ProfileWhereInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionListRelationFilter
   programPreference?: Prisma.XOR<Prisma.ProgramPreferenceNullableScalarRelationFilter, Prisma.ProgramPreferenceWhereInput> | null
   onboardingProgress?: Prisma.XOR<Prisma.OnboardingProgressNullableScalarRelationFilter, Prisma.OnboardingProgressWhereInput> | null
+  baselineSessions?: Prisma.BaselineSessionListRelationFilter
+  dailyRecords?: Prisma.DailyRecordListRelationFilter
+  dailyCheckIns?: Prisma.DailyCheckInListRelationFilter
+  mealLogs?: Prisma.MealLogListRelationFilter
+  sleepLogs?: Prisma.SleepLogListRelationFilter
+  activityLogs?: Prisma.ActivityLogListRelationFilter
+  stepRecords?: Prisma.StepRecordListRelationFilter
+  bodyMeasurements?: Prisma.BodyMeasurementListRelationFilter
+  digestiveLogs?: Prisma.DigestiveLogListRelationFilter
 }
 
 export type ProfileOrderByWithRelationInput = {
@@ -282,6 +291,15 @@ export type ProfileOrderByWithRelationInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionOrderByRelationAggregateInput
   programPreference?: Prisma.ProgramPreferenceOrderByWithRelationInput
   onboardingProgress?: Prisma.OnboardingProgressOrderByWithRelationInput
+  baselineSessions?: Prisma.BaselineSessionOrderByRelationAggregateInput
+  dailyRecords?: Prisma.DailyRecordOrderByRelationAggregateInput
+  dailyCheckIns?: Prisma.DailyCheckInOrderByRelationAggregateInput
+  mealLogs?: Prisma.MealLogOrderByRelationAggregateInput
+  sleepLogs?: Prisma.SleepLogOrderByRelationAggregateInput
+  activityLogs?: Prisma.ActivityLogOrderByRelationAggregateInput
+  stepRecords?: Prisma.StepRecordOrderByRelationAggregateInput
+  bodyMeasurements?: Prisma.BodyMeasurementOrderByRelationAggregateInput
+  digestiveLogs?: Prisma.DigestiveLogOrderByRelationAggregateInput
 }
 
 export type ProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -311,6 +329,15 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   questionnaireSessions?: Prisma.QuestionnaireSessionListRelationFilter
   programPreference?: Prisma.XOR<Prisma.ProgramPreferenceNullableScalarRelationFilter, Prisma.ProgramPreferenceWhereInput> | null
   onboardingProgress?: Prisma.XOR<Prisma.OnboardingProgressNullableScalarRelationFilter, Prisma.OnboardingProgressWhereInput> | null
+  baselineSessions?: Prisma.BaselineSessionListRelationFilter
+  dailyRecords?: Prisma.DailyRecordListRelationFilter
+  dailyCheckIns?: Prisma.DailyCheckInListRelationFilter
+  mealLogs?: Prisma.MealLogListRelationFilter
+  sleepLogs?: Prisma.SleepLogListRelationFilter
+  activityLogs?: Prisma.ActivityLogListRelationFilter
+  stepRecords?: Prisma.StepRecordListRelationFilter
+  bodyMeasurements?: Prisma.BodyMeasurementListRelationFilter
+  digestiveLogs?: Prisma.DigestiveLogListRelationFilter
 }, "id" | "userId">
 
 export type ProfileOrderByWithAggregationInput = {
@@ -374,6 +401,15 @@ export type ProfileCreateInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateInput = {
@@ -399,6 +435,15 @@ export type ProfileUncheckedCreateInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUpdateInput = {
@@ -424,6 +469,15 @@ export type ProfileUpdateInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateInput = {
@@ -449,6 +503,15 @@ export type ProfileUncheckedUpdateInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateManyInput = {
@@ -760,6 +823,132 @@ export type ProfileUpdateOneWithoutPreferencesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutPreferencesInput, Prisma.ProfileUpdateWithoutPreferencesInput>, Prisma.ProfileUncheckedUpdateWithoutPreferencesInput>
 }
 
+export type ProfileCreateNestedOneWithoutBaselineSessionsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutBaselineSessionsInput, Prisma.ProfileUncheckedCreateWithoutBaselineSessionsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutBaselineSessionsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutBaselineSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutBaselineSessionsInput, Prisma.ProfileUncheckedCreateWithoutBaselineSessionsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutBaselineSessionsInput
+  upsert?: Prisma.ProfileUpsertWithoutBaselineSessionsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutBaselineSessionsInput, Prisma.ProfileUpdateWithoutBaselineSessionsInput>, Prisma.ProfileUncheckedUpdateWithoutBaselineSessionsInput>
+}
+
+export type ProfileCreateNestedOneWithoutDailyRecordsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutDailyRecordsInput, Prisma.ProfileUncheckedCreateWithoutDailyRecordsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutDailyRecordsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutDailyRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutDailyRecordsInput, Prisma.ProfileUncheckedCreateWithoutDailyRecordsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutDailyRecordsInput
+  upsert?: Prisma.ProfileUpsertWithoutDailyRecordsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutDailyRecordsInput, Prisma.ProfileUpdateWithoutDailyRecordsInput>, Prisma.ProfileUncheckedUpdateWithoutDailyRecordsInput>
+}
+
+export type ProfileCreateNestedOneWithoutDailyCheckInsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutDailyCheckInsInput, Prisma.ProfileUncheckedCreateWithoutDailyCheckInsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutDailyCheckInsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutDailyCheckInsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutDailyCheckInsInput, Prisma.ProfileUncheckedCreateWithoutDailyCheckInsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutDailyCheckInsInput
+  upsert?: Prisma.ProfileUpsertWithoutDailyCheckInsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutDailyCheckInsInput, Prisma.ProfileUpdateWithoutDailyCheckInsInput>, Prisma.ProfileUncheckedUpdateWithoutDailyCheckInsInput>
+}
+
+export type ProfileCreateNestedOneWithoutMealLogsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutMealLogsInput, Prisma.ProfileUncheckedCreateWithoutMealLogsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutMealLogsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutMealLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutMealLogsInput, Prisma.ProfileUncheckedCreateWithoutMealLogsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutMealLogsInput
+  upsert?: Prisma.ProfileUpsertWithoutMealLogsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutMealLogsInput, Prisma.ProfileUpdateWithoutMealLogsInput>, Prisma.ProfileUncheckedUpdateWithoutMealLogsInput>
+}
+
+export type ProfileCreateNestedOneWithoutSleepLogsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutSleepLogsInput, Prisma.ProfileUncheckedCreateWithoutSleepLogsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutSleepLogsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutSleepLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutSleepLogsInput, Prisma.ProfileUncheckedCreateWithoutSleepLogsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutSleepLogsInput
+  upsert?: Prisma.ProfileUpsertWithoutSleepLogsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutSleepLogsInput, Prisma.ProfileUpdateWithoutSleepLogsInput>, Prisma.ProfileUncheckedUpdateWithoutSleepLogsInput>
+}
+
+export type ProfileCreateNestedOneWithoutActivityLogsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutActivityLogsInput, Prisma.ProfileUncheckedCreateWithoutActivityLogsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutActivityLogsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutActivityLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutActivityLogsInput, Prisma.ProfileUncheckedCreateWithoutActivityLogsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutActivityLogsInput
+  upsert?: Prisma.ProfileUpsertWithoutActivityLogsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutActivityLogsInput, Prisma.ProfileUpdateWithoutActivityLogsInput>, Prisma.ProfileUncheckedUpdateWithoutActivityLogsInput>
+}
+
+export type ProfileCreateNestedOneWithoutStepRecordsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutStepRecordsInput, Prisma.ProfileUncheckedCreateWithoutStepRecordsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutStepRecordsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutStepRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutStepRecordsInput, Prisma.ProfileUncheckedCreateWithoutStepRecordsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutStepRecordsInput
+  upsert?: Prisma.ProfileUpsertWithoutStepRecordsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutStepRecordsInput, Prisma.ProfileUpdateWithoutStepRecordsInput>, Prisma.ProfileUncheckedUpdateWithoutStepRecordsInput>
+}
+
+export type ProfileCreateNestedOneWithoutBodyMeasurementsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutBodyMeasurementsInput, Prisma.ProfileUncheckedCreateWithoutBodyMeasurementsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutBodyMeasurementsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutBodyMeasurementsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutBodyMeasurementsInput, Prisma.ProfileUncheckedCreateWithoutBodyMeasurementsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutBodyMeasurementsInput
+  upsert?: Prisma.ProfileUpsertWithoutBodyMeasurementsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutBodyMeasurementsInput, Prisma.ProfileUpdateWithoutBodyMeasurementsInput>, Prisma.ProfileUncheckedUpdateWithoutBodyMeasurementsInput>
+}
+
+export type ProfileCreateNestedOneWithoutDigestiveLogsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutDigestiveLogsInput, Prisma.ProfileUncheckedCreateWithoutDigestiveLogsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutDigestiveLogsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutDigestiveLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutDigestiveLogsInput, Prisma.ProfileUncheckedCreateWithoutDigestiveLogsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutDigestiveLogsInput
+  upsert?: Prisma.ProfileUpsertWithoutDigestiveLogsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutDigestiveLogsInput, Prisma.ProfileUpdateWithoutDigestiveLogsInput>, Prisma.ProfileUncheckedUpdateWithoutDigestiveLogsInput>
+}
+
 export type ProfileCreateWithoutUserInput = {
   id?: string
   fullName: string
@@ -782,6 +971,15 @@ export type ProfileCreateWithoutUserInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutUserInput = {
@@ -806,6 +1004,15 @@ export type ProfileUncheckedCreateWithoutUserInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutUserInput = {
@@ -875,6 +1082,15 @@ export type ProfileCreateWithoutConsentsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutConsentsInput = {
@@ -899,6 +1115,15 @@ export type ProfileUncheckedCreateWithoutConsentsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutConsentsInput = {
@@ -939,6 +1164,15 @@ export type ProfileUpdateWithoutConsentsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutConsentsInput = {
@@ -963,6 +1197,15 @@ export type ProfileUncheckedUpdateWithoutConsentsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutGuardianConsentsInput = {
@@ -987,6 +1230,15 @@ export type ProfileCreateWithoutGuardianConsentsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutGuardianConsentsInput = {
@@ -1011,6 +1263,15 @@ export type ProfileUncheckedCreateWithoutGuardianConsentsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutGuardianConsentsInput = {
@@ -1051,6 +1312,15 @@ export type ProfileUpdateWithoutGuardianConsentsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutGuardianConsentsInput = {
@@ -1075,6 +1345,15 @@ export type ProfileUncheckedUpdateWithoutGuardianConsentsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutSafetySessionsInput = {
@@ -1099,6 +1378,15 @@ export type ProfileCreateWithoutSafetySessionsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutSafetySessionsInput = {
@@ -1123,6 +1411,15 @@ export type ProfileUncheckedCreateWithoutSafetySessionsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutSafetySessionsInput = {
@@ -1163,6 +1460,15 @@ export type ProfileUpdateWithoutSafetySessionsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutSafetySessionsInput = {
@@ -1187,6 +1493,15 @@ export type ProfileUncheckedUpdateWithoutSafetySessionsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutSafetyResultsInput = {
@@ -1211,6 +1526,15 @@ export type ProfileCreateWithoutSafetyResultsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutSafetyResultsInput = {
@@ -1235,6 +1559,15 @@ export type ProfileUncheckedCreateWithoutSafetyResultsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutSafetyResultsInput = {
@@ -1275,6 +1608,15 @@ export type ProfileUpdateWithoutSafetyResultsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutSafetyResultsInput = {
@@ -1299,6 +1641,15 @@ export type ProfileUncheckedUpdateWithoutSafetyResultsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutGoalsInput = {
@@ -1323,6 +1674,15 @@ export type ProfileCreateWithoutGoalsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutGoalsInput = {
@@ -1347,6 +1707,15 @@ export type ProfileUncheckedCreateWithoutGoalsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutGoalsInput = {
@@ -1387,6 +1756,15 @@ export type ProfileUpdateWithoutGoalsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutGoalsInput = {
@@ -1411,6 +1789,15 @@ export type ProfileUncheckedUpdateWithoutGoalsInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutQuestionnaireSessionsInput = {
@@ -1435,6 +1822,15 @@ export type ProfileCreateWithoutQuestionnaireSessionsInput = {
   preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutQuestionnaireSessionsInput = {
@@ -1459,6 +1855,15 @@ export type ProfileUncheckedCreateWithoutQuestionnaireSessionsInput = {
   preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutQuestionnaireSessionsInput = {
@@ -1499,6 +1904,15 @@ export type ProfileUpdateWithoutQuestionnaireSessionsInput = {
   preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutQuestionnaireSessionsInput = {
@@ -1523,6 +1937,15 @@ export type ProfileUncheckedUpdateWithoutQuestionnaireSessionsInput = {
   preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutProgramPreferenceInput = {
@@ -1547,6 +1970,15 @@ export type ProfileCreateWithoutProgramPreferenceInput = {
   preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
   questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutProgramPreferenceInput = {
@@ -1571,6 +2003,15 @@ export type ProfileUncheckedCreateWithoutProgramPreferenceInput = {
   preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutProgramPreferenceInput = {
@@ -1611,6 +2052,15 @@ export type ProfileUpdateWithoutProgramPreferenceInput = {
   preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
   questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutProgramPreferenceInput = {
@@ -1635,6 +2085,15 @@ export type ProfileUncheckedUpdateWithoutProgramPreferenceInput = {
   preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutOnboardingProgressInput = {
@@ -1659,6 +2118,15 @@ export type ProfileCreateWithoutOnboardingProgressInput = {
   preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
   questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutOnboardingProgressInput = {
@@ -1683,6 +2151,15 @@ export type ProfileUncheckedCreateWithoutOnboardingProgressInput = {
   preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutOnboardingProgressInput = {
@@ -1723,6 +2200,15 @@ export type ProfileUpdateWithoutOnboardingProgressInput = {
   preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
   questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutOnboardingProgressInput = {
@@ -1747,6 +2233,15 @@ export type ProfileUncheckedUpdateWithoutOnboardingProgressInput = {
   preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutPreferencesInput = {
@@ -1771,6 +2266,15 @@ export type ProfileCreateWithoutPreferencesInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutPreferencesInput = {
@@ -1795,6 +2299,15 @@ export type ProfileUncheckedCreateWithoutPreferencesInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
   programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutPreferencesInput = {
@@ -1835,6 +2348,15 @@ export type ProfileUpdateWithoutPreferencesInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutPreferencesInput = {
@@ -1859,6 +2381,1347 @@ export type ProfileUncheckedUpdateWithoutPreferencesInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutBaselineSessionsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutBaselineSessionsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutBaselineSessionsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutBaselineSessionsInput, Prisma.ProfileUncheckedCreateWithoutBaselineSessionsInput>
+}
+
+export type ProfileUpsertWithoutBaselineSessionsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutBaselineSessionsInput, Prisma.ProfileUncheckedUpdateWithoutBaselineSessionsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutBaselineSessionsInput, Prisma.ProfileUncheckedCreateWithoutBaselineSessionsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutBaselineSessionsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutBaselineSessionsInput, Prisma.ProfileUncheckedUpdateWithoutBaselineSessionsInput>
+}
+
+export type ProfileUpdateWithoutBaselineSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutBaselineSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutDailyRecordsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutDailyRecordsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutDailyRecordsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutDailyRecordsInput, Prisma.ProfileUncheckedCreateWithoutDailyRecordsInput>
+}
+
+export type ProfileUpsertWithoutDailyRecordsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutDailyRecordsInput, Prisma.ProfileUncheckedUpdateWithoutDailyRecordsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutDailyRecordsInput, Prisma.ProfileUncheckedCreateWithoutDailyRecordsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutDailyRecordsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutDailyRecordsInput, Prisma.ProfileUncheckedUpdateWithoutDailyRecordsInput>
+}
+
+export type ProfileUpdateWithoutDailyRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutDailyRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutDailyCheckInsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutDailyCheckInsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutDailyCheckInsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutDailyCheckInsInput, Prisma.ProfileUncheckedCreateWithoutDailyCheckInsInput>
+}
+
+export type ProfileUpsertWithoutDailyCheckInsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutDailyCheckInsInput, Prisma.ProfileUncheckedUpdateWithoutDailyCheckInsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutDailyCheckInsInput, Prisma.ProfileUncheckedCreateWithoutDailyCheckInsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutDailyCheckInsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutDailyCheckInsInput, Prisma.ProfileUncheckedUpdateWithoutDailyCheckInsInput>
+}
+
+export type ProfileUpdateWithoutDailyCheckInsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutDailyCheckInsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutMealLogsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutMealLogsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutMealLogsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutMealLogsInput, Prisma.ProfileUncheckedCreateWithoutMealLogsInput>
+}
+
+export type ProfileUpsertWithoutMealLogsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutMealLogsInput, Prisma.ProfileUncheckedUpdateWithoutMealLogsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutMealLogsInput, Prisma.ProfileUncheckedCreateWithoutMealLogsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutMealLogsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutMealLogsInput, Prisma.ProfileUncheckedUpdateWithoutMealLogsInput>
+}
+
+export type ProfileUpdateWithoutMealLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutMealLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutSleepLogsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutSleepLogsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutSleepLogsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutSleepLogsInput, Prisma.ProfileUncheckedCreateWithoutSleepLogsInput>
+}
+
+export type ProfileUpsertWithoutSleepLogsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutSleepLogsInput, Prisma.ProfileUncheckedUpdateWithoutSleepLogsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutSleepLogsInput, Prisma.ProfileUncheckedCreateWithoutSleepLogsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutSleepLogsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutSleepLogsInput, Prisma.ProfileUncheckedUpdateWithoutSleepLogsInput>
+}
+
+export type ProfileUpdateWithoutSleepLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutSleepLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutActivityLogsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutActivityLogsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutActivityLogsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutActivityLogsInput, Prisma.ProfileUncheckedCreateWithoutActivityLogsInput>
+}
+
+export type ProfileUpsertWithoutActivityLogsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutActivityLogsInput, Prisma.ProfileUncheckedUpdateWithoutActivityLogsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutActivityLogsInput, Prisma.ProfileUncheckedCreateWithoutActivityLogsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutActivityLogsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutActivityLogsInput, Prisma.ProfileUncheckedUpdateWithoutActivityLogsInput>
+}
+
+export type ProfileUpdateWithoutActivityLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutActivityLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutStepRecordsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutStepRecordsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutStepRecordsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutStepRecordsInput, Prisma.ProfileUncheckedCreateWithoutStepRecordsInput>
+}
+
+export type ProfileUpsertWithoutStepRecordsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutStepRecordsInput, Prisma.ProfileUncheckedUpdateWithoutStepRecordsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutStepRecordsInput, Prisma.ProfileUncheckedCreateWithoutStepRecordsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutStepRecordsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutStepRecordsInput, Prisma.ProfileUncheckedUpdateWithoutStepRecordsInput>
+}
+
+export type ProfileUpdateWithoutStepRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutStepRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutBodyMeasurementsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutBodyMeasurementsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutBodyMeasurementsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutBodyMeasurementsInput, Prisma.ProfileUncheckedCreateWithoutBodyMeasurementsInput>
+}
+
+export type ProfileUpsertWithoutBodyMeasurementsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutBodyMeasurementsInput, Prisma.ProfileUncheckedUpdateWithoutBodyMeasurementsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutBodyMeasurementsInput, Prisma.ProfileUncheckedCreateWithoutBodyMeasurementsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutBodyMeasurementsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutBodyMeasurementsInput, Prisma.ProfileUncheckedUpdateWithoutBodyMeasurementsInput>
+}
+
+export type ProfileUpdateWithoutBodyMeasurementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutBodyMeasurementsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutDigestiveLogsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutDigestiveLogsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutDigestiveLogsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutDigestiveLogsInput, Prisma.ProfileUncheckedCreateWithoutDigestiveLogsInput>
+}
+
+export type ProfileUpsertWithoutDigestiveLogsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutDigestiveLogsInput, Prisma.ProfileUncheckedUpdateWithoutDigestiveLogsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutDigestiveLogsInput, Prisma.ProfileUncheckedCreateWithoutDigestiveLogsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutDigestiveLogsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutDigestiveLogsInput, Prisma.ProfileUncheckedUpdateWithoutDigestiveLogsInput>
+}
+
+export type ProfileUpdateWithoutDigestiveLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutDigestiveLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateManyUserInput = {
@@ -1898,6 +3761,15 @@ export type ProfileUpdateWithoutUserInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutUserInput = {
@@ -1922,6 +3794,15 @@ export type ProfileUncheckedUpdateWithoutUserInput = {
   questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
   programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
   onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateManyWithoutUserInput = {
@@ -1952,6 +3833,15 @@ export type ProfileCountOutputType = {
   safetyResults: number
   preferences: number
   questionnaireSessions: number
+  baselineSessions: number
+  dailyRecords: number
+  dailyCheckIns: number
+  mealLogs: number
+  sleepLogs: number
+  activityLogs: number
+  stepRecords: number
+  bodyMeasurements: number
+  digestiveLogs: number
 }
 
 export type ProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1962,6 +3852,15 @@ export type ProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   safetyResults?: boolean | ProfileCountOutputTypeCountSafetyResultsArgs
   preferences?: boolean | ProfileCountOutputTypeCountPreferencesArgs
   questionnaireSessions?: boolean | ProfileCountOutputTypeCountQuestionnaireSessionsArgs
+  baselineSessions?: boolean | ProfileCountOutputTypeCountBaselineSessionsArgs
+  dailyRecords?: boolean | ProfileCountOutputTypeCountDailyRecordsArgs
+  dailyCheckIns?: boolean | ProfileCountOutputTypeCountDailyCheckInsArgs
+  mealLogs?: boolean | ProfileCountOutputTypeCountMealLogsArgs
+  sleepLogs?: boolean | ProfileCountOutputTypeCountSleepLogsArgs
+  activityLogs?: boolean | ProfileCountOutputTypeCountActivityLogsArgs
+  stepRecords?: boolean | ProfileCountOutputTypeCountStepRecordsArgs
+  bodyMeasurements?: boolean | ProfileCountOutputTypeCountBodyMeasurementsArgs
+  digestiveLogs?: boolean | ProfileCountOutputTypeCountDigestiveLogsArgs
 }
 
 /**
@@ -2023,6 +3922,69 @@ export type ProfileCountOutputTypeCountQuestionnaireSessionsArgs<ExtArgs extends
   where?: Prisma.QuestionnaireSessionWhereInput
 }
 
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountBaselineSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BaselineSessionWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountDailyRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DailyRecordWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountDailyCheckInsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DailyCheckInWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountMealLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MealLogWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountSleepLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SleepLogWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountActivityLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ActivityLogWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountStepRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StepRecordWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountBodyMeasurementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BodyMeasurementWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountDigestiveLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DigestiveLogWhereInput
+}
+
 
 export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2048,6 +4010,15 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   questionnaireSessions?: boolean | Prisma.Profile$questionnaireSessionsArgs<ExtArgs>
   programPreference?: boolean | Prisma.Profile$programPreferenceArgs<ExtArgs>
   onboardingProgress?: boolean | Prisma.Profile$onboardingProgressArgs<ExtArgs>
+  baselineSessions?: boolean | Prisma.Profile$baselineSessionsArgs<ExtArgs>
+  dailyRecords?: boolean | Prisma.Profile$dailyRecordsArgs<ExtArgs>
+  dailyCheckIns?: boolean | Prisma.Profile$dailyCheckInsArgs<ExtArgs>
+  mealLogs?: boolean | Prisma.Profile$mealLogsArgs<ExtArgs>
+  sleepLogs?: boolean | Prisma.Profile$sleepLogsArgs<ExtArgs>
+  activityLogs?: boolean | Prisma.Profile$activityLogsArgs<ExtArgs>
+  stepRecords?: boolean | Prisma.Profile$stepRecordsArgs<ExtArgs>
+  bodyMeasurements?: boolean | Prisma.Profile$bodyMeasurementsArgs<ExtArgs>
+  digestiveLogs?: boolean | Prisma.Profile$digestiveLogsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profile"]>
 
@@ -2113,6 +4084,15 @@ export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   questionnaireSessions?: boolean | Prisma.Profile$questionnaireSessionsArgs<ExtArgs>
   programPreference?: boolean | Prisma.Profile$programPreferenceArgs<ExtArgs>
   onboardingProgress?: boolean | Prisma.Profile$onboardingProgressArgs<ExtArgs>
+  baselineSessions?: boolean | Prisma.Profile$baselineSessionsArgs<ExtArgs>
+  dailyRecords?: boolean | Prisma.Profile$dailyRecordsArgs<ExtArgs>
+  dailyCheckIns?: boolean | Prisma.Profile$dailyCheckInsArgs<ExtArgs>
+  mealLogs?: boolean | Prisma.Profile$mealLogsArgs<ExtArgs>
+  sleepLogs?: boolean | Prisma.Profile$sleepLogsArgs<ExtArgs>
+  activityLogs?: boolean | Prisma.Profile$activityLogsArgs<ExtArgs>
+  stepRecords?: boolean | Prisma.Profile$stepRecordsArgs<ExtArgs>
+  bodyMeasurements?: boolean | Prisma.Profile$bodyMeasurementsArgs<ExtArgs>
+  digestiveLogs?: boolean | Prisma.Profile$digestiveLogsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2135,6 +4115,15 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     questionnaireSessions: Prisma.$QuestionnaireSessionPayload<ExtArgs>[]
     programPreference: Prisma.$ProgramPreferencePayload<ExtArgs> | null
     onboardingProgress: Prisma.$OnboardingProgressPayload<ExtArgs> | null
+    baselineSessions: Prisma.$BaselineSessionPayload<ExtArgs>[]
+    dailyRecords: Prisma.$DailyRecordPayload<ExtArgs>[]
+    dailyCheckIns: Prisma.$DailyCheckInPayload<ExtArgs>[]
+    mealLogs: Prisma.$MealLogPayload<ExtArgs>[]
+    sleepLogs: Prisma.$SleepLogPayload<ExtArgs>[]
+    activityLogs: Prisma.$ActivityLogPayload<ExtArgs>[]
+    stepRecords: Prisma.$StepRecordPayload<ExtArgs>[]
+    bodyMeasurements: Prisma.$BodyMeasurementPayload<ExtArgs>[]
+    digestiveLogs: Prisma.$DigestiveLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2554,6 +4543,15 @@ export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.
   questionnaireSessions<T extends Prisma.Profile$questionnaireSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$questionnaireSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionnaireSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   programPreference<T extends Prisma.Profile$programPreferenceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$programPreferenceArgs<ExtArgs>>): Prisma.Prisma__ProgramPreferenceClient<runtime.Types.Result.GetResult<Prisma.$ProgramPreferencePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   onboardingProgress<T extends Prisma.Profile$onboardingProgressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$onboardingProgressArgs<ExtArgs>>): Prisma.Prisma__OnboardingProgressClient<runtime.Types.Result.GetResult<Prisma.$OnboardingProgressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  baselineSessions<T extends Prisma.Profile$baselineSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$baselineSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BaselineSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  dailyRecords<T extends Prisma.Profile$dailyRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$dailyRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  dailyCheckIns<T extends Prisma.Profile$dailyCheckInsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$dailyCheckInsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyCheckInPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mealLogs<T extends Prisma.Profile$mealLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$mealLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MealLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sleepLogs<T extends Prisma.Profile$sleepLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$sleepLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SleepLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  activityLogs<T extends Prisma.Profile$activityLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$activityLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  stepRecords<T extends Prisma.Profile$stepRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$stepRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StepRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bodyMeasurements<T extends Prisma.Profile$bodyMeasurementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$bodyMeasurementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BodyMeasurementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  digestiveLogs<T extends Prisma.Profile$digestiveLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$digestiveLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DigestiveLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3200,6 +5198,222 @@ export type Profile$onboardingProgressArgs<ExtArgs extends runtime.Types.Extensi
    */
   include?: Prisma.OnboardingProgressInclude<ExtArgs> | null
   where?: Prisma.OnboardingProgressWhereInput
+}
+
+/**
+ * Profile.baselineSessions
+ */
+export type Profile$baselineSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BaselineSession
+   */
+  select?: Prisma.BaselineSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BaselineSession
+   */
+  omit?: Prisma.BaselineSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BaselineSessionInclude<ExtArgs> | null
+  where?: Prisma.BaselineSessionWhereInput
+  orderBy?: Prisma.BaselineSessionOrderByWithRelationInput | Prisma.BaselineSessionOrderByWithRelationInput[]
+  cursor?: Prisma.BaselineSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BaselineSessionScalarFieldEnum | Prisma.BaselineSessionScalarFieldEnum[]
+}
+
+/**
+ * Profile.dailyRecords
+ */
+export type Profile$dailyRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DailyRecord
+   */
+  select?: Prisma.DailyRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DailyRecord
+   */
+  omit?: Prisma.DailyRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DailyRecordInclude<ExtArgs> | null
+  where?: Prisma.DailyRecordWhereInput
+  orderBy?: Prisma.DailyRecordOrderByWithRelationInput | Prisma.DailyRecordOrderByWithRelationInput[]
+  cursor?: Prisma.DailyRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DailyRecordScalarFieldEnum | Prisma.DailyRecordScalarFieldEnum[]
+}
+
+/**
+ * Profile.dailyCheckIns
+ */
+export type Profile$dailyCheckInsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DailyCheckIn
+   */
+  select?: Prisma.DailyCheckInSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DailyCheckIn
+   */
+  omit?: Prisma.DailyCheckInOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DailyCheckInInclude<ExtArgs> | null
+  where?: Prisma.DailyCheckInWhereInput
+  orderBy?: Prisma.DailyCheckInOrderByWithRelationInput | Prisma.DailyCheckInOrderByWithRelationInput[]
+  cursor?: Prisma.DailyCheckInWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DailyCheckInScalarFieldEnum | Prisma.DailyCheckInScalarFieldEnum[]
+}
+
+/**
+ * Profile.mealLogs
+ */
+export type Profile$mealLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MealLog
+   */
+  select?: Prisma.MealLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MealLog
+   */
+  omit?: Prisma.MealLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MealLogInclude<ExtArgs> | null
+  where?: Prisma.MealLogWhereInput
+  orderBy?: Prisma.MealLogOrderByWithRelationInput | Prisma.MealLogOrderByWithRelationInput[]
+  cursor?: Prisma.MealLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MealLogScalarFieldEnum | Prisma.MealLogScalarFieldEnum[]
+}
+
+/**
+ * Profile.sleepLogs
+ */
+export type Profile$sleepLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SleepLog
+   */
+  select?: Prisma.SleepLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SleepLog
+   */
+  omit?: Prisma.SleepLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SleepLogInclude<ExtArgs> | null
+  where?: Prisma.SleepLogWhereInput
+  orderBy?: Prisma.SleepLogOrderByWithRelationInput | Prisma.SleepLogOrderByWithRelationInput[]
+  cursor?: Prisma.SleepLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SleepLogScalarFieldEnum | Prisma.SleepLogScalarFieldEnum[]
+}
+
+/**
+ * Profile.activityLogs
+ */
+export type Profile$activityLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ActivityLog
+   */
+  select?: Prisma.ActivityLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ActivityLog
+   */
+  omit?: Prisma.ActivityLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ActivityLogInclude<ExtArgs> | null
+  where?: Prisma.ActivityLogWhereInput
+  orderBy?: Prisma.ActivityLogOrderByWithRelationInput | Prisma.ActivityLogOrderByWithRelationInput[]
+  cursor?: Prisma.ActivityLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ActivityLogScalarFieldEnum | Prisma.ActivityLogScalarFieldEnum[]
+}
+
+/**
+ * Profile.stepRecords
+ */
+export type Profile$stepRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StepRecord
+   */
+  select?: Prisma.StepRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StepRecord
+   */
+  omit?: Prisma.StepRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StepRecordInclude<ExtArgs> | null
+  where?: Prisma.StepRecordWhereInput
+  orderBy?: Prisma.StepRecordOrderByWithRelationInput | Prisma.StepRecordOrderByWithRelationInput[]
+  cursor?: Prisma.StepRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StepRecordScalarFieldEnum | Prisma.StepRecordScalarFieldEnum[]
+}
+
+/**
+ * Profile.bodyMeasurements
+ */
+export type Profile$bodyMeasurementsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BodyMeasurement
+   */
+  select?: Prisma.BodyMeasurementSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BodyMeasurement
+   */
+  omit?: Prisma.BodyMeasurementOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BodyMeasurementInclude<ExtArgs> | null
+  where?: Prisma.BodyMeasurementWhereInput
+  orderBy?: Prisma.BodyMeasurementOrderByWithRelationInput | Prisma.BodyMeasurementOrderByWithRelationInput[]
+  cursor?: Prisma.BodyMeasurementWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BodyMeasurementScalarFieldEnum | Prisma.BodyMeasurementScalarFieldEnum[]
+}
+
+/**
+ * Profile.digestiveLogs
+ */
+export type Profile$digestiveLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DigestiveLog
+   */
+  select?: Prisma.DigestiveLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DigestiveLog
+   */
+  omit?: Prisma.DigestiveLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DigestiveLogInclude<ExtArgs> | null
+  where?: Prisma.DigestiveLogWhereInput
+  orderBy?: Prisma.DigestiveLogOrderByWithRelationInput | Prisma.DigestiveLogOrderByWithRelationInput[]
+  cursor?: Prisma.DigestiveLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DigestiveLogScalarFieldEnum | Prisma.DigestiveLogScalarFieldEnum[]
 }
 
 /**

@@ -75,7 +75,22 @@ export const ModelName = {
   OnboardingProgress: 'OnboardingProgress',
   AppPreference: 'AppPreference',
   DeviceSession: 'DeviceSession',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  BaselineSession: 'BaselineSession',
+  DailyRecord: 'DailyRecord',
+  DailyCheckIn: 'DailyCheckIn',
+  MealLog: 'MealLog',
+  SleepLog: 'SleepLog',
+  ActivityLog: 'ActivityLog',
+  StepRecord: 'StepRecord',
+  BodyMeasurement: 'BodyMeasurement',
+  DigestiveLog: 'DigestiveLog',
+  DailyTaskDefinition: 'DailyTaskDefinition',
+  DailyTaskInstance: 'DailyTaskInstance',
+  DataCompletenessSnapshot: 'DataCompletenessSnapshot',
+  Day7Checkpoint: 'Day7Checkpoint',
+  Day7Feedback: 'Day7Feedback',
+  BaselineReadinessResult: 'BaselineReadinessResult'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -492,6 +507,288 @@ export const AuditLogScalarFieldEnum = {
 } as const
 
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+export const BaselineSessionScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  status: 'status',
+  startedAt: 'startedAt',
+  startLocalDate: 'startLocalDate',
+  timezone: 'timezone',
+  currentDay: 'currentDay',
+  targetDays: 'targetDays',
+  calendarCompletedAt: 'calendarCompletedAt',
+  completedAt: 'completedAt',
+  readinessStatus: 'readinessStatus',
+  completenessScore: 'completenessScore',
+  extensionAllowed: 'extensionAllowed',
+  extensionDays: 'extensionDays',
+  configVersion: 'configVersion',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BaselineSessionScalarFieldEnum = (typeof BaselineSessionScalarFieldEnum)[keyof typeof BaselineSessionScalarFieldEnum]
+
+
+export const DailyRecordScalarFieldEnum = {
+  id: 'id',
+  baselineSessionId: 'baselineSessionId',
+  profileId: 'profileId',
+  localDate: 'localDate',
+  dayIndex: 'dayIndex',
+  completenessStatus: 'completenessStatus',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DailyRecordScalarFieldEnum = (typeof DailyRecordScalarFieldEnum)[keyof typeof DailyRecordScalarFieldEnum]
+
+
+export const DailyCheckInScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  baselineSessionId: 'baselineSessionId',
+  dailyRecordId: 'dailyRecordId',
+  localDate: 'localDate',
+  mood: 'mood',
+  hunger: 'hunger',
+  fullness: 'fullness',
+  energy: 'energy',
+  bodyFeeling: 'bodyFeeling',
+  barriers: 'barriers',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DailyCheckInScalarFieldEnum = (typeof DailyCheckInScalarFieldEnum)[keyof typeof DailyCheckInScalarFieldEnum]
+
+
+export const MealLogScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  baselineSessionId: 'baselineSessionId',
+  dailyRecordId: 'dailyRecordId',
+  localDate: 'localDate',
+  mealType: 'mealType',
+  eatenAt: 'eatenAt',
+  description: 'description',
+  source: 'source',
+  skipped: 'skipped',
+  sugaryDrinkConsumed: 'sugaryDrinkConsumed',
+  lateMeal: 'lateMeal',
+  homeCooked: 'homeCooked',
+  eatingContext: 'eatingContext',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MealLogScalarFieldEnum = (typeof MealLogScalarFieldEnum)[keyof typeof MealLogScalarFieldEnum]
+
+
+export const SleepLogScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  baselineSessionId: 'baselineSessionId',
+  dailyRecordId: 'dailyRecordId',
+  localDate: 'localDate',
+  sleepStartedAt: 'sleepStartedAt',
+  wokeUpAt: 'wokeUpAt',
+  durationMinutes: 'durationMinutes',
+  perceivedQuality: 'perceivedQuality',
+  nightAwakenings: 'nightAwakenings',
+  notes: 'notes',
+  source: 'source',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SleepLogScalarFieldEnum = (typeof SleepLogScalarFieldEnum)[keyof typeof SleepLogScalarFieldEnum]
+
+
+export const ActivityLogScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  baselineSessionId: 'baselineSessionId',
+  dailyRecordId: 'dailyRecordId',
+  localDate: 'localDate',
+  activityType: 'activityType',
+  startedAt: 'startedAt',
+  durationMinutes: 'durationMinutes',
+  perceivedIntensity: 'perceivedIntensity',
+  description: 'description',
+  notes: 'notes',
+  source: 'source',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ActivityLogScalarFieldEnum = (typeof ActivityLogScalarFieldEnum)[keyof typeof ActivityLogScalarFieldEnum]
+
+
+export const StepRecordScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  baselineSessionId: 'baselineSessionId',
+  dailyRecordId: 'dailyRecordId',
+  localDate: 'localDate',
+  steps: 'steps',
+  source: 'source',
+  sourceDevice: 'sourceDevice',
+  verified: 'verified',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StepRecordScalarFieldEnum = (typeof StepRecordScalarFieldEnum)[keyof typeof StepRecordScalarFieldEnum]
+
+
+export const BodyMeasurementScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  baselineSessionId: 'baselineSessionId',
+  dailyRecordId: 'dailyRecordId',
+  localDate: 'localDate',
+  measuredAt: 'measuredAt',
+  weightKg: 'weightKg',
+  waistCm: 'waistCm',
+  source: 'source',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BodyMeasurementScalarFieldEnum = (typeof BodyMeasurementScalarFieldEnum)[keyof typeof BodyMeasurementScalarFieldEnum]
+
+
+export const DigestiveLogScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  baselineSessionId: 'baselineSessionId',
+  dailyRecordId: 'dailyRecordId',
+  localDate: 'localDate',
+  symptomType: 'symptomType',
+  occurredAt: 'occurredAt',
+  intensity: 'intensity',
+  relatedMealId: 'relatedMealId',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DigestiveLogScalarFieldEnum = (typeof DigestiveLogScalarFieldEnum)[keyof typeof DigestiveLogScalarFieldEnum]
+
+
+export const DailyTaskDefinitionScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  version: 'version',
+  title: 'title',
+  domain: 'domain',
+  minimumRequirement: 'minimumRequirement',
+  sortOrder: 'sortOrder',
+  contentStatus: 'contentStatus',
+  expertValidationRequired: 'expertValidationRequired',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DailyTaskDefinitionScalarFieldEnum = (typeof DailyTaskDefinitionScalarFieldEnum)[keyof typeof DailyTaskDefinitionScalarFieldEnum]
+
+
+export const DailyTaskInstanceScalarFieldEnum = {
+  id: 'id',
+  dailyRecordId: 'dailyRecordId',
+  definitionId: 'definitionId',
+  status: 'status',
+  progress: 'progress',
+  target: 'target',
+  source: 'source',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DailyTaskInstanceScalarFieldEnum = (typeof DailyTaskInstanceScalarFieldEnum)[keyof typeof DailyTaskInstanceScalarFieldEnum]
+
+
+export const DataCompletenessSnapshotScalarFieldEnum = {
+  id: 'id',
+  baselineSessionId: 'baselineSessionId',
+  scope: 'scope',
+  scopeKey: 'scopeKey',
+  localDate: 'localDate',
+  status: 'status',
+  score: 'score',
+  achievedDomains: 'achievedDomains',
+  missingDomains: 'missingDomains',
+  domainCoverage: 'domainCoverage',
+  completedDays: 'completedDays',
+  elapsedDays: 'elapsedDays',
+  configVersion: 'configVersion',
+  validationStatus: 'validationStatus',
+  calculatedAt: 'calculatedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DataCompletenessSnapshotScalarFieldEnum = (typeof DataCompletenessSnapshotScalarFieldEnum)[keyof typeof DataCompletenessSnapshotScalarFieldEnum]
+
+
+export const Day7CheckpointScalarFieldEnum = {
+  id: 'id',
+  baselineSessionId: 'baselineSessionId',
+  generatedAt: 'generatedAt',
+  observedDays: 'observedDays',
+  daysWithData: 'daysWithData',
+  domainCoverage: 'domainCoverage',
+  missingDomains: 'missingDomains',
+  observations: 'observations',
+  disclaimer: 'disclaimer',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type Day7CheckpointScalarFieldEnum = (typeof Day7CheckpointScalarFieldEnum)[keyof typeof Day7CheckpointScalarFieldEnum]
+
+
+export const Day7FeedbackScalarFieldEnum = {
+  id: 'id',
+  baselineSessionId: 'baselineSessionId',
+  easeRating: 'easeRating',
+  hardestDomains: 'hardestDomains',
+  wantsToContinue: 'wantsToContinue',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type Day7FeedbackScalarFieldEnum = (typeof Day7FeedbackScalarFieldEnum)[keyof typeof Day7FeedbackScalarFieldEnum]
+
+
+export const BaselineReadinessResultScalarFieldEnum = {
+  id: 'id',
+  baselineSessionId: 'baselineSessionId',
+  status: 'status',
+  domainCoverage: 'domainCoverage',
+  missingDomains: 'missingDomains',
+  totalDays: 'totalDays',
+  completedDays: 'completedDays',
+  completenessScore: 'completenessScore',
+  reasonCodes: 'reasonCodes',
+  recommendation: 'recommendation',
+  configVersion: 'configVersion',
+  evaluatedAt: 'evaluatedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BaselineReadinessResultScalarFieldEnum = (typeof BaselineReadinessResultScalarFieldEnum)[keyof typeof BaselineReadinessResultScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -18,6 +18,7 @@
     "@fastify/rate-limit": "11.2.0",
     "@prisma/adapter-pg": "7.9.1",
     "@prisma/client": "7.9.1",
+    "@sarira/baseline": "workspace:*",
     "@sarira/config": "workspace:*",
     "@sarira/expert-system": "workspace:*",
     "@sarira/logger": "workspace:*",

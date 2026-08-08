@@ -135,12 +135,86 @@ async function seedQuestionnaire() {
   }
 }
 
+const taskDefinitions = [
+  { id: '70000000-0000-4000-8000-000000000001', code: 'checkIn', title: 'Isi Daily Check-in', sortOrder: 1 },
+  { id: '70000000-0000-4000-8000-000000000002', code: 'food', title: 'Catat makanan hari ini', sortOrder: 2 },
+  { id: '70000000-0000-4000-8000-000000000003', code: 'sleep', title: 'Lengkapi catatan tidur', sortOrder: 3 },
+  { id: '70000000-0000-4000-8000-000000000004', code: 'activity', title: 'Catat aktivitas hari ini', sortOrder: 4 },
+];
+
+async function seedTaskDefinitions() {
+  for (const item of taskDefinitions) {
+    await prisma.dailyTaskDefinition.upsert({
+      where: { code_version: { code: item.code, version: 'phase4-dev-v1' } },
+      update: { title: item.title, domain: item.code, minimumRequirement: 1, sortOrder: item.sortOrder, active: true },
+      create: { ...item, version: 'phase4-dev-v1', domain: item.code, minimumRequirement: 1, sortOrder: item.sortOrder, contentStatus: ContentStatus.DEVELOPMENT_REQUIRES_EXPERT_VALIDATION, expertValidationRequired: true },
+    });
+  }
+}
+
+const seedProfiles = [
+  { key: 'day1', suffix: '01', email: 'phase4-day1@sarira.test', name: 'Dewasa Day 1', birthDate: '1996-01-01', startDate: '2026-08-08', currentDay: 1, status: 'ACTIVE' as const, mode: 'day1' },
+  { key: 'day7', suffix: '02', email: 'phase4-day7-teen@sarira.test', name: 'Remaja Day 7', birthDate: '2011-01-01', startDate: '2026-08-02', currentDay: 7, status: 'DAY_7_REVIEW_AVAILABLE' as const, mode: 'missing' },
+  { key: 'ready', suffix: '03', email: 'phase4-day14-ready-aging@sarira.test', name: 'Healthy Aging Ready', birthDate: '1961-01-01', startDate: '2026-07-26', currentDay: 14, status: 'DAY_14_REVIEW_AVAILABLE' as const, mode: 'ready' },
+  { key: 'insufficient', suffix: '04', email: 'phase4-day14-insufficient@sarira.test', name: 'Dewasa Insufficient', birthDate: '1991-01-01', startDate: '2026-07-26', currentDay: 14, status: 'DATA_INSUFFICIENT' as const, mode: 'insufficient' },
+  { key: 'missing', suffix: '05', email: 'phase4-missing-days@sarira.test', name: 'Dewasa Missing Days', birthDate: '1988-01-01', startDate: '2026-08-02', currentDay: 7, status: 'DAY_7_REVIEW_AVAILABLE' as const, mode: 'missing' },
+];
+
+const stableUuid = (group: string, value: number) => `${group}-0000-4000-8000-${String(value).padStart(12, '0')}`;
+
+async function seedPhase4Profiles() {
+  const template = await prisma.safetyScreeningTemplate.findUniqueOrThrow({ where: { code_version: { code: 'ONBOARDING_SAFETY', version } } });
+  const goalDefinition = await prisma.goalDefinition.findUniqueOrThrow({ where: { code: 'MAINTAIN_WEIGHT' } });
+  const consentVersions = await prisma.consentVersion.findMany({ where: { version, type: { in: [ConsentType.TERMS_OF_SERVICE, ConsentType.PRIVACY_POLICY, ConsentType.HEALTH_PROFILE, ConsentType.NUTRITION_DATA, ConsentType.ACTIVITY_DATA, ConsentType.SLEEP_DATA] } } });
+
+  for (const [profileIndex, seed] of seedProfiles.entries()) {
+    const number = profileIndex + 1;
+    const userId = stableUuid('81000000', number);
+    const profileId = stableUuid('82000000', number);
+    const baselineId = stableUuid('83000000', number);
+    const user = await prisma.user.upsert({ where: { externalAuthId: stableUuid('80000000', number) }, update: { email: seed.email, status: 'ACTIVE' }, create: { id: userId, externalAuthId: stableUuid('80000000', number), email: seed.email, status: 'ACTIVE' } });
+    await prisma.roleAssignment.upsert({ where: { userId_role: { userId: user.id, role: Role.USER } }, update: {}, create: { userId: user.id, role: Role.USER } });
+    const profile = await prisma.profile.upsert({ where: { userId: user.id }, update: { fullName: seed.name, dateOfBirth: new Date(`${seed.birthDate}T00:00:00.000Z`), timezone: 'Asia/Makassar', primaryRole: Role.USER, onboardingStatus: 'COMPLETED', onboardingCompletedAt: activeAt }, create: { id: profileId, userId: user.id, fullName: seed.name, dateOfBirth: new Date(`${seed.birthDate}T00:00:00.000Z`), timezone: 'Asia/Makassar', primaryRole: Role.USER, onboardingStatus: 'COMPLETED', onboardingCompletedAt: activeAt } });
+    await prisma.onboardingProgress.upsert({ where: { userId: user.id }, update: { profileId: profile.id, status: 'COMPLETED', currentStep: 'starter-journey', lastCompletedStep: 'profile-summary', completedAt: activeAt }, create: { id: stableUuid('84000000', number), userId: user.id, profileId: profile.id, status: 'COMPLETED', currentStep: 'starter-journey', lastCompletedStep: 'profile-summary', completedAt: activeAt } });
+    for (const [consentIndex, consentVersion] of consentVersions.entries()) {
+      await prisma.userConsent.upsert({ where: { id: stableUuid(`85${seed.suffix}0000`, consentIndex + 1) }, update: { status: 'GRANTED', grantedAt: activeAt, revokedAt: null }, create: { id: stableUuid(`85${seed.suffix}0000`, consentIndex + 1), userId: user.id, profileId: profile.id, consentVersionId: consentVersion.id, status: 'GRANTED', source: 'ONBOARDING', grantedAt: activeAt } });
+    }
+    const safetySessionId = stableUuid('86000000', number);
+    await prisma.safetyScreeningSession.upsert({ where: { id: safetySessionId }, update: { status: 'COMPLETED', completedAt: activeAt }, create: { id: safetySessionId, userId: user.id, profileId: profile.id, templateId: template.id, rulesetId: template.code, rulesetHash: `${template.code}:${template.version}`, ruleVersion: version, status: 'COMPLETED', startedAt: activeAt, completedAt: activeAt } });
+    await prisma.safetyResult.upsert({ where: { sessionId: safetySessionId }, update: { status: 'GREEN', profileId: profile.id }, create: { id: stableUuid('87000000', number), sessionId: safetySessionId, profileId: profile.id, status: 'GREEN', triggeredRules: [], restrictedPrograms: [], referralRequired: false, ruleVersion: version, completedAt: activeAt } });
+    await prisma.userGoal.upsert({ where: { id: stableUuid('88000000', number) }, update: { status: 'ACTIVE', code: goalDefinition.code, definitionId: goalDefinition.id }, create: { id: stableUuid('88000000', number), userId: user.id, profileId: profile.id, definitionId: goalDefinition.id, code: goalDefinition.code, status: 'ACTIVE' } });
+    await prisma.programPreference.upsert({ where: { profileId: profile.id }, update: { program: 'GUIDED_MEAL' }, create: { id: stableUuid('89000000', number), profileId: profile.id, program: 'GUIDED_MEAL' } });
+    const readinessStatus = seed.mode === 'ready' ? 'READY' : seed.mode === 'insufficient' ? 'INSUFFICIENT_DATA' : 'PENDING';
+    await prisma.baselineSession.upsert({ where: { id: baselineId }, update: { status: seed.status, currentDay: seed.currentDay, readinessStatus, completenessScore: seed.mode === 'ready' ? 79 : seed.mode === 'insufficient' ? 2 : 0 }, create: { id: baselineId, profileId: profile.id, status: seed.status, startedAt: new Date(`${seed.startDate}T00:00:00.000Z`), startLocalDate: new Date(`${seed.startDate}T00:00:00.000Z`), timezone: 'Asia/Makassar', currentDay: seed.currentDay, targetDays: 14, readinessStatus, completenessScore: seed.mode === 'ready' ? 79 : seed.mode === 'insufficient' ? 2 : 0, extensionAllowed: true, extensionDays: 7, configVersion: 'phase4-dev-v1', ...(seed.currentDay === 14 ? { calendarCompletedAt: activeAt } : {}) } });
+
+    const loggedDays = seed.mode === 'ready' ? 11 : seed.mode === 'day1' ? 1 : seed.mode === 'insufficient' ? 1 : 3;
+    for (let dayIndex = 1; dayIndex <= loggedDays; dayIndex += 1) {
+      const localDate = new Date(`${seed.startDate}T00:00:00.000Z`); localDate.setUTCDate(localDate.getUTCDate() + (seed.mode === 'missing' && dayIndex > 1 ? dayIndex : dayIndex - 1));
+      const recordNumber = number * 100 + dayIndex;
+      const dailyRecordId = stableUuid('8a000000', recordNumber);
+      const complete = seed.mode === 'ready' || seed.mode === 'day1';
+      await prisma.dailyRecord.upsert({ where: { baselineSessionId_localDate: { baselineSessionId: baselineId, localDate } }, update: { completenessStatus: complete ? 'COMPLETE' : 'PARTIAL' }, create: { id: dailyRecordId, baselineSessionId: baselineId, profileId: profile.id, localDate, dayIndex: Math.round((localDate.getTime() - new Date(`${seed.startDate}T00:00:00.000Z`).getTime()) / 86_400_000) + 1, completenessStatus: complete ? 'COMPLETE' : 'PARTIAL', ...(complete ? { completedAt: activeAt } : {}) } });
+      await prisma.dailyCheckIn.upsert({ where: { dailyRecordId }, update: { mood: 'GOOD', hunger: 3, fullness: 4 }, create: { id: stableUuid('8b000000', recordNumber), profileId: profile.id, baselineSessionId: baselineId, dailyRecordId, localDate, mood: 'GOOD', hunger: 3, fullness: 4, barriers: [] } });
+      if (complete) {
+        await prisma.mealLog.upsert({ where: { id: stableUuid('8c000000', recordNumber) }, update: {}, create: { id: stableUuid('8c000000', recordNumber), profileId: profile.id, baselineSessionId: baselineId, dailyRecordId, localDate, mealType: 'BREAKFAST', description: 'Data uji sarapan', source: 'MANUAL', skipped: false } });
+        await prisma.sleepLog.upsert({ where: { id: stableUuid('8d000000', recordNumber) }, update: {}, create: { id: stableUuid('8d000000', recordNumber), profileId: profile.id, baselineSessionId: baselineId, dailyRecordId, localDate, sleepStartedAt: new Date(`${localDate.toISOString().slice(0, 10)}T00:00:00.000Z`), wokeUpAt: new Date(`${localDate.toISOString().slice(0, 10)}T07:00:00.000Z`), durationMinutes: 420, perceivedQuality: 'GOOD', source: 'MANUAL' } });
+        await prisma.activityLog.upsert({ where: { id: stableUuid('8e000000', recordNumber) }, update: {}, create: { id: stableUuid('8e000000', recordNumber), profileId: profile.id, baselineSessionId: baselineId, dailyRecordId, localDate, activityType: 'WALKING', durationMinutes: 20, perceivedIntensity: 'LIGHT', source: 'MANUAL' } });
+      }
+    }
+    if (seed.currentDay === 14) {
+      await prisma.baselineReadinessResult.upsert({ where: { baselineSessionId: baselineId }, update: { status: readinessStatus, completenessScore: seed.mode === 'ready' ? 79 : 2 }, create: { id: stableUuid('8f000000', number), baselineSessionId: baselineId, status: readinessStatus, domainCoverage: seed.mode === 'ready' ? { checkIn: 0.79, food: 0.79, sleep: 0.79, activity: 0.79 } : { checkIn: 0.07, food: 0, sleep: 0, activity: 0 }, missingDomains: seed.mode === 'ready' ? [] : ['checkIn', 'food', 'sleep', 'activity'], totalDays: 14, completedDays: seed.mode === 'ready' ? 11 : 0, completenessScore: seed.mode === 'ready' ? 79 : 2, reasonCodes: seed.mode === 'ready' ? ['MINIMUM_SCORE_MET', 'REQUIRED_DOMAIN_COVERAGE_MET'] : ['COMPLETENESS_BELOW_READY_THRESHOLD'], recommendation: seed.mode === 'ready' ? 'Data baseline siap dianalisis.' : 'Data belum cukup; lanjutkan pencatatan.', configVersion: 'phase4-dev-v1', evaluatedAt: activeAt } });
+    }
+  }
+}
+
 async function main() {
   if (PHASE_3_CONTENT_STATUS !== 'DEVELOPMENT_REQUIRES_EXPERT_VALIDATION' || PHASE_3_RULE_VERSION !== version) throw new Error('Phase 3 seed version tidak konsisten.');
   await seedConsents();
   await seedSafety();
   await seedGoals();
   await seedQuestionnaire();
+  await seedTaskDefinitions();
+  await seedPhase4Profiles();
 }
 
 main().finally(() => prisma.$disconnect());

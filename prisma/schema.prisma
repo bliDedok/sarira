@@ -142,6 +142,119 @@ enum DeviceSessionStatus {
   EXPIRED
 }
 
+enum BaselineStatus {
+  ACTIVE
+  DAY_7_REVIEW_AVAILABLE
+  DAY_14_REVIEW_AVAILABLE
+  DATA_INSUFFICIENT
+  COMPLETED
+  PAUSED
+  CANCELLED
+}
+
+enum BaselineReadinessStatus {
+  PENDING
+  READY
+  PARTIALLY_READY
+  INSUFFICIENT_DATA
+}
+
+enum DailyCompletenessStatus {
+  COMPLETE
+  PARTIAL
+  MISSING
+}
+
+enum MoodLevel {
+  VERY_LOW
+  LOW
+  NEUTRAL
+  GOOD
+  VERY_GOOD
+}
+
+enum BarrierCode {
+  BUSY
+  FORGOT
+  FOOD_UNAVAILABLE
+  LACK_OF_SLEEP
+  NO_TIME_FOR_ACTIVITY
+  NONE
+  OTHER
+}
+
+enum TrackingSource {
+  MANUAL
+  APPLE_HEALTH
+  HEALTH_CONNECT
+  GARMIN
+  FITBIT
+  SAMSUNG
+  HUAWEI
+  OURA
+  OTHER
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+  OTHER
+}
+
+enum SleepQuality {
+  POOR
+  FAIR
+  GOOD
+  VERY_GOOD
+}
+
+enum ActivityType {
+  WALKING
+  RUNNING
+  CYCLING
+  STRENGTH
+  STRETCHING
+  SPORT
+  OTHER
+}
+
+enum PerceivedIntensity {
+  LIGHT
+  MODERATE
+  VIGOROUS
+}
+
+enum DigestiveSymptomType {
+  BLOATING
+  NAUSEA
+  ABDOMINAL_PAIN
+  DIARRHEA
+  CONSTIPATION
+  HEARTBURN
+  LOW_APPETITE
+  POST_MEAL_DISCOMFORT
+  OTHER
+}
+
+enum DailyTaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  SKIPPED
+}
+
+enum DailyTaskSource {
+  SYSTEM
+  USER
+}
+
+enum CompletenessScope {
+  DAILY
+  OVERALL
+}
+
 enum AuditEvent {
   USER_REGISTERED
   USER_LOGGED_IN
@@ -166,6 +279,22 @@ enum AuditEvent {
   QUESTIONNAIRE_COMPLETED
   PROGRAM_PREFERENCE_SELECTED
   ONBOARDING_COMPLETED
+  BASELINE_STARTED
+  BASELINE_DAY_CREATED
+  DAILY_CHECKIN_UPDATED
+  MEAL_LOG_CREATED
+  MEAL_LOG_UPDATED
+  MEAL_LOG_DELETED
+  SLEEP_LOG_CREATED
+  ACTIVITY_LOG_CREATED
+  STEP_RECORD_UPDATED
+  DIGESTIVE_LOG_CREATED
+  DAY_7_CHECKPOINT_VIEWED
+  DAY_7_FEEDBACK_SUBMITTED
+  BASELINE_DAY_14_REACHED
+  BASELINE_READY
+  BASELINE_DATA_INSUFFICIENT
+  BASELINE_COMPLETED
 }
 
 model User {
@@ -214,6 +343,15 @@ model Profile {
   questionnaireSessions QuestionnaireSession[]
   programPreference     ProgramPreference?
   onboardingProgress    OnboardingProgress?
+  baselineSessions      BaselineSession[]
+  dailyRecords          DailyRecord[]
+  dailyCheckIns         DailyCheckIn[]
+  mealLogs              MealLog[]
+  sleepLogs             SleepLog[]
+  activityLogs          ActivityLog[]
+  stepRecords           StepRecord[]
+  bodyMeasurements      BodyMeasurement[]
+  digestiveLogs         DigestiveLog[]
 
   @@index([onboardingStatus])
 }
@@ -418,7 +556,7 @@ model SafetyResult {
   triggeredRules     String[]
   restrictedPrograms String[]
   referralRequired   Boolean      @default(false)
-  ruleVersion        String
+  ruleVersion        String       @default("phase3-dev-v1")
   evaluatedAt        DateTime     @default(now()) @db.Timestamptz(3)
   completedAt        DateTime     @default(now()) @db.Timestamptz(3)
   createdAt          DateTime     @default(now()) @db.Timestamptz(3)
@@ -633,4 +771,330 @@ model AuditLog {
   @@index([actorUserId, createdAt])
   @@index([event, createdAt])
   @@index([entityType, entityId])
+}
+
+model BaselineSession {
+  id                  String                      @id @default(uuid()) @db.Uuid
+  profileId           String                      @db.Uuid
+  status              BaselineStatus              @default(ACTIVE)
+  startedAt           DateTime                    @default(now()) @db.Timestamptz(3)
+  startLocalDate      DateTime                    @db.Date
+  timezone            String
+  currentDay          Int                         @default(1)
+  targetDays          Int                         @default(14)
+  calendarCompletedAt DateTime?                   @db.Timestamptz(3)
+  completedAt         DateTime?                   @db.Timestamptz(3)
+  readinessStatus     BaselineReadinessStatus     @default(PENDING)
+  completenessScore   Float                       @default(0)
+  extensionAllowed    Boolean                     @default(true)
+  extensionDays       Int                         @default(7)
+  configVersion       String
+  createdAt           DateTime                    @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime                    @updatedAt @db.Timestamptz(3)
+  profile             Profile                     @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  dailyRecords        DailyRecord[]
+  mealLogs            MealLog[]
+  sleepLogs           SleepLog[]
+  activityLogs        ActivityLog[]
+  stepRecords         StepRecord[]
+  bodyMeasurements    BodyMeasurement[]
+  digestiveLogs       DigestiveLog[]
+  completeness        DataCompletenessSnapshot[]
+  day7Checkpoint      Day7Checkpoint?
+  day7Feedback        Day7Feedback?
+  readinessResult     BaselineReadinessResult?
+
+  @@index([profileId, status])
+  @@index([profileId, startedAt])
+}
+
+model DailyRecord {
+  id                  String                    @id @default(uuid()) @db.Uuid
+  baselineSessionId   String                    @db.Uuid
+  profileId           String                    @db.Uuid
+  localDate           DateTime                  @db.Date
+  dayIndex            Int
+  completenessStatus  DailyCompletenessStatus   @default(MISSING)
+  completedAt         DateTime?                 @db.Timestamptz(3)
+  createdAt           DateTime                  @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime                  @updatedAt @db.Timestamptz(3)
+  baselineSession     BaselineSession           @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  profile             Profile                   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  checkIn             DailyCheckIn?
+  mealLogs            MealLog[]
+  sleepLogs           SleepLog[]
+  activityLogs        ActivityLog[]
+  stepRecord          StepRecord?
+  bodyMeasurements    BodyMeasurement[]
+  digestiveLogs       DigestiveLog[]
+  taskInstances       DailyTaskInstance[]
+
+  @@unique([baselineSessionId, localDate])
+  @@index([profileId, localDate])
+  @@index([baselineSessionId, dayIndex])
+}
+
+model DailyCheckIn {
+  id                String        @id @default(uuid()) @db.Uuid
+  profileId         String        @db.Uuid
+  baselineSessionId String        @db.Uuid
+  dailyRecordId     String        @unique @db.Uuid
+  localDate         DateTime      @db.Date
+  mood              MoodLevel
+  hunger            Int
+  fullness          Int
+  energy            Int?
+  bodyFeeling       String?
+  barriers          BarrierCode[]
+  notes             String?
+  createdAt         DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime      @updatedAt @db.Timestamptz(3)
+  profile           Profile       @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  dailyRecord       DailyRecord   @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
+
+  @@unique([baselineSessionId, localDate])
+  @@index([profileId, localDate])
+}
+
+model MealLog {
+  id                    String          @id @default(uuid()) @db.Uuid
+  profileId             String          @db.Uuid
+  baselineSessionId     String          @db.Uuid
+  dailyRecordId         String          @db.Uuid
+  localDate             DateTime        @db.Date
+  mealType              MealType
+  eatenAt               DateTime?       @db.Timestamptz(3)
+  description           String?
+  source                TrackingSource  @default(MANUAL)
+  skipped               Boolean         @default(false)
+  sugaryDrinkConsumed   Boolean?
+  lateMeal              Boolean?
+  homeCooked            Boolean?
+  eatingContext         String?
+  notes                 String?
+  createdAt             DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime        @updatedAt @db.Timestamptz(3)
+  profile               Profile         @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  baselineSession       BaselineSession @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  dailyRecord           DailyRecord     @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
+  digestiveLogs         DigestiveLog[]
+
+  @@index([profileId, localDate])
+  @@index([baselineSessionId, localDate])
+}
+
+model SleepLog {
+  id                String          @id @default(uuid()) @db.Uuid
+  profileId         String          @db.Uuid
+  baselineSessionId String          @db.Uuid
+  dailyRecordId     String          @db.Uuid
+  localDate         DateTime        @db.Date
+  sleepStartedAt    DateTime        @db.Timestamptz(3)
+  wokeUpAt          DateTime        @db.Timestamptz(3)
+  durationMinutes   Int
+  perceivedQuality  SleepQuality
+  nightAwakenings   Int?
+  notes             String?
+  source            TrackingSource  @default(MANUAL)
+  createdAt         DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime        @updatedAt @db.Timestamptz(3)
+  profile           Profile         @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  baselineSession   BaselineSession @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  dailyRecord       DailyRecord     @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, localDate])
+  @@index([baselineSessionId, localDate])
+}
+
+model ActivityLog {
+  id                  String              @id @default(uuid()) @db.Uuid
+  profileId           String              @db.Uuid
+  baselineSessionId   String              @db.Uuid
+  dailyRecordId       String              @db.Uuid
+  localDate           DateTime            @db.Date
+  activityType        ActivityType
+  startedAt           DateTime?           @db.Timestamptz(3)
+  durationMinutes     Int
+  perceivedIntensity  PerceivedIntensity
+  description         String?
+  notes               String?
+  source              TrackingSource      @default(MANUAL)
+  createdAt           DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime            @updatedAt @db.Timestamptz(3)
+  profile             Profile             @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  baselineSession     BaselineSession     @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  dailyRecord         DailyRecord         @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, localDate])
+  @@index([baselineSessionId, localDate])
+}
+
+model StepRecord {
+  id                String          @id @default(uuid()) @db.Uuid
+  profileId         String          @db.Uuid
+  baselineSessionId String          @db.Uuid
+  dailyRecordId     String          @unique @db.Uuid
+  localDate         DateTime        @db.Date
+  steps             Int
+  source            TrackingSource  @default(MANUAL)
+  sourceDevice      String?
+  verified          Boolean         @default(false)
+  createdAt         DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime        @updatedAt @db.Timestamptz(3)
+  profile           Profile         @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  baselineSession   BaselineSession @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  dailyRecord       DailyRecord     @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
+
+  @@unique([baselineSessionId, localDate])
+  @@index([profileId, localDate])
+}
+
+model BodyMeasurement {
+  id                String          @id @default(uuid()) @db.Uuid
+  profileId         String          @db.Uuid
+  baselineSessionId String          @db.Uuid
+  dailyRecordId     String          @db.Uuid
+  localDate         DateTime        @db.Date
+  measuredAt        DateTime        @db.Timestamptz(3)
+  weightKg          Decimal         @db.Decimal(6, 2)
+  waistCm           Decimal?        @db.Decimal(6, 2)
+  source            TrackingSource  @default(MANUAL)
+  notes             String?
+  createdAt         DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime        @updatedAt @db.Timestamptz(3)
+  profile           Profile         @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  baselineSession   BaselineSession @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  dailyRecord       DailyRecord     @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, measuredAt])
+  @@index([baselineSessionId, localDate])
+}
+
+model DigestiveLog {
+  id                String                   @id @default(uuid()) @db.Uuid
+  profileId         String                   @db.Uuid
+  baselineSessionId String                   @db.Uuid
+  dailyRecordId     String                   @db.Uuid
+  localDate         DateTime                 @db.Date
+  symptomType       DigestiveSymptomType
+  occurredAt        DateTime                 @db.Timestamptz(3)
+  intensity         Int
+  relatedMealId     String?                  @db.Uuid
+  notes             String?
+  createdAt         DateTime                 @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime                 @updatedAt @db.Timestamptz(3)
+  profile           Profile                  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  baselineSession   BaselineSession          @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  dailyRecord       DailyRecord              @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
+  relatedMeal       MealLog?                 @relation(fields: [relatedMealId], references: [id], onDelete: SetNull)
+
+  @@index([profileId, localDate])
+  @@index([baselineSessionId, localDate])
+  @@index([relatedMealId])
+}
+
+model DailyTaskDefinition {
+  id                       String              @id @default(uuid()) @db.Uuid
+  code                     String
+  version                  String
+  title                    String
+  domain                   String
+  minimumRequirement       Int                 @default(1)
+  sortOrder                Int
+  contentStatus            ContentStatus       @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
+  expertValidationRequired Boolean             @default(true)
+  active                   Boolean             @default(true)
+  createdAt                DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime            @updatedAt @db.Timestamptz(3)
+  instances                DailyTaskInstance[]
+
+  @@unique([code, version])
+  @@index([active, sortOrder])
+}
+
+model DailyTaskInstance {
+  id              String           @id @default(uuid()) @db.Uuid
+  dailyRecordId   String           @db.Uuid
+  definitionId    String           @db.Uuid
+  status          DailyTaskStatus  @default(PENDING)
+  progress        Int              @default(0)
+  target          Int              @default(1)
+  source          DailyTaskSource  @default(SYSTEM)
+  completedAt     DateTime?        @db.Timestamptz(3)
+  createdAt       DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime         @updatedAt @db.Timestamptz(3)
+  dailyRecord     DailyRecord      @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
+  definition      DailyTaskDefinition @relation(fields: [definitionId], references: [id], onDelete: Restrict)
+
+  @@unique([dailyRecordId, definitionId])
+  @@index([status, updatedAt])
+}
+
+model DataCompletenessSnapshot {
+  id                String                    @id @default(uuid()) @db.Uuid
+  baselineSessionId String                    @db.Uuid
+  scope             CompletenessScope
+  scopeKey          String
+  localDate         DateTime?                 @db.Date
+  status            DailyCompletenessStatus
+  score             Float
+  achievedDomains   String[]
+  missingDomains    String[]
+  domainCoverage    Json
+  completedDays     Int
+  elapsedDays       Int
+  configVersion     String
+  validationStatus  String
+  calculatedAt      DateTime                  @default(now()) @db.Timestamptz(3)
+  createdAt         DateTime                  @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime                  @updatedAt @db.Timestamptz(3)
+  baselineSession   BaselineSession           @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+
+  @@unique([baselineSessionId, scopeKey])
+  @@index([baselineSessionId, scope, calculatedAt])
+}
+
+model Day7Checkpoint {
+  id                String          @id @default(uuid()) @db.Uuid
+  baselineSessionId String          @unique @db.Uuid
+  generatedAt       DateTime        @default(now()) @db.Timestamptz(3)
+  observedDays      Int
+  daysWithData      Int
+  domainCoverage    Json
+  missingDomains    String[]
+  observations      String[]
+  disclaimer        String
+  createdAt         DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime        @updatedAt @db.Timestamptz(3)
+  baselineSession   BaselineSession @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+}
+
+model Day7Feedback {
+  id                String          @id @default(uuid()) @db.Uuid
+  baselineSessionId String          @unique @db.Uuid
+  easeRating        Int
+  hardestDomains    String[]
+  wantsToContinue   Boolean
+  notes             String?
+  createdAt         DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime        @updatedAt @db.Timestamptz(3)
+  baselineSession   BaselineSession @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+}
+
+model BaselineReadinessResult {
+  id                String                      @id @default(uuid()) @db.Uuid
+  baselineSessionId String                      @unique @db.Uuid
+  status            BaselineReadinessStatus
+  domainCoverage    Json
+  missingDomains    String[]
+  totalDays         Int
+  completedDays     Int
+  completenessScore Float
+  reasonCodes       String[]
+  recommendation    String
+  configVersion     String
+  evaluatedAt       DateTime                    @default(now()) @db.Timestamptz(3)
+  createdAt         DateTime                    @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime                    @updatedAt @db.Timestamptz(3)
+  baselineSession   BaselineSession             @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
 }

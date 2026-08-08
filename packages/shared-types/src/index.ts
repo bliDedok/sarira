@@ -334,6 +334,257 @@ export interface OnboardingSummaryRecord {
   completionIssues: string[];
 }
 
+export const baselineStatuses = [
+  'ACTIVE',
+  'DAY_7_REVIEW_AVAILABLE',
+  'DAY_14_REVIEW_AVAILABLE',
+  'DATA_INSUFFICIENT',
+  'COMPLETED',
+  'PAUSED',
+  'CANCELLED',
+] as const;
+export type BaselineStatus = (typeof baselineStatuses)[number];
+export type BaselineReadinessStatus = 'PENDING' | 'READY' | 'PARTIALLY_READY' | 'INSUFFICIENT_DATA';
+export type DailyCompletenessStatus = 'COMPLETE' | 'PARTIAL' | 'MISSING';
+export type BaselineDayState = DailyCompletenessStatus | 'TODAY' | 'UPCOMING';
+export type TrackingSource = 'MANUAL' | 'APPLE_HEALTH' | 'HEALTH_CONNECT' | 'GARMIN' | 'FITBIT' | 'SAMSUNG' | 'HUAWEI' | 'OURA' | 'OTHER';
+export type MoodLevel = 'VERY_LOW' | 'LOW' | 'NEUTRAL' | 'GOOD' | 'VERY_GOOD';
+export type BarrierCode = 'BUSY' | 'FORGOT' | 'FOOD_UNAVAILABLE' | 'LACK_OF_SLEEP' | 'NO_TIME_FOR_ACTIVITY' | 'NONE' | 'OTHER';
+export type MealType = 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK' | 'OTHER';
+export type SleepQuality = 'POOR' | 'FAIR' | 'GOOD' | 'VERY_GOOD';
+export type ActivityType = 'WALKING' | 'RUNNING' | 'CYCLING' | 'STRENGTH' | 'STRETCHING' | 'SPORT' | 'OTHER';
+export type PerceivedIntensity = 'LIGHT' | 'MODERATE' | 'VIGOROUS';
+export type DigestiveSymptomType = 'BLOATING' | 'NAUSEA' | 'ABDOMINAL_PAIN' | 'DIARRHEA' | 'CONSTIPATION' | 'HEARTBURN' | 'LOW_APPETITE' | 'POST_MEAL_DISCOMFORT' | 'OTHER';
+export type DailyTaskStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'SKIPPED';
+export type BaselineDomain = 'checkIn' | 'food' | 'sleep' | 'activity';
+
+export interface BaselineSessionRecord {
+  id: string;
+  profileId: string;
+  status: BaselineStatus;
+  startedAt: string;
+  startLocalDate: string;
+  timezone: string;
+  currentDay: number;
+  targetDays: number;
+  calendarCompletedAt?: string;
+  completedAt?: string;
+  readinessStatus: BaselineReadinessStatus;
+  completenessScore: number;
+  extensionAllowed: boolean;
+  extensionDays: number;
+  configVersion: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DailyCheckInRecord {
+  id: string;
+  profileId: string;
+  baselineSessionId: string;
+  dailyRecordId: string;
+  localDate: string;
+  mood: MoodLevel;
+  hunger: number;
+  fullness: number;
+  energy?: number;
+  bodyFeeling?: string;
+  barriers: BarrierCode[];
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MealLogRecord {
+  id: string;
+  profileId: string;
+  baselineSessionId: string;
+  dailyRecordId: string;
+  localDate: string;
+  mealType: MealType;
+  eatenAt?: string;
+  description?: string;
+  source: TrackingSource;
+  skipped: boolean;
+  sugaryDrinkConsumed?: boolean;
+  lateMeal?: boolean;
+  homeCooked?: boolean;
+  eatingContext?: string;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SleepLogRecord {
+  id: string;
+  profileId: string;
+  baselineSessionId: string;
+  dailyRecordId: string;
+  localDate: string;
+  sleepStartedAt: string;
+  wokeUpAt: string;
+  durationMinutes: number;
+  perceivedQuality: SleepQuality;
+  nightAwakenings?: number;
+  notes?: string;
+  source: TrackingSource;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ActivityLogRecord {
+  id: string;
+  profileId: string;
+  baselineSessionId: string;
+  dailyRecordId: string;
+  localDate: string;
+  activityType: ActivityType;
+  startedAt?: string;
+  durationMinutes: number;
+  perceivedIntensity: PerceivedIntensity;
+  description?: string;
+  notes?: string;
+  source: TrackingSource;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface StepRecordValue {
+  id: string;
+  profileId: string;
+  baselineSessionId: string;
+  dailyRecordId: string;
+  localDate: string;
+  steps: number;
+  source: TrackingSource;
+  sourceDevice?: string;
+  verified: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BodyMeasurementRecord {
+  id: string;
+  profileId: string;
+  baselineSessionId: string;
+  dailyRecordId: string;
+  localDate: string;
+  measuredAt: string;
+  weightKg: number;
+  waistCm?: number;
+  source: TrackingSource;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DigestiveLogRecord {
+  id: string;
+  profileId: string;
+  baselineSessionId: string;
+  dailyRecordId: string;
+  localDate: string;
+  symptomType: DigestiveSymptomType;
+  occurredAt: string;
+  intensity: number;
+  relatedMealId?: string;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DailyTaskRecord {
+  id: string;
+  definitionCode: BaselineDomain;
+  title: string;
+  localDate: string;
+  status: DailyTaskStatus;
+  progress: number;
+  target: number;
+  completedAt?: string;
+  source: 'SYSTEM' | 'USER';
+}
+
+export interface CompletenessRecord {
+  scope: 'DAILY' | 'OVERALL';
+  localDate?: string;
+  status: DailyCompletenessStatus;
+  score: number;
+  achievedDomains: BaselineDomain[];
+  missingDomains: BaselineDomain[];
+  domainCoverage: Record<BaselineDomain, number>;
+  completedDays: number;
+  elapsedDays: number;
+  configVersion: string;
+  validationStatus: 'REQUIRES_PRODUCT_EXPERT_VALIDATION';
+  calculatedAt: string;
+}
+
+export interface BaselineDayRecord {
+  id?: string;
+  localDate: string;
+  dayIndex: number;
+  state: BaselineDayState;
+  completenessStatus: DailyCompletenessStatus;
+  completedAt?: string;
+  categoryCount: number;
+  tasks: DailyTaskRecord[];
+  checkIn?: DailyCheckInRecord;
+  mealLogs: MealLogRecord[];
+  sleepLogs: SleepLogRecord[];
+  activityLogs: ActivityLogRecord[];
+  stepRecord?: StepRecordValue;
+  bodyMeasurements: BodyMeasurementRecord[];
+  digestiveLogs: DigestiveLogRecord[];
+}
+
+export interface Day7CheckpointRecord {
+  id: string;
+  baselineSessionId: string;
+  generatedAt: string;
+  observedDays: number;
+  daysWithData: number;
+  domainCoverage: Record<BaselineDomain, number>;
+  missingDomains: BaselineDomain[];
+  observations: string[];
+  disclaimer: string;
+}
+
+export interface Day7FeedbackRecord {
+  id: string;
+  baselineSessionId: string;
+  easeRating: number;
+  hardestDomains: BaselineDomain[];
+  wantsToContinue: boolean;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BaselineReadinessRecord {
+  id: string;
+  baselineSessionId: string;
+  status: Exclude<BaselineReadinessStatus, 'PENDING'>;
+  domainCoverage: Record<BaselineDomain, number>;
+  missingDomains: BaselineDomain[];
+  totalDays: number;
+  completedDays: number;
+  completenessScore: number;
+  reasonCodes: string[];
+  recommendation: string;
+  configVersion: string;
+  evaluatedAt: string;
+}
+
+export interface StarterJourneyRecord {
+  profile: UserProfile;
+  ageGroup: AgeGroup;
+  goal: UserGoalRecord;
+  safetyResult: SafetyResultRecord;
+  programPreference?: ProgramPreferenceRecord;
+  baseline: BaselineSessionRecord | null;
+}
+
 export interface ActiveProfile {
   id: string;
   name: string;
