@@ -9,7 +9,7 @@ const connectionString = process.env.DATABASE_URL;
 const prisma = connectionString ? createPrismaClient(connectionString) : null;
 const repositories = prisma ? createPrismaRepositories(prisma) : null;
 
-describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–4 integration', () => {
+describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–5 integration', () => {
   let app: FastifyInstance;
   let userId: string | undefined;
   const email = `phase3-integration-${crypto.randomUUID()}@example.test`;
