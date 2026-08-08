@@ -1,0 +1,53 @@
+name: Phase 2 CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  quality-and-build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_DB: sarira
+          POSTGRES_USER: sarira
+          POSTGRES_PASSWORD: sarira_ci_only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U sarira -d sarira"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      APP_ENV: test
+      NODE_ENV: test
+      USE_MOCK_DATA: "true"
+      LOG_LEVEL: silent
+      DATABASE_URL: postgresql://sarira:sarira_ci_only@localhost:5432/sarira?schema=public
+      DIRECT_URL: postgresql://sarira:sarira_ci_only@localhost:5432/sarira?schema=public
+      EXPO_PUBLIC_USE_MOCK_DATA: "true"
+      EXPO_PUBLIC_API_BASE_URL: http://localhost:4000/api/v1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm db:migrate:deploy
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm db:migrate:status

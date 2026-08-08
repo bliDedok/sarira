@@ -1,0 +1,87 @@
+# ==================================================
+# SARIRA Git Ignore
+# ==================================================
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment / Secrets
+.env
+.env.*
+!.env.example
+
+# Expo
+.expo/
+dist/
+web-build/
+.expo-shared/
+
+# React Native / Metro
+.metro-health-check*
+*.jsbundle
+
+# Next.js
+.next/
+out/
+
+# Build output
+build/
+coverage/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+
+# Temporary
+tmp/
+temp/
+.cache/
+*.tmp
+
+# Test artifacts
+playwright-report/
+test-results/
+coverage/
+
+# Local database files / dumps
+*.dump
+*.sql.gz
+backups/
+database-backups/
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
+# Prisma local SQLite if ever used
+*.db
+*.db-journal
+
+# Certificates / keys
+*.pem
+*.key
+*.p12
+*.p8
+*.mobileprovision
+
+# Credentials
+credentials.json
+service-account*.json
+secrets/

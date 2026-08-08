@@ -1,0 +1,26 @@
+import { authenticationDomain } from './authentication';
+import { usersDomain } from './users';
+import { profilesDomain } from './profiles';
+import { familyDomain } from './family';
+import { consentDomain } from './consent';
+import { safetyDomain } from './safety';
+import { goalsDomain } from './goals';
+import { onboardingDomain } from './onboarding';
+import { baselineDomain } from './baseline';
+import { checkInsDomain } from './check-ins';
+import { nutritionDomain } from './nutrition';
+import { recipesDomain } from './recipes';
+import { foodLogDomain } from './food-log';
+import { activityDomain } from './activity';
+import { sleepDomain } from './sleep';
+import { workoutsDomain } from './workouts';
+import { growthDomain } from './growth';
+import { digestiveSupportDomain } from './digestive-support';
+import { patternMapDomain } from './pattern-map';
+import { weeklyActionsDomain } from './weekly-actions';
+import { evidenceDomain } from './evidence';
+import { referralsDomain } from './referrals';
+import { devicesDomain } from './devices';
+import { notificationsDomain } from './notifications';
+
+export const domainModules = [authenticationDomain, usersDomain, profilesDomain, familyDomain, consentDomain, safetyDomain, goalsDomain, onboardingDomain, baselineDomain, checkInsDomain, nutritionDomain, recipesDomain, foodLogDomain, activityDomain, sleepDomain, workoutsDomain, growthDomain, digestiveSupportDomain, patternMapDomain, weeklyActionsDomain, evidenceDomain, referralsDomain, devicesDomain, notificationsDomain] as const;

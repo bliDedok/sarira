@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "SARIRA",
+    "slug": "sarira-user-app",
+    "version": "0.3.0",
+    "orientation": "default",
+    "scheme": "sarira",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "id.sarira.app"
+    },
+    "android": {
+      "package": "id.sarira.app"
+    }
+  }
+}

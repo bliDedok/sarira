@@ -1,0 +1,636 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../apps/api/src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AccountStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum Role {
+  USER
+  PARENT
+  GUARDIAN
+  CAREGIVER
+  ADMIN
+  CONTENT_REVIEWER
+  NUTRITION_REVIEWER
+  SUPER_ADMIN
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  OTHER
+  UNDISCLOSED
+}
+
+enum OnboardingStatus {
+  ACCOUNT_CREATED
+  ROLE_PENDING
+  ROLE_COMPLETED
+  BIRTH_DATE_PENDING
+  GUARDIAN_CONSENT_PENDING
+  PRIVACY_CONSENT_PENDING
+  SAFETY_SCREENING_PENDING
+  GOAL_PENDING
+  QUESTIONNAIRE_PENDING
+  PROGRAM_PREFERENCE_PENDING
+  REVIEW_PENDING
+  COMPLETED
+}
+
+enum ConsentType {
+  TERMS_OF_SERVICE
+  PRIVACY_POLICY
+  HEALTH_PROFILE
+  NUTRITION_DATA
+  ACTIVITY_DATA
+  SLEEP_DATA
+  CAMERA_FOOD
+  CAMERA_WORKOUT
+  LOCATION
+  WEARABLE
+  BODY_PHOTO
+  CHILD_DATA
+  PRIVACY
+  TERMS
+  HEALTH_DATA
+  GUARDIAN
+  MARKETING
+}
+
+enum ConsentStatus {
+  GRANTED
+  REVOKED
+}
+
+enum ConsentSource {
+  ONBOARDING
+  SETTINGS
+  FEATURE_PROMPT
+  GUARDIAN_FLOW
+}
+
+enum GuardianConsentStatus {
+  GRANTED
+  REVOKED
+}
+
+enum GoalStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+  ARCHIVED
+}
+
+enum SafetyStatus {
+  GREEN
+  YELLOW
+  RED
+  UNKNOWN
+}
+
+enum SafetySessionStatus {
+  IN_PROGRESS
+  COMPLETED
+  EXPIRED
+}
+
+enum SafetyAnswerCode {
+  YES
+  NO
+  NOT_SURE
+}
+
+enum QuestionnaireSessionStatus {
+  IN_PROGRESS
+  COMPLETED
+  EXPIRED
+}
+
+enum QuestionnaireValueType {
+  TEXT
+  NUMBER
+  SINGLE_SELECT
+  MULTI_SELECT
+  BOOLEAN
+  TIME
+}
+
+enum ProgramCode {
+  GUIDED_MEAL
+  FLEX_KITCHEN
+}
+
+enum ContentStatus {
+  DEVELOPMENT_REQUIRES_EXPERT_VALIDATION
+  ACTIVE
+  RETIRED
+}
+
+enum DeviceSessionStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+enum AuditEvent {
+  USER_REGISTERED
+  USER_LOGGED_IN
+  USER_LOGGED_OUT
+  PROFILE_UPDATED
+  CONSENT_GRANTED
+  CONSENT_REVOKED
+  ROLE_UPDATED
+  DEPENDENT_CREATED
+  DATA_EXPORT_REQUESTED
+  ACCOUNT_DELETION_REQUESTED
+  ONBOARDING_STARTED
+  ROLE_SELECTED
+  DATE_OF_BIRTH_UPDATED
+  GUARDIAN_CONSENT_GRANTED
+  GUARDIAN_CONSENT_REVOKED
+  SAFETY_SCREENING_STARTED
+  SAFETY_SCREENING_COMPLETED
+  SAFETY_RESULT_CREATED
+  GOAL_SELECTED
+  QUESTIONNAIRE_STARTED
+  QUESTIONNAIRE_COMPLETED
+  PROGRAM_PREFERENCE_SELECTED
+  ONBOARDING_COMPLETED
+}
+
+model User {
+  id             String                 @id @default(uuid()) @db.Uuid
+  externalAuthId String                 @unique @db.Uuid
+  email          String                 @unique
+  status         AccountStatus          @default(PENDING)
+  createdAt      DateTime               @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime               @updatedAt @db.Timestamptz(3)
+  profiles       Profile[]
+  roles          RoleAssignment[]
+  dependents     DependentProfile[]
+  consents       UserConsent[]
+  goals          UserGoal[]
+  safetySessions SafetyScreeningSession[]
+  preferences    AppPreference[]
+  deviceSessions DeviceSession[]
+  questionnaireSessions QuestionnaireSession[]
+  onboardingProgress OnboardingProgress?
+  auditEvents    AuditLog[]             @relation("AuditActor")
+
+  @@index([status])
+}
+
+model Profile {
+  id                    String           @id @default(uuid()) @db.Uuid
+  userId                String           @unique @db.Uuid
+  fullName              String
+  dateOfBirth           DateTime?        @db.Date
+  gender                Gender?
+  country               String           @default("ID") @db.VarChar(2)
+  timezone              String           @default("Asia/Makassar")
+  preferredLanguage     String           @default("id-ID")
+  primaryRole           Role?
+  onboardingStatus      OnboardingStatus @default(ROLE_PENDING)
+  onboardingCompletedAt DateTime?        @db.Timestamptz(3)
+  createdAt             DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime         @updatedAt @db.Timestamptz(3)
+  user                  User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  consents              UserConsent[]
+  guardianConsents      GuardianConsent[]
+  goals                 UserGoal[]
+  safetySessions        SafetyScreeningSession[]
+  safetyResults         SafetyResult[]
+  preferences           AppPreference[]
+  questionnaireSessions QuestionnaireSession[]
+  programPreference     ProgramPreference?
+  onboardingProgress    OnboardingProgress?
+
+  @@index([onboardingStatus])
+}
+
+model RoleAssignment {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @db.Uuid
+  role       Role
+  assignedAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(3)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role])
+  @@index([role])
+}
+
+model DependentProfile {
+  id          String   @id @default(uuid()) @db.Uuid
+  ownerUserId String   @db.Uuid
+  name        String
+  dateOfBirth DateTime @db.Date
+  gender      Gender?
+  relation    String
+  createdAt   DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(3)
+  owner       User     @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+  consents    UserConsent[]
+
+  @@index([ownerUserId])
+}
+
+model ConsentVersion {
+  id                       String        @id @default(uuid()) @db.Uuid
+  type                     ConsentType
+  version                  String
+  locale                   String        @default("id-ID")
+  displayName              String        @default("")
+  description              String        @default("")
+  required                 Boolean       @default(false)
+  contentHash              String
+  contentStatus            ContentStatus @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
+  expertValidationRequired Boolean       @default(true)
+  activeAt                 DateTime       @db.Timestamptz(3)
+  retiredAt                DateTime?      @db.Timestamptz(3)
+  createdAt                DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime       @updatedAt @db.Timestamptz(3)
+  consents                 UserConsent[]
+
+  @@unique([type, version, locale])
+  @@index([type, activeAt])
+  @@index([required, activeAt])
+}
+
+model UserConsent {
+  id               String          @id @default(uuid()) @db.Uuid
+  userId           String          @db.Uuid
+  profileId        String?         @db.Uuid
+  dependentId      String?         @db.Uuid
+  consentVersionId String          @db.Uuid
+  status           ConsentStatus
+  source           ConsentSource   @default(ONBOARDING)
+  grantedAt        DateTime?       @db.Timestamptz(3)
+  revokedAt        DateTime?       @db.Timestamptz(3)
+  createdAt        DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime        @updatedAt @db.Timestamptz(3)
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile          Profile?        @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  dependent        DependentProfile? @relation(fields: [dependentId], references: [id], onDelete: Cascade)
+  consentVersion   ConsentVersion  @relation(fields: [consentVersionId], references: [id], onDelete: Restrict)
+
+  @@index([userId, status])
+  @@index([profileId, status])
+  @@index([dependentId])
+  @@index([consentVersionId])
+}
+
+model GuardianConsent {
+  id                   String                @id @default(uuid()) @db.Uuid
+  minorProfileId       String                @db.Uuid
+  guardianName         String
+  guardianRelationship String
+  status               GuardianConsentStatus
+  consentVersion       String
+  source               ConsentSource         @default(GUARDIAN_FLOW)
+  grantedAt            DateTime?             @db.Timestamptz(3)
+  revokedAt            DateTime?             @db.Timestamptz(3)
+  createdAt            DateTime              @default(now()) @db.Timestamptz(3)
+  updatedAt            DateTime              @updatedAt @db.Timestamptz(3)
+  minorProfile         Profile               @relation(fields: [minorProfileId], references: [id], onDelete: Cascade)
+
+  @@index([minorProfileId, status, createdAt])
+}
+
+model SafetyScreeningTemplate {
+  id                       String        @id @default(uuid()) @db.Uuid
+  code                     String
+  version                  String
+  title                    String
+  description              String
+  contentStatus            ContentStatus @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
+  expertValidationRequired Boolean       @default(true)
+  activeAt                 DateTime       @db.Timestamptz(3)
+  retiredAt                DateTime?      @db.Timestamptz(3)
+  createdAt                DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime       @updatedAt @db.Timestamptz(3)
+  questions                SafetyQuestion[]
+  rules                    SafetyRuleDefinition[]
+  sessions                 SafetyScreeningSession[]
+
+  @@unique([code, version])
+  @@index([activeAt, retiredAt])
+}
+
+model SafetyQuestion {
+  id           String   @id @default(uuid()) @db.Uuid
+  templateId   String   @db.Uuid
+  code         String
+  category     String
+  prompt       String
+  helpText     String?
+  required     Boolean  @default(true)
+  allowsUnknown Boolean @default(true)
+  sortOrder    Int
+  applicability Json?
+  createdAt    DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime @updatedAt @db.Timestamptz(3)
+  template     SafetyScreeningTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  answers      SafetyAnswer[]
+
+  @@unique([templateId, code])
+  @@index([templateId, sortOrder])
+}
+
+model SafetyRuleDefinition {
+  id                       String        @id @default(uuid()) @db.Uuid
+  templateId               String        @db.Uuid
+  ruleId                   String
+  version                  String
+  applicableAgeMin         Int
+  applicableAgeMax         Int
+  condition                Json
+  severity                 Int
+  result                   SafetyStatus
+  restrictedPrograms       String[]
+  messageKey               String
+  referralRequired         Boolean       @default(false)
+  contentStatus            ContentStatus @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
+  expertValidationRequired Boolean       @default(true)
+  createdAt                DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime       @updatedAt @db.Timestamptz(3)
+  template                 SafetyScreeningTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@unique([ruleId, version])
+  @@index([templateId, result])
+}
+
+model SafetyScreeningSession {
+  id          String              @id @default(uuid()) @db.Uuid
+  userId      String              @db.Uuid
+  profileId   String?             @db.Uuid
+  templateId  String?             @db.Uuid
+  rulesetId   String
+  rulesetHash String
+  ruleVersion String              @default("phase3-dev-v1")
+  status      SafetySessionStatus @default(IN_PROGRESS)
+  startedAt   DateTime            @default(now()) @db.Timestamptz(3)
+  expiresAt   DateTime?           @db.Timestamptz(3)
+  completedAt DateTime?           @db.Timestamptz(3)
+  createdAt   DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime            @updatedAt @db.Timestamptz(3)
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile     Profile?            @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  template    SafetyScreeningTemplate? @relation(fields: [templateId], references: [id], onDelete: Restrict)
+  answers     SafetyAnswer[]
+  result      SafetyResult?
+
+  @@index([userId, status, createdAt])
+  @@index([profileId, status])
+  @@index([templateId])
+}
+
+model SafetyAnswer {
+  id                   String           @id @default(uuid()) @db.Uuid
+  sessionId            String           @db.Uuid
+  questionId           String
+  questionDefinitionId String?          @db.Uuid
+  answerCode           SafetyAnswerCode
+  createdAt            DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt            DateTime         @updatedAt @db.Timestamptz(3)
+  session              SafetyScreeningSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  questionDefinition   SafetyQuestion?  @relation(fields: [questionDefinitionId], references: [id], onDelete: Restrict)
+
+  @@unique([sessionId, questionId])
+  @@index([questionDefinitionId])
+}
+
+model SafetyResult {
+  id                 String       @id @default(uuid()) @db.Uuid
+  sessionId          String       @unique @db.Uuid
+  profileId          String?      @db.Uuid
+  status             SafetyStatus
+  triggeredRules     String[]
+  restrictedPrograms String[]
+  referralRequired   Boolean      @default(false)
+  ruleVersion        String
+  evaluatedAt        DateTime     @default(now()) @db.Timestamptz(3)
+  completedAt        DateTime     @default(now()) @db.Timestamptz(3)
+  createdAt          DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime     @updatedAt @db.Timestamptz(3)
+  session            SafetyScreeningSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  profile            Profile?     @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, status, completedAt])
+}
+
+model GoalDefinition {
+  id                       String        @id @default(uuid()) @db.Uuid
+  code                     String        @unique
+  label                    String
+  description              String
+  minimumAge               Int
+  maximumAge               Int
+  allowedRoles             Role[]
+  blockedSafetyStatuses    SafetyStatus[]
+  priorityAgeGroups        String[]
+  contentStatus            ContentStatus @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
+  expertValidationRequired Boolean       @default(true)
+  active                   Boolean       @default(true)
+  createdAt                DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime      @updatedAt @db.Timestamptz(3)
+  goals                    UserGoal[]
+
+  @@index([active, minimumAge, maximumAge])
+}
+
+model UserGoal {
+  id           String     @id @default(uuid()) @db.Uuid
+  userId       String     @db.Uuid
+  profileId    String?    @db.Uuid
+  definitionId String?    @db.Uuid
+  code         String
+  status       GoalStatus @default(ACTIVE)
+  createdAt    DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime   @updatedAt @db.Timestamptz(3)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile      Profile?   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  definition   GoalDefinition? @relation(fields: [definitionId], references: [id], onDelete: Restrict)
+
+  @@index([userId, status])
+  @@index([profileId, status])
+  @@index([definitionId])
+  @@map("Goal")
+}
+
+model QuestionnaireTemplate {
+  id                       String        @id @default(uuid()) @db.Uuid
+  code                     String
+  version                  String
+  title                    String
+  description              String
+  contentStatus            ContentStatus @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
+  expertValidationRequired Boolean       @default(true)
+  activeAt                 DateTime       @db.Timestamptz(3)
+  retiredAt                DateTime?      @db.Timestamptz(3)
+  createdAt                DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime       @updatedAt @db.Timestamptz(3)
+  questions                QuestionnaireQuestion[]
+  sessions                 QuestionnaireSession[]
+
+  @@unique([code, version])
+  @@index([activeAt, retiredAt])
+}
+
+model QuestionnaireQuestion {
+  id             String                 @id @default(uuid()) @db.Uuid
+  templateId     String                 @db.Uuid
+  code           String
+  section        String
+  prompt         String
+  helpText       String?
+  valueType      QuestionnaireValueType
+  required       Boolean                @default(false)
+  sortOrder      Int
+  validation     Json?
+  visibleWhen    Json?
+  createdAt      DateTime               @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime               @updatedAt @db.Timestamptz(3)
+  template       QuestionnaireTemplate  @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  options        QuestionnaireOption[]
+  answers        QuestionnaireAnswer[]
+
+  @@unique([templateId, code])
+  @@index([templateId, section, sortOrder])
+}
+
+model QuestionnaireOption {
+  id         String   @id @default(uuid()) @db.Uuid
+  questionId String   @db.Uuid
+  code       String
+  label      String
+  sortOrder  Int
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(3)
+  question   QuestionnaireQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, code])
+  @@index([questionId, sortOrder])
+}
+
+model QuestionnaireSession {
+  id          String                     @id @default(uuid()) @db.Uuid
+  userId      String                     @db.Uuid
+  profileId   String                     @db.Uuid
+  templateId  String                     @db.Uuid
+  status      QuestionnaireSessionStatus @default(IN_PROGRESS)
+  startedAt   DateTime                   @default(now()) @db.Timestamptz(3)
+  completedAt DateTime?                  @db.Timestamptz(3)
+  createdAt   DateTime                   @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime                   @updatedAt @db.Timestamptz(3)
+  user        User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile     Profile                    @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  template    QuestionnaireTemplate      @relation(fields: [templateId], references: [id], onDelete: Restrict)
+  answers     QuestionnaireAnswer[]
+
+  @@index([userId, status, updatedAt])
+  @@index([profileId, status])
+  @@index([templateId, status])
+}
+
+model QuestionnaireAnswer {
+  id         String   @id @default(uuid()) @db.Uuid
+  sessionId  String   @db.Uuid
+  questionId String   @db.Uuid
+  value      Json
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(3)
+  session    QuestionnaireSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question   QuestionnaireQuestion @relation(fields: [questionId], references: [id], onDelete: Restrict)
+
+  @@unique([sessionId, questionId])
+  @@index([questionId])
+}
+
+model ProgramPreference {
+  id         String      @id @default(uuid()) @db.Uuid
+  profileId  String      @unique @db.Uuid
+  program    ProgramCode
+  selectedAt DateTime    @default(now()) @db.Timestamptz(3)
+  createdAt  DateTime    @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime    @updatedAt @db.Timestamptz(3)
+  profile    Profile     @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([program])
+}
+
+model OnboardingProgress {
+  id                String           @id @default(uuid()) @db.Uuid
+  userId            String           @unique @db.Uuid
+  profileId         String           @unique @db.Uuid
+  status            OnboardingStatus @default(ROLE_PENDING)
+  currentStep       String           @default("role-selection")
+  lastCompletedStep String?
+  stateVersion      Int              @default(1)
+  startedAt         DateTime         @default(now()) @db.Timestamptz(3)
+  completedAt       DateTime?        @db.Timestamptz(3)
+  createdAt         DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime         @updatedAt @db.Timestamptz(3)
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile           Profile          @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([status, updatedAt])
+}
+
+model AppPreference {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  profileId String?  @db.Uuid
+  key       String
+  value     Json
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile   Profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, profileId, key])
+  @@index([profileId])
+}
+
+model DeviceSession {
+  id           String              @id @default(uuid()) @db.Uuid
+  userId       String              @db.Uuid
+  deviceIdHash String
+  platform     String
+  status       DeviceSessionStatus @default(ACTIVE)
+  lastSeenAt   DateTime            @default(now()) @db.Timestamptz(3)
+  expiresAt    DateTime?           @db.Timestamptz(3)
+  createdAt    DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime            @updatedAt @db.Timestamptz(3)
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+}
+
+model AuditLog {
+  id          String     @id @default(uuid()) @db.Uuid
+  actorUserId String?    @db.Uuid
+  event       AuditEvent
+  entityType  String
+  entityId    String?
+  requestId   String?
+  ipHash      String?
+  metadata    Json?
+  createdAt   DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime   @updatedAt @db.Timestamptz(3)
+  actor       User?      @relation("AuditActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([actorUserId, createdAt])
+  @@index([event, createdAt])
+  @@index([entityType, entityId])
+}

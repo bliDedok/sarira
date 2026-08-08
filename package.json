@@ -1,0 +1,36 @@
+{
+  "name": "sarira",
+  "version": "0.3.0",
+  "private": true,
+  "packageManager": "pnpm@11.7.0",
+  "scripts": {
+    "dev": "pnpm dev:user",
+    "dev:user": "pnpm --dir apps/user-app start",
+    "dev:admin": "pnpm --dir apps/admin-web dev",
+    "dev:api": "pnpm --dir apps/api dev",
+    "web": "pnpm --dir apps/user-app web",
+    "android": "pnpm --dir apps/user-app android",
+    "ios": "pnpm --dir apps/user-app ios",
+    "lint": "pnpm --dir apps/user-app lint && pnpm --dir apps/admin-web lint && pnpm --dir apps/api lint",
+    "typecheck": "pnpm --dir apps/user-app typecheck && pnpm --dir apps/admin-web typecheck && pnpm --dir apps/api typecheck",
+    "test": "pnpm --dir apps/user-app test && pnpm --dir apps/api test",
+    "build": "pnpm build:user && pnpm build:admin && pnpm build:api",
+    "build:user": "pnpm --dir apps/user-app export:web",
+    "build:admin": "pnpm --dir apps/admin-web build",
+    "build:api": "pnpm --dir apps/api build",
+    "db:generate": "prisma generate",
+    "db:validate": "prisma validate",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:status": "prisma migrate status",
+    "db:seed": "prisma db seed",
+    "migration:check": "prisma validate && prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm db:validate",
+    "clean:artifacts": "pnpm --dir apps/user-app clean && pnpm --dir apps/admin-web clean && pnpm --dir apps/api clean"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.3",
+    "prisma": "7.9.1",
+    "tsx": "^4.20.6"
+  }
+}

@@ -1,0 +1,18 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+overrides:
+  "@react-native/jest-preset": "0.86.0"
+  "agent-cli-detector": "0.1.4"
+  "core-js-compat": "3.49.0"
+  "electron-to-chromium": "1.5.399"
+  "multitars": "1.0.0"
+
+allowBuilds:
+  '@prisma/engines': true
+  esbuild: true
+  prisma: true
+  "unrs-resolver": true
+
+verifyDepsBeforeRun: false

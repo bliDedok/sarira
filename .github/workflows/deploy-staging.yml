@@ -1,0 +1,48 @@
+name: Deploy staging
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sarira-staging
+  cancel-in-progress: false
+
+jobs:
+  verify-and-migrate:
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      APP_ENV: staging
+      NODE_ENV: production
+      USE_MOCK_DATA: "false"
+      DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+      DIRECT_URL: ${{ secrets.STAGING_DIRECT_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.7.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm check
+      - run: pnpm build
+      - run: pnpm db:migrate:deploy
+
+  trigger-hosts:
+    needs: verify-and-migrate
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Trigger Render API staging
+        run: curl --fail --silent --show-error --request POST "${{ secrets.RENDER_STAGING_DEPLOY_HOOK }}"
+      - name: Trigger user web staging
+        run: curl --fail --silent --show-error --request POST "${{ secrets.VERCEL_USER_STAGING_DEPLOY_HOOK }}"
+      - name: Trigger admin web staging
+        run: curl --fail --silent --show-error --request POST "${{ secrets.VERCEL_ADMIN_STAGING_DEPLOY_HOOK }}"

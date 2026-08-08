@@ -1,0 +1,8 @@
+{
+  "framework": null,
+  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
+  "buildCommand": "cd ../.. && pnpm build:user",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "rewrites": [{ "source": "/((?!_expo|assets).*)", "destination": "/index.html" }]
+}
