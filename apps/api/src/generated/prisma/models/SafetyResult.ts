@@ -313,7 +313,7 @@ export type SafetyResultCreateInput = {
   triggeredRules?: Prisma.SafetyResultCreatetriggeredRulesInput | string[]
   restrictedPrograms?: Prisma.SafetyResultCreaterestrictedProgramsInput | string[]
   referralRequired?: boolean
-  ruleVersion: string
+  ruleVersion?: string
   evaluatedAt?: Date | string
   completedAt?: Date | string
   createdAt?: Date | string
@@ -330,7 +330,7 @@ export type SafetyResultUncheckedCreateInput = {
   triggeredRules?: Prisma.SafetyResultCreatetriggeredRulesInput | string[]
   restrictedPrograms?: Prisma.SafetyResultCreaterestrictedProgramsInput | string[]
   referralRequired?: boolean
-  ruleVersion: string
+  ruleVersion?: string
   evaluatedAt?: Date | string
   completedAt?: Date | string
   createdAt?: Date | string
@@ -375,7 +375,7 @@ export type SafetyResultCreateManyInput = {
   triggeredRules?: Prisma.SafetyResultCreatetriggeredRulesInput | string[]
   restrictedPrograms?: Prisma.SafetyResultCreaterestrictedProgramsInput | string[]
   referralRequired?: boolean
-  ruleVersion: string
+  ruleVersion?: string
   evaluatedAt?: Date | string
   completedAt?: Date | string
   createdAt?: Date | string
@@ -564,7 +564,7 @@ export type SafetyResultCreateWithoutProfileInput = {
   triggeredRules?: Prisma.SafetyResultCreatetriggeredRulesInput | string[]
   restrictedPrograms?: Prisma.SafetyResultCreaterestrictedProgramsInput | string[]
   referralRequired?: boolean
-  ruleVersion: string
+  ruleVersion?: string
   evaluatedAt?: Date | string
   completedAt?: Date | string
   createdAt?: Date | string
@@ -579,7 +579,7 @@ export type SafetyResultUncheckedCreateWithoutProfileInput = {
   triggeredRules?: Prisma.SafetyResultCreatetriggeredRulesInput | string[]
   restrictedPrograms?: Prisma.SafetyResultCreaterestrictedProgramsInput | string[]
   referralRequired?: boolean
-  ruleVersion: string
+  ruleVersion?: string
   evaluatedAt?: Date | string
   completedAt?: Date | string
   createdAt?: Date | string
@@ -636,7 +636,7 @@ export type SafetyResultCreateWithoutSessionInput = {
   triggeredRules?: Prisma.SafetyResultCreatetriggeredRulesInput | string[]
   restrictedPrograms?: Prisma.SafetyResultCreaterestrictedProgramsInput | string[]
   referralRequired?: boolean
-  ruleVersion: string
+  ruleVersion?: string
   evaluatedAt?: Date | string
   completedAt?: Date | string
   createdAt?: Date | string
@@ -651,7 +651,7 @@ export type SafetyResultUncheckedCreateWithoutSessionInput = {
   triggeredRules?: Prisma.SafetyResultCreatetriggeredRulesInput | string[]
   restrictedPrograms?: Prisma.SafetyResultCreaterestrictedProgramsInput | string[]
   referralRequired?: boolean
-  ruleVersion: string
+  ruleVersion?: string
   evaluatedAt?: Date | string
   completedAt?: Date | string
   createdAt?: Date | string
@@ -709,7 +709,7 @@ export type SafetyResultCreateManyProfileInput = {
   triggeredRules?: Prisma.SafetyResultCreatetriggeredRulesInput | string[]
   restrictedPrograms?: Prisma.SafetyResultCreaterestrictedProgramsInput | string[]
   referralRequired?: boolean
-  ruleVersion: string
+  ruleVersion?: string
   evaluatedAt?: Date | string
   completedAt?: Date | string
   createdAt?: Date | string

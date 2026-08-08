@@ -187,6 +187,61 @@ export type DailyCheckIn = Prisma.DailyCheckInModel
  */
 export type MealLog = Prisma.MealLogModel
 /**
+ * Model FoodDataSource
+ * 
+ */
+export type FoodDataSource = Prisma.FoodDataSourceModel
+/**
+ * Model FoodItem
+ * 
+ */
+export type FoodItem = Prisma.FoodItemModel
+/**
+ * Model FoodServing
+ * 
+ */
+export type FoodServing = Prisma.FoodServingModel
+/**
+ * Model NutrientDefinition
+ * 
+ */
+export type NutrientDefinition = Prisma.NutrientDefinitionModel
+/**
+ * Model FoodNutrient
+ * 
+ */
+export type FoodNutrient = Prisma.FoodNutrientModel
+/**
+ * Model FoodAllergen
+ * 
+ */
+export type FoodAllergen = Prisma.FoodAllergenModel
+/**
+ * Model FoodDietaryTag
+ * 
+ */
+export type FoodDietaryTag = Prisma.FoodDietaryTagModel
+/**
+ * Model MealLogItem
+ * 
+ */
+export type MealLogItem = Prisma.MealLogItemModel
+/**
+ * Model NutritionSnapshot
+ * 
+ */
+export type NutritionSnapshot = Prisma.NutritionSnapshotModel
+/**
+ * Model NutritionPolicy
+ * 
+ */
+export type NutritionPolicy = Prisma.NutritionPolicyModel
+/**
+ * Model NutritionTargetProfile
+ * 
+ */
+export type NutritionTargetProfile = Prisma.NutritionTargetProfileModel
+/**
  * Model SleepLog
  * 
  */

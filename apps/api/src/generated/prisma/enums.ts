@@ -350,6 +350,102 @@ export const CompletenessScope = {
 export type CompletenessScope = (typeof CompletenessScope)[keyof typeof CompletenessScope]
 
 
+export const FoodCategory = {
+  GRAIN: 'GRAIN',
+  PROTEIN: 'PROTEIN',
+  VEGETABLE: 'VEGETABLE',
+  FRUIT: 'FRUIT',
+  DAIRY: 'DAIRY',
+  BEVERAGE: 'BEVERAGE',
+  SNACK: 'SNACK',
+  CONDIMENT: 'CONDIMENT',
+  MIXED_DISH: 'MIXED_DISH',
+  OTHER: 'OTHER'
+} as const
+
+export type FoodCategory = (typeof FoodCategory)[keyof typeof FoodCategory]
+
+
+export const FoodUnit = {
+  G: 'G',
+  KG: 'KG',
+  ML: 'ML',
+  L: 'L',
+  PIECE: 'PIECE',
+  SERVING: 'SERVING',
+  TBSP: 'TBSP',
+  TSP: 'TSP',
+  CUP: 'CUP'
+} as const
+
+export type FoodUnit = (typeof FoodUnit)[keyof typeof FoodUnit]
+
+
+export const FoodSourceType = {
+  OFFICIAL_DATABASE: 'OFFICIAL_DATABASE',
+  PRODUCT_LABEL: 'PRODUCT_LABEL',
+  INTERNAL_VERIFIED: 'INTERNAL_VERIFIED',
+  USER_ENTERED: 'USER_ENTERED',
+  SYNTHETIC_TEST_DATA: 'SYNTHETIC_TEST_DATA'
+} as const
+
+export type FoodSourceType = (typeof FoodSourceType)[keyof typeof FoodSourceType]
+
+
+export const MealItemSource = {
+  DATABASE_FOOD: 'DATABASE_FOOD',
+  CUSTOM_FOOD: 'CUSTOM_FOOD',
+  USER_ENTERED: 'USER_ENTERED'
+} as const
+
+export type MealItemSource = (typeof MealItemSource)[keyof typeof MealItemSource]
+
+
+export const AllergenCode = {
+  MILK: 'MILK',
+  EGG: 'EGG',
+  FISH: 'FISH',
+  SHELLFISH: 'SHELLFISH',
+  PEANUT: 'PEANUT',
+  TREE_NUT: 'TREE_NUT',
+  SOY: 'SOY',
+  WHEAT: 'WHEAT',
+  SESAME: 'SESAME',
+  OTHER: 'OTHER'
+} as const
+
+export type AllergenCode = (typeof AllergenCode)[keyof typeof AllergenCode]
+
+
+export const DietaryTagCode = {
+  VEGETARIAN: 'VEGETARIAN',
+  VEGAN: 'VEGAN',
+  HALAL_VERIFIED: 'HALAL_VERIFIED',
+  PORK: 'PORK',
+  ALCOHOL: 'ALCOHOL',
+  OTHER: 'OTHER'
+} as const
+
+export type DietaryTagCode = (typeof DietaryTagCode)[keyof typeof DietaryTagCode]
+
+
+export const DietaryTagStatus = {
+  VERIFIED: 'VERIFIED',
+  UNKNOWN: 'UNKNOWN'
+} as const
+
+export type DietaryTagStatus = (typeof DietaryTagStatus)[keyof typeof DietaryTagStatus]
+
+
+export const NutritionPolicyStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  DEPRECATED: 'DEPRECATED'
+} as const
+
+export type NutritionPolicyStatus = (typeof NutritionPolicyStatus)[keyof typeof NutritionPolicyStatus]
+
+
 export const AuditEvent = {
   USER_REGISTERED: 'USER_REGISTERED',
   USER_LOGGED_IN: 'USER_LOGGED_IN',
@@ -389,7 +485,12 @@ export const AuditEvent = {
   BASELINE_DAY_14_REACHED: 'BASELINE_DAY_14_REACHED',
   BASELINE_READY: 'BASELINE_READY',
   BASELINE_DATA_INSUFFICIENT: 'BASELINE_DATA_INSUFFICIENT',
-  BASELINE_COMPLETED: 'BASELINE_COMPLETED'
+  BASELINE_COMPLETED: 'BASELINE_COMPLETED',
+  MEAL_LOG_ITEM_CREATED: 'MEAL_LOG_ITEM_CREATED',
+  MEAL_LOG_ITEM_UPDATED: 'MEAL_LOG_ITEM_UPDATED',
+  MEAL_LOG_ITEM_DELETED: 'MEAL_LOG_ITEM_DELETED',
+  NUTRITION_TARGET_CALCULATED: 'NUTRITION_TARGET_CALCULATED',
+  NUTRITION_DAILY_VIEWED: 'NUTRITION_DAILY_VIEWED'
 } as const
 
 export type AuditEvent = (typeof AuditEvent)[keyof typeof AuditEvent]

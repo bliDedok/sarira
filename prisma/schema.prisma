@@ -255,6 +255,78 @@ enum CompletenessScope {
   OVERALL
 }
 
+enum FoodCategory {
+  GRAIN
+  PROTEIN
+  VEGETABLE
+  FRUIT
+  DAIRY
+  BEVERAGE
+  SNACK
+  CONDIMENT
+  MIXED_DISH
+  OTHER
+}
+
+enum FoodUnit {
+  G
+  KG
+  ML
+  L
+  PIECE
+  SERVING
+  TBSP
+  TSP
+  CUP
+}
+
+enum FoodSourceType {
+  OFFICIAL_DATABASE
+  PRODUCT_LABEL
+  INTERNAL_VERIFIED
+  USER_ENTERED
+  SYNTHETIC_TEST_DATA
+}
+
+enum MealItemSource {
+  DATABASE_FOOD
+  CUSTOM_FOOD
+  USER_ENTERED
+}
+
+enum AllergenCode {
+  MILK
+  EGG
+  FISH
+  SHELLFISH
+  PEANUT
+  TREE_NUT
+  SOY
+  WHEAT
+  SESAME
+  OTHER
+}
+
+enum DietaryTagCode {
+  VEGETARIAN
+  VEGAN
+  HALAL_VERIFIED
+  PORK
+  ALCOHOL
+  OTHER
+}
+
+enum DietaryTagStatus {
+  VERIFIED
+  UNKNOWN
+}
+
+enum NutritionPolicyStatus {
+  DRAFT
+  ACTIVE
+  DEPRECATED
+}
+
 enum AuditEvent {
   USER_REGISTERED
   USER_LOGGED_IN
@@ -295,6 +367,11 @@ enum AuditEvent {
   BASELINE_READY
   BASELINE_DATA_INSUFFICIENT
   BASELINE_COMPLETED
+  MEAL_LOG_ITEM_CREATED
+  MEAL_LOG_ITEM_UPDATED
+  MEAL_LOG_ITEM_DELETED
+  NUTRITION_TARGET_CALCULATED
+  NUTRITION_DAILY_VIEWED
 }
 
 model User {
@@ -352,6 +429,8 @@ model Profile {
   stepRecords           StepRecord[]
   bodyMeasurements      BodyMeasurement[]
   digestiveLogs         DigestiveLog[]
+  mealLogItems          MealLogItem[]
+  nutritionTargets      NutritionTargetProfile[]
 
   @@index([onboardingStatus])
 }
@@ -878,9 +957,254 @@ model MealLog {
   baselineSession       BaselineSession @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
   dailyRecord           DailyRecord     @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
   digestiveLogs         DigestiveLog[]
+  items                 MealLogItem[]
 
   @@index([profileId, localDate])
   @@index([baselineSessionId, localDate])
+}
+
+model FoodDataSource {
+  id           String         @id @default(uuid()) @db.Uuid
+  name         String
+  publisher    String
+  version      String
+  sourceType   FoodSourceType
+  sourceUrl    String?
+  license      String
+  datasetLabel String
+  importedAt   DateTime       @default(now()) @db.Timestamptz(3)
+  reviewedAt   DateTime?      @db.Timestamptz(3)
+  active       Boolean        @default(true)
+  createdAt    DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime       @updatedAt @db.Timestamptz(3)
+  foodItems    FoodItem[]
+  nutrients    FoodNutrient[]
+
+  @@unique([name, version])
+  @@index([sourceType, active])
+}
+
+model FoodItem {
+  id               String            @id @default(uuid()) @db.Uuid
+  code             String            @unique
+  name             String
+  alternateNames   String[]
+  category         FoodCategory
+  description      String?
+  defaultServingId String?           @unique @db.Uuid
+  sourceId         String            @db.Uuid
+  sourceVersion    String
+  countryCode      String            @default("ID") @db.VarChar(2)
+  language         String            @default("id-ID")
+  verified         Boolean           @default(false)
+  active           Boolean           @default(true)
+  createdAt        DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime          @updatedAt @db.Timestamptz(3)
+  source           FoodDataSource    @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+  defaultServing   FoodServing?      @relation("DefaultServing", fields: [defaultServingId], references: [id], onDelete: SetNull)
+  servings         FoodServing[]     @relation("FoodServings")
+  nutrients        FoodNutrient[]
+  allergens        FoodAllergen[]
+  dietaryTags      FoodDietaryTag[]
+  mealLogItems     MealLogItem[]
+
+  @@index([name])
+  @@index([category, active])
+  @@index([sourceId, active])
+}
+
+model FoodServing {
+  id             String       @id @default(uuid()) @db.Uuid
+  foodItemId     String       @db.Uuid
+  label          String
+  quantity       Decimal      @db.Decimal(10, 3)
+  unit           FoodUnit
+  gramEquivalent Decimal?     @db.Decimal(10, 3)
+  defaultServing Boolean      @default(false)
+  source         String
+  verified       Boolean      @default(false)
+  createdAt      DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime     @updatedAt @db.Timestamptz(3)
+  foodItem       FoodItem     @relation("FoodServings", fields: [foodItemId], references: [id], onDelete: Cascade)
+  defaultFor     FoodItem?    @relation("DefaultServing")
+  mealLogItems   MealLogItem[]
+
+  @@unique([foodItemId, label])
+  @@index([foodItemId, defaultServing])
+}
+
+model NutrientDefinition {
+  id               String         @id @default(uuid()) @db.Uuid
+  code             String         @unique
+  displayName      String
+  unit             String
+  category         String
+  decimalPrecision Int
+  active           Boolean        @default(true)
+  createdAt        DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime       @updatedAt @db.Timestamptz(3)
+  nutrients        FoodNutrient[]
+
+  @@index([active, category])
+}
+
+model FoodNutrient {
+  id               String             @id @default(uuid()) @db.Uuid
+  foodItemId       String             @db.Uuid
+  nutrientId       String             @db.Uuid
+  amount           Decimal            @db.Decimal(14, 6)
+  unit             String
+  basisAmount      Decimal            @default(100) @db.Decimal(10, 3)
+  basisUnit        FoodUnit           @default(G)
+  sourceId         String             @db.Uuid
+  sourceVersion    String
+  createdAt        DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime           @updatedAt @db.Timestamptz(3)
+  foodItem         FoodItem           @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
+  nutrient         NutrientDefinition @relation(fields: [nutrientId], references: [id], onDelete: Restrict)
+  source           FoodDataSource     @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+
+  @@unique([foodItemId, nutrientId])
+  @@index([foodItemId])
+  @@index([nutrientId])
+  @@index([sourceId])
+}
+
+model FoodAllergen {
+  id         String       @id @default(uuid()) @db.Uuid
+  foodItemId String       @db.Uuid
+  code       AllergenCode
+  verified   Boolean      @default(false)
+  sourceNote String?
+  createdAt  DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime     @updatedAt @db.Timestamptz(3)
+  foodItem   FoodItem     @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
+
+  @@unique([foodItemId, code])
+  @@index([code, verified])
+}
+
+model FoodDietaryTag {
+  id         String            @id @default(uuid()) @db.Uuid
+  foodItemId String            @db.Uuid
+  code       DietaryTagCode
+  status     DietaryTagStatus  @default(UNKNOWN)
+  sourceNote String?
+  createdAt  DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime          @updatedAt @db.Timestamptz(3)
+  foodItem   FoodItem          @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
+
+  @@unique([foodItemId, code])
+  @@index([code, status])
+}
+
+model MealLogItem {
+  id            String           @id @default(uuid()) @db.Uuid
+  mealLogId     String           @db.Uuid
+  profileId     String           @db.Uuid
+  foodItemId    String?          @db.Uuid
+  servingId     String?          @db.Uuid
+  itemSource    MealItemSource   @default(DATABASE_FOOD)
+  customName    String?
+  quantity      Decimal          @db.Decimal(10, 3)
+  gramAmount    Decimal?         @db.Decimal(10, 3)
+  sourceVersion String
+  allergenWarnings Json
+  createdAt     DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime         @updatedAt @db.Timestamptz(3)
+  mealLog       MealLog          @relation(fields: [mealLogId], references: [id], onDelete: Cascade)
+  profile       Profile          @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  foodItem      FoodItem?        @relation(fields: [foodItemId], references: [id], onDelete: Restrict)
+  serving       FoodServing?     @relation(fields: [servingId], references: [id], onDelete: Restrict)
+  snapshot      NutritionSnapshot?
+
+  @@index([mealLogId])
+  @@index([foodItemId])
+  @@index([profileId, createdAt])
+}
+
+model NutritionSnapshot {
+  id                String       @id @default(uuid()) @db.Uuid
+  mealLogItemId     String       @unique @db.Uuid
+  sourceVersion     String
+  foodName          String
+  gramAmount        Decimal?     @db.Decimal(10, 3)
+  energyKcal        Decimal?     @db.Decimal(14, 6)
+  proteinG          Decimal?     @db.Decimal(14, 6)
+  carbohydrateG     Decimal?     @db.Decimal(14, 6)
+  fatG              Decimal?     @db.Decimal(14, 6)
+  saturatedFatG     Decimal?     @db.Decimal(14, 6)
+  fiberG            Decimal?     @db.Decimal(14, 6)
+  sugarG            Decimal?     @db.Decimal(14, 6)
+  sodiumMg          Decimal?     @db.Decimal(14, 6)
+  missingNutrients  String[]
+  complete          Boolean
+  calculationVersion String
+  createdAt         DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime     @updatedAt @db.Timestamptz(3)
+  mealLogItem       MealLogItem  @relation(fields: [mealLogItemId], references: [id], onDelete: Cascade)
+
+  @@index([sourceVersion])
+}
+
+model NutritionPolicy {
+  id                       String                  @id @default(uuid()) @db.Uuid
+  code                     String
+  version                  String
+  ageMin                   Int
+  ageMax                   Int
+  applicableSex            Gender?
+  applicableGoals          String[]
+  applicableSafetyStatuses SafetyStatus[]
+  status                   NutritionPolicyStatus  @default(DRAFT)
+  effectiveFrom            DateTime                @db.Date
+  effectiveTo              DateTime?               @db.Date
+  targetConfiguration      Json
+  sourceMetadata           Json
+  requiresExpertValidation Boolean                 @default(true)
+  createdAt                DateTime                @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime                @updatedAt @db.Timestamptz(3)
+  targetProfiles           NutritionTargetProfile[]
+
+  @@unique([code, version])
+  @@index([status, ageMin, ageMax, effectiveFrom])
+}
+
+model NutritionTargetProfile {
+  id                       String          @id @default(uuid()) @db.Uuid
+  profileId                String          @db.Uuid
+  policyId                 String          @db.Uuid
+  policyVersion            String
+  goal                     String
+  ageGroup                 String
+  effectiveFrom            DateTime        @db.Date
+  effectiveTo              DateTime?       @db.Date
+  energyMin                Decimal?        @db.Decimal(10, 2)
+  energyTarget             Decimal?        @db.Decimal(10, 2)
+  energyMax                Decimal?        @db.Decimal(10, 2)
+  proteinMin               Decimal?        @db.Decimal(10, 2)
+  proteinTarget            Decimal?        @db.Decimal(10, 2)
+  carbsMin                 Decimal?        @db.Decimal(10, 2)
+  carbsMax                 Decimal?        @db.Decimal(10, 2)
+  fatMin                   Decimal?        @db.Decimal(10, 2)
+  fatMax                   Decimal?        @db.Decimal(10, 2)
+  fiberMin                 Decimal?        @db.Decimal(10, 2)
+  sugarMax                 Decimal?        @db.Decimal(10, 2)
+  sodiumMax                Decimal?        @db.Decimal(10, 2)
+  saturatedFatMax          Decimal?        @db.Decimal(10, 2)
+  inputValues              Json
+  calculationReason        String
+  safetyStatus             SafetyStatus
+  restrictionReasons       String[]
+  requiresExpertValidation Boolean         @default(true)
+  calculatedAt             DateTime         @default(now()) @db.Timestamptz(3)
+  createdAt                DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime         @updatedAt @db.Timestamptz(3)
+  profile                  Profile          @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  policy                   NutritionPolicy  @relation(fields: [policyId], references: [id], onDelete: Restrict)
+
+  @@index([profileId, effectiveFrom, effectiveTo])
+  @@index([policyId, calculatedAt])
 }
 
 model SleepLog {

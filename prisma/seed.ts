@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { createHash } from 'node:crypto';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { phase3DevelopmentSafetyRules, phase3GoalConfigurations, PHASE_3_CONTENT_STATUS, PHASE_3_RULE_VERSION } from '../packages/expert-system/src/index';
+import { DEVELOPMENT_FOODS, DEVELOPMENT_POLICIES, DEVELOPMENT_SOURCE, nutrientCodes } from '../packages/nutrition-engine/src/index';
 import {
   ConsentType,
   ContentStatus,
@@ -10,6 +11,13 @@ import {
   QuestionnaireValueType,
   Role,
   SafetyStatus,
+  FoodCategory,
+  FoodSourceType,
+  FoodUnit,
+  AllergenCode,
+  DietaryTagCode,
+  DietaryTagStatus,
+  NutritionPolicyStatus,
 } from '../apps/api/src/generated/prisma/client';
 
 const connectionString = process.env.DIRECT_URL ?? process.env.DATABASE_URL;
@@ -24,7 +32,7 @@ const consentContent = [
   [ConsentType.TERMS_OF_SERVICE, 'Ketentuan Layanan', 'Ketentuan penggunaan SARIRA.', true],
   [ConsentType.PRIVACY_POLICY, 'Kebijakan Privasi', 'Cara data diproses dan hak pengguna.', true],
   [ConsentType.HEALTH_PROFILE, 'Profil Kesehatan', 'Pemrosesan jawaban safety dan kuesioner onboarding.', true],
-  [ConsentType.NUTRITION_DATA, 'Data Nutrisi', 'Opsional; rekomendasi nutrisi masih demo.', false],
+  [ConsentType.NUTRITION_DATA, 'Data Nutrisi', 'Opsional; pemrosesan catatan pangan, target, dan indikator nutrisi.', false],
   [ConsentType.ACTIVITY_DATA, 'Data Aktivitas', 'Opsional; izin dapat diubah dari Settings.', false],
   [ConsentType.SLEEP_DATA, 'Data Tidur', 'Opsional; izin dapat diubah dari Settings.', false],
   [ConsentType.CAMERA_FOOD, 'Kamera Makanan', 'Opsional dan diminta saat fitur digunakan.', false],
@@ -152,6 +160,51 @@ async function seedTaskDefinitions() {
   }
 }
 
+const nutrientRegistry = [
+  ['ENERGY_KCAL', 'Energi', 'kcal', 'ENERGY', 0],
+  ['PROTEIN_G', 'Protein', 'g', 'MACRONUTRIENT', 1],
+  ['CARBOHYDRATE_G', 'Karbohidrat', 'g', 'MACRONUTRIENT', 1],
+  ['FAT_G', 'Lemak', 'g', 'MACRONUTRIENT', 1],
+  ['SATURATED_FAT_G', 'Lemak jenuh', 'g', 'LIMIT', 1],
+  ['FIBER_G', 'Serat', 'g', 'MACRONUTRIENT', 1],
+  ['SUGAR_G', 'Gula', 'g', 'LIMIT', 1],
+  ['SODIUM_MG', 'Natrium', 'mg', 'LIMIT', 0],
+] as const;
+
+async function seedPhase5Nutrition() {
+  for (const [code, displayName, unit, category, decimalPrecision] of nutrientRegistry) {
+    await prisma.nutrientDefinition.upsert({ where: { code }, update: { displayName, unit, category, decimalPrecision, active: true }, create: { code, displayName, unit, category, decimalPrecision, active: true } });
+  }
+  const source = await prisma.foodDataSource.upsert({
+    where: { name_version: { name: DEVELOPMENT_SOURCE.name, version: DEVELOPMENT_SOURCE.version } },
+    update: { publisher: DEVELOPMENT_SOURCE.publisher, sourceType: FoodSourceType.SYNTHETIC_TEST_DATA, license: DEVELOPMENT_SOURCE.license, datasetLabel: DEVELOPMENT_SOURCE.datasetLabel, active: true },
+    create: { ...DEVELOPMENT_SOURCE, sourceType: FoodSourceType.SYNTHETIC_TEST_DATA },
+  });
+  const definitions = new Map((await prisma.nutrientDefinition.findMany({ where: { code: { in: [...nutrientCodes] } } })).map((item) => [item.code, item]));
+  for (const foodSeed of DEVELOPMENT_FOODS) {
+    const food = await prisma.foodItem.upsert({
+      where: { code: foodSeed.code },
+      update: { name: foodSeed.name, alternateNames: foodSeed.alternateNames, category: foodSeed.category as FoodCategory, sourceId: source.id, sourceVersion: source.version, verified: false, active: true },
+      create: { code: foodSeed.code, name: foodSeed.name, alternateNames: foodSeed.alternateNames, category: foodSeed.category as FoodCategory, sourceId: source.id, sourceVersion: source.version, countryCode: 'ID', language: 'id-ID', verified: false, active: true, description: DEVELOPMENT_SOURCE.datasetLabel },
+    });
+    const serving = await prisma.foodServing.upsert({
+      where: { foodItemId_label: { foodItemId: food.id, label: foodSeed.servingLabel } },
+      update: { quantity: 1, unit: foodSeed.servingUnit as FoodUnit, gramEquivalent: foodSeed.gramEquivalent, defaultServing: true, source: source.name, verified: false },
+      create: { foodItemId: food.id, label: foodSeed.servingLabel, quantity: 1, unit: foodSeed.servingUnit as FoodUnit, gramEquivalent: foodSeed.gramEquivalent, defaultServing: true, source: source.name, verified: false },
+    });
+    await prisma.foodItem.update({ where: { id: food.id }, data: { defaultServingId: serving.id } });
+    for (const [code, amount] of Object.entries(foodSeed.nutrients)) {
+      const definition = definitions.get(code); if (!definition || amount === undefined) continue;
+      await prisma.foodNutrient.upsert({ where: { foodItemId_nutrientId: { foodItemId: food.id, nutrientId: definition.id } }, update: { amount, sourceId: source.id, sourceVersion: source.version }, create: { foodItemId: food.id, nutrientId: definition.id, amount, unit: definition.unit, basisAmount: 100, basisUnit: FoodUnit.G, sourceId: source.id, sourceVersion: source.version } });
+    }
+    for (const allergen of foodSeed.allergens ?? []) await prisma.foodAllergen.upsert({ where: { foodItemId_code: { foodItemId: food.id, code: allergen as AllergenCode } }, update: { verified: false, sourceNote: DEVELOPMENT_SOURCE.datasetLabel }, create: { foodItemId: food.id, code: allergen as AllergenCode, verified: false, sourceNote: DEVELOPMENT_SOURCE.datasetLabel } });
+    for (const tag of foodSeed.tags ?? []) await prisma.foodDietaryTag.upsert({ where: { foodItemId_code: { foodItemId: food.id, code: tag.code as DietaryTagCode } }, update: { status: tag.status as DietaryTagStatus, sourceNote: DEVELOPMENT_SOURCE.datasetLabel }, create: { foodItemId: food.id, code: tag.code as DietaryTagCode, status: tag.status as DietaryTagStatus, sourceNote: DEVELOPMENT_SOURCE.datasetLabel } });
+  }
+  for (const policy of DEVELOPMENT_POLICIES) {
+    await prisma.nutritionPolicy.upsert({ where: { code_version: { code: policy.code, version: policy.version } }, update: { status: NutritionPolicyStatus.ACTIVE, targetConfiguration: { targets: policy.targets } as Prisma.InputJsonValue, requiresExpertValidation: true }, create: { code: policy.code, version: policy.version, ageMin: policy.ageMin, ageMax: policy.ageMax, applicableGoals: [], applicableSafetyStatuses: [SafetyStatus.GREEN, SafetyStatus.YELLOW, SafetyStatus.RED], status: NutritionPolicyStatus.ACTIVE, effectiveFrom: activeAt, targetConfiguration: { targets: policy.targets } as Prisma.InputJsonValue, sourceMetadata: { datasetLabel: DEVELOPMENT_SOURCE.datasetLabel, evidenceStatus: 'DEVELOPMENT_CONFIGURATION' }, requiresExpertValidation: true } });
+  }
+}
+
 const seedProfiles = [
   { key: 'day1', suffix: '01', email: 'phase4-day1@sarira.test', name: 'Dewasa Day 1', birthDate: '1996-01-01', startDate: '2026-08-08', currentDay: 1, status: 'ACTIVE' as const, mode: 'day1' },
   { key: 'day7', suffix: '02', email: 'phase4-day7-teen@sarira.test', name: 'Remaja Day 7', birthDate: '2011-01-01', startDate: '2026-08-02', currentDay: 7, status: 'DAY_7_REVIEW_AVAILABLE' as const, mode: 'missing' },
@@ -214,6 +267,7 @@ async function main() {
   await seedGoals();
   await seedQuestionnaire();
   await seedTaskDefinitions();
+  await seedPhase5Nutrition();
   await seedPhase4Profiles();
 }
 

@@ -210,6 +210,38 @@ export const day7FeedbackSchema = z.object({
   notes: optionalText(500),
 });
 
+export const foodSearchQuerySchema = z.object({
+  q: z.string().trim().max(100).optional(),
+  category: z.enum(['GRAIN', 'PROTEIN', 'VEGETABLE', 'FRUIT', 'DAIRY', 'BEVERAGE', 'SNACK', 'CONDIMENT', 'MIXED_DISH', 'OTHER']).optional(),
+  verified: z.coerce.boolean().optional(),
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(1).max(50).default(20),
+});
+
+export const mealLogItemSchema = z.object({
+  foodItemId: z.string().uuid(),
+  servingId: z.string().uuid(),
+  quantity: z.number().positive().max(100),
+});
+
+export const mealLogItemPatchSchema = z.object({
+  servingId: z.string().uuid().optional(),
+  quantity: z.number().positive().max(100).optional(),
+}).refine((value) => Object.keys(value).length > 0, 'Minimal satu field harus diubah.');
+
+export const customMealLogItemSchema = z.object({
+  customName: z.string().trim().min(2).max(160),
+  servingDescription: z.string().trim().min(1).max(100),
+  quantity: z.number().positive().max(100),
+});
+
+export const nutritionPreviewSchema = mealLogItemSchema;
+
+export const nutritionHistoryQuerySchema = z.object({
+  from: localDateSchema,
+  to: localDateSchema,
+}).refine((value) => value.from <= value.to, { message: 'Rentang tanggal tidak valid.', path: ['to'] });
+
 export type ProfileInput = z.infer<typeof profileSchema>;
 export type ProfilePatchInput = z.infer<typeof profilePatchSchema>;
 export type ConsentInput = z.infer<typeof consentSchema>;
@@ -223,3 +255,4 @@ export type MealLogInput = z.infer<typeof mealLogSchema>;
 export type SleepLogInput = z.infer<typeof sleepLogSchema>;
 export type ActivityLogInput = z.infer<typeof activityLogSchema>;
 export type DigestiveLogInput = z.infer<typeof digestiveLogSchema>;
+export type MealLogItemInput = z.infer<typeof mealLogItemSchema>;
