@@ -94,7 +94,7 @@ describe('Phase 3 critical onboarding scenarios', () => {
     const account = await register('adult-green');
     const result = await completeStandard(account.headers, '1996-01-01', 'MAINTAIN_WEIGHT');
     expect(result.safetyResult.status).toBe('GREEN');
-    expect(result.completed.starterContext).toMatchObject({ ageGroup: 'ADULT_BALANCE', selectedGoal: 'MAINTAIN_WEIGHT', simulatedJourney: true });
+    expect(result.completed.starterContext).toMatchObject({ ageGroup: 'ADULT_BALANCE', selectedGoal: 'MAINTAIN_WEIGHT', simulatedJourney: false });
   });
 
   it('SCENARIO B — remaja tanpa guardian consent diblokir', async () => {

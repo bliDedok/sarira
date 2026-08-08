@@ -1,81 +1,68 @@
-import React from 'react';
-import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { router } from 'expo-router';
-import { Camera, ChefHat, ChevronRight, Clock3, Coins, Search, Sparkles, Utensils } from 'lucide-react-native';
-import { breakpoints, colors, radius, spacing } from '@sarira/design-tokens';
-import { AppText, Button, Card, Chip, ProgressBar, ProgressRing, SectionHeader } from '@sarira/ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { Clock3, Pencil, Plus, Trash2, Utensils } from 'lucide-react-native';
+import type { MealLogRecord, MealType } from '@sarira/shared-types';
+import { colors, radius, spacing } from '@sarira/design-tokens';
+import { AppText, Button, Card, Chip, ErrorState, Field, InlineNotice, Loading, SimulatedBadge, Toggle } from '@sarira/ui';
 import { AppShell } from '@/layouts/AppShell';
-import { meals, nutritionSummary } from '@/mocks/data';
-import { screenHref } from '@/utils/routes';
+import { api } from '@/services/api';
+import { messageFor, useBaseline } from '@/features/baseline/useBaseline';
+import { isoToLocalTime, localDateTimeToIso } from '@/utils/timezone';
+
+const mealTypes: { value: MealType; label: string }[] = [{ value: 'BREAKFAST', label: 'Sarapan' }, { value: 'LUNCH', label: 'Makan siang' }, { value: 'DINNER', label: 'Makan malam' }, { value: 'SNACK', label: 'Camilan' }, { value: 'OTHER', label: 'Lainnya' }];
 
 export default function FoodScreen() {
-  const { width } = useWindowDimensions();
-  const desktop = width >= breakpoints.desktop;
-  const protein = nutritionSummary.find((metric) => metric.id === 'protein')!;
-  return (
-    <AppShell title="Makanan" subtitle="Rencana dan catatan konsumsi">
-      <View style={styles.titleRow}>
-        <View style={{ flex: 1, gap: 4 }}><AppText variant="eyebrow">PILIHAN YANG FLEKSIBEL</AppText><AppText variant={desktop ? 'h1' : 'h2'}>Makan terarah, tetap terasa nyata.</AppText><AppText variant="body">Menu dan angka di prototype ini adalah simulasi, bukan rencana diet personal.</AppText></View>
-        <Button label="Scan makanan" icon={Camera} variant="secondary" onPress={() => router.push(screenHref('food-scan') as never)} />
-      </View>
+  const { date } = useLocalSearchParams<{ date?: string }>();
+  const { profile, current, loading: baselineLoading, error: baselineError, reload: reloadBaseline } = useBaseline();
+  const [logs, setLogs] = useState<MealLogRecord[]>([]);
+  const [editingId, setEditingId] = useState<string>();
+  const [mealType, setMealType] = useState<MealType>('BREAKFAST'); const [time, setTime] = useState(''); const [description, setDescription] = useState(''); const [notes, setNotes] = useState('');
+  const [skipped, setSkipped] = useState(false); const [sugary, setSugary] = useState(false); const [late, setLate] = useState(false); const [homeCooked, setHomeCooked] = useState(false);
+  const [loading, setLoading] = useState(true); const [saving, setSaving] = useState(false); const [error, setError] = useState<string>();
 
-      <View style={styles.topGrid}>
-        <Card tone="dark" style={styles.nutritionHero}>
-          <View style={styles.rowBetween}>
-            <View style={{ gap: 5 }}><AppText variant="eyebrow" style={{ color: colors.lime }}>RINGKASAN NUTRISI</AppText><AppText variant="h2" style={{ color: colors.white }}>Energi hari ini</AppText><AppText variant="body" style={{ color: '#C9D7CD' }}>1.420 dari rentang demo 1.800–2.000 kkal</AppText></View>
-            <ProgressRing value={74} size={86} label="Energi 74 persen dari target demo" />
-          </View>
-          <View style={{ gap: spacing.xs }}><View style={styles.rowBetween}><AppText variant="label" style={{ color: colors.white }}>Protein · minimum</AppText><AppText variant="caption" style={{ color: '#C9D7CD' }}>{protein.value} / {protein.target} g</AppText></View><ProgressBar value={protein.value} max={protein.target} tone="lime" label="Protein minimum" /></View>
-          <Button label="Lihat 10 indikator" variant="lime" onPress={() => router.push(screenHref('nutrition-indicator') as never)} />
+  const trackingDate = date ?? current?.localDate;
+  const load = useCallback(async () => { if (!trackingDate) return; setLoading(true); setError(undefined); try { setLogs(await api.getMealLogs(trackingDate)); } catch (cause) { setError(messageFor(cause)); } finally { setLoading(false); } }, [trackingDate]);
+  useEffect(() => {
+    if (!trackingDate) return;
+    const timer = setTimeout(() => void load(), 0);
+    return () => clearTimeout(timer);
+  }, [load, trackingDate]);
+  const reset = () => { setEditingId(undefined); setMealType('BREAKFAST'); setTime(''); setDescription(''); setNotes(''); setSkipped(false); setSugary(false); setLate(false); setHomeCooked(false); };
+  const edit = (log: MealLogRecord) => { setEditingId(log.id); setMealType(log.mealType); setTime(isoToLocalTime(log.eatenAt, profile?.timezone ?? 'Asia/Makassar')); setDescription(log.description ?? ''); setNotes(log.notes ?? ''); setSkipped(log.skipped); setSugary(Boolean(log.sugaryDrinkConsumed)); setLate(Boolean(log.lateMeal)); setHomeCooked(Boolean(log.homeCooked)); };
+  const save = async () => {
+    if (!current || !profile) return; setSaving(true); setError(undefined);
+    try {
+      const selectedDate = trackingDate!; const payload = { localDate: selectedDate, mealType, ...(time ? { eatenAt: localDateTimeToIso(selectedDate, time, profile.timezone) } : {}), description, skipped, sugaryDrinkConsumed: sugary, lateMeal: late, homeCooked, notes };
+      if (editingId) await api.updateMealLog(editingId, payload); else await api.createMealLog(payload);
+      reset(); await Promise.all([load(), reloadBaseline()]);
+    } catch (cause) { setError(messageFor(cause)); } finally { setSaving(false); }
+  };
+  const remove = async (id: string) => { setError(undefined); try { await api.deleteMealLog(id); await Promise.all([load(), reloadBaseline()]); } catch (cause) { setError(messageFor(cause)); } };
+
+  return <AppShell title="Catatan Makanan" subtitle="Pencatatan dasar tanpa kalkulasi nutrisi">
+    {baselineLoading ? <Loading label="Memuat baseline…" /> : baselineError ? <ErrorState description={baselineError} onRetry={() => void reloadBaseline()} /> : !current ? <ErrorState title="Baseline belum dimulai" description="Mulai dari Starter Journey sebelum mencatat makanan." /> : <>
+      <Card tone="lime" style={styles.intro}><View style={styles.row}><Utensils size={30} color={colors.primaryDark} /><View style={styles.flex}><AppText variant="h2">Makanan · {trackingDate}</AppText><AppText variant="body">Catat waktu dan deskripsi sederhana. Tidak ada angka kalori atau makro yang dibuat dari catatan ini.</AppText></View></View></Card>
+      {error ? <View accessibilityLiveRegion="assertive"><InlineNotice title="Catatan belum tersimpan" text={error} tone="danger" /></View> : null}
+      <View style={styles.grid}>
+        <Card style={styles.column}>
+          <View style={styles.row}><AppText variant="h2">{editingId ? 'Edit catatan' : 'Tambah catatan'}</AppText>{editingId ? <Button label="Batal edit" variant="ghost" onPress={reset} /> : null}</View>
+          <View style={styles.chips}>{mealTypes.map((item) => <Chip key={item.value} label={item.label} selected={mealType === item.value} onPress={() => setMealType(item.value)} />)}</View>
+          <Field label="Waktu makan (opsional)" value={time} onChangeText={setTime} placeholder="07:30" keyboardType="numbers-and-punctuation" helper={`Waktu lokal ${profile?.timezone}`} />
+          <Toggle label="Waktu makan dilewati" value={skipped} onValueChange={setSkipped} />
+          <Field label="Nama atau deskripsi makanan" value={description} onChangeText={setDescription} maxLength={200} editable={!skipped} placeholder={skipped ? 'Tidak perlu diisi' : 'Contoh: nasi, ayam, dan sayur'} />
+          <View style={styles.chips}><Chip label="Minuman manis" selected={sugary} onPress={() => setSugary((value) => !value)} /><Chip label="Makan larut" selected={late} onPress={() => setLate((value) => !value)} /><Chip label="Dimasak di rumah" selected={homeCooked} onPress={() => setHomeCooked((value) => !value)} /></View>
+          <Field label="Catatan (opsional)" value={notes} onChangeText={setNotes} maxLength={500} multiline />
+          <Button label={editingId ? 'Simpan perubahan' : 'Tambah catatan'} icon={editingId ? Pencil : Plus} loading={saving} variant="lime" disabled={!skipped && description.trim().length === 0} onPress={() => void save()} />
         </Card>
-        <View style={styles.modeColumn}>
-          <Pressable onPress={() => router.push(screenHref('guided-meal') as never)} style={({ pressed }) => [styles.modePress, pressed && { opacity: 0.76 }]}><Card tone="lime" style={styles.modeCard}><View style={styles.modeIcon}><Utensils size={24} color={colors.primaryDark} /></View><View style={{ flex: 1 }}><AppText variant="h3">Guided Meal</AppText><AppText variant="caption">Menu demo terarah untuk hari ini.</AppText></View><ChevronRight size={20} color={colors.primaryDark} /></Card></Pressable>
-          <Pressable onPress={() => router.push(screenHref('flex-kitchen') as never)} style={({ pressed }) => [styles.modePress, pressed && { opacity: 0.76 }]}><Card tone="mint" style={styles.modeCard}><View style={styles.modeIcon}><ChefHat size={24} color={colors.primary} /></View><View style={{ flex: 1 }}><AppText variant="h3">Flex Kitchen</AppText><AppText variant="caption">Susun resep dari bahan yang tersedia.</AppText></View><ChevronRight size={20} color={colors.primary} /></Card></Pressable>
-        </View>
+        <Card tone="mint" style={styles.column}>
+          <AppText variant="h2">Riwayat hari ini</AppText>
+          {loading ? <Loading label="Memuat catatan…" /> : logs.length === 0 ? <AppText variant="body">Belum ada makanan yang tercatat.</AppText> : logs.map((log) => <Pressable key={log.id} accessibilityRole="button" accessibilityLabel={`Edit ${log.mealType}`} onPress={() => edit(log)} style={({ pressed }) => [styles.log, pressed && { opacity: 0.72 }]}><View style={styles.flex}><View style={styles.chips}><Chip label={mealTypes.find((item) => item.value === log.mealType)?.label ?? log.mealType} tone="neutral" />{log.skipped ? <Chip label="DILEWATI" tone="warning" /> : null}</View><AppText variant="label">{log.skipped ? 'Tidak makan pada waktu ini' : log.description}</AppText><View style={styles.rowStart}><Clock3 size={15} color={colors.textMuted} /><AppText variant="caption">{isoToLocalTime(log.eatenAt, profile?.timezone ?? 'Asia/Makassar') || 'Waktu tidak dicatat'} · Sumber manual</AppText></View></View><Button label="Hapus" icon={Trash2} variant="danger" onPress={() => void remove(log.id)} /></Pressable>)}
+        </Card>
       </View>
-
-      <SectionHeader title="Rencana hari ini" action="Food log" onAction={() => router.push(screenHref('food-log') as never)} />
-      <View style={styles.mealGrid}>
-        {meals.map((meal, index) => (
-          <Pressable key={meal.id} accessibilityRole="button" accessibilityLabel={`Buka resep ${meal.name}`} onPress={() => router.push(screenHref('recipe-detail') as never)} style={({ pressed }) => [styles.mealPress, pressed && { opacity: 0.76 }]}>
-            <Card tone={meal.tone} style={styles.mealCard}>
-              <View style={[styles.foodVisual, { backgroundColor: index === 0 ? '#F5D48B' : index === 1 ? '#CEE3B7' : '#E8D7B9' }]} accessible={false} importantForAccessibility="no-hide-descendants">
-                <View style={styles.plate}><View style={[styles.foodShape, { backgroundColor: index === 0 ? '#F7F0DE' : index === 1 ? '#73964E' : '#D2A659' }]} /><View style={[styles.foodDot, { backgroundColor: index === 0 ? '#F5C33B' : index === 1 ? '#E2A44D' : '#87AA67' }]} /></View>
-              </View>
-              <View style={styles.rowBetween}><Chip label={meal.time.toUpperCase()} tone="neutral" />{meal.consumed ? <Chip label="SUDAH DICATAT" tone="mint" /> : null}</View>
-              <AppText variant="h3">{meal.name}</AppText>
-              <View style={styles.metaRow}><Clock3 size={15} color={colors.textMuted} /><AppText variant="caption">{meal.duration}</AppText><Coins size={15} color={colors.textMuted} /><AppText variant="caption">{meal.price}</AppText></View>
-              <View style={styles.metaRow}><AppText variant="caption">{meal.energy}</AppText><AppText variant="caption">•</AppText><AppText variant="caption">{meal.protein}</AppText></View>
-            </Card>
-          </Pressable>
-        ))}
-      </View>
-
-      <Card tone="peach" style={styles.suggestionCard}>
-        <View style={[styles.modeIcon, { backgroundColor: colors.white }]}><Sparkles size={24} color={colors.warning} /></View>
-        <View style={{ flex: 1, gap: 3 }}><AppText variant="h3">Punya bahan sendiri?</AppText><AppText variant="body">Cari bahan dan lihat bagaimana perubahan berat atau porsi memengaruhi kalkulasi demo.</AppText></View>
-        <Button label="Buka Recipe Builder" icon={Search} variant="secondary" onPress={() => router.push(screenHref('recipe-builder') as never)} />
-      </Card>
-    </AppShell>
-  );
+      <Card tone="cream" style={styles.column}><View style={styles.row}><View><AppText variant="eyebrow">NUTRITION ENGINE</AppText><AppText variant="h3">Indikator dan rekomendasi nutrisi belum dihitung</AppText></View><SimulatedBadge label="DEMO" /></View><AppText variant="body">Kalori, protein, karbohidrat, lemak, natrium, serat, Guided Meal, dan Flex Kitchen tetap berada di luar Phase 4.</AppText></Card>
+    </>}
+  </AppShell>;
 }
 
-const styles = StyleSheet.create({
-  titleRow: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: spacing.md },
-  topGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
-  nutritionHero: { flex: 1.2, minWidth: 310, minHeight: 280, borderColor: colors.primaryDark, justifyContent: 'space-between', gap: spacing.lg, padding: spacing.xl },
-  rowBetween: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm },
-  modeColumn: { flex: 0.8, minWidth: 300, gap: spacing.md },
-  modePress: { flex: 1, borderRadius: radius.card },
-  modeCard: { minHeight: 132, flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  modeIcon: { width: 50, height: 50, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.68)', alignItems: 'center', justifyContent: 'center' },
-  mealGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
-  mealPress: { flex: 1, minWidth: 250, borderRadius: radius.card },
-  mealCard: { minHeight: 350, gap: spacing.sm },
-  foodVisual: { height: 130, borderRadius: radius.input, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
-  plate: { width: 112, height: 112, borderRadius: 56, backgroundColor: colors.white, borderWidth: 8, borderColor: 'rgba(255,255,255,0.55)', alignItems: 'center', justifyContent: 'center' },
-  foodShape: { width: 72, height: 58, borderRadius: 28, transform: [{ rotate: '-8deg' }] },
-  foodDot: { position: 'absolute', width: 34, height: 34, borderRadius: 17, right: 13, bottom: 12 },
-  metaRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: spacing.xs },
-  suggestionCard: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: spacing.md },
-});
+const styles = StyleSheet.create({ intro: { gap: spacing.sm }, grid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md }, column: { flex: 1, minWidth: 300, gap: spacing.md }, flex: { flex: 1, gap: 4 }, row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm, flexWrap: 'wrap' }, rowStart: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs }, chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs }, log: { minHeight: 92, borderRadius: radius.input, backgroundColor: colors.white, padding: spacing.sm, flexDirection: 'row', alignItems: 'center', gap: spacing.sm, borderWidth: 1, borderColor: colors.border } });

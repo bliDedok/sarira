@@ -17,6 +17,7 @@ export interface BaselineContext {
   now: string;
   localDate: string;
   currentDay: number;
+  calendarReachedNow: boolean;
 }
 
 export async function starterJourney(repositories: DataRepositories, userId: string): Promise<StarterJourneyRecord> {
@@ -46,6 +47,7 @@ export async function refreshBaseline(repositories: DataRepositories, profile: P
   const rawDay = Math.max(1, calendarDayIndex(baseline.startLocalDate, localDate));
   const maximumDay = baseline.extensionAllowed ? baseline.targetDays + baseline.extensionDays : baseline.targetDays;
   const currentDay = Math.min(rawDay, maximumDay);
+  const calendarReachedNow = day14Available(rawDay) && !baseline.calendarCompletedAt;
   let status = baseline.status;
   if (!['COMPLETED', 'CANCELLED', 'PAUSED'].includes(status)) {
     if (day14Available(rawDay)) status = 'DAY_14_REVIEW_AVAILABLE';
@@ -66,7 +68,7 @@ export async function refreshBaseline(repositories: DataRepositories, profile: P
     completenessScore = overall.score;
   }
   const refreshed = await repositories.baseline.refresh(baseline.id, { currentDay, status, ...(calendarCompletedAt ? { calendarCompletedAt } : {}), readinessStatus, completenessScore });
-  return { profile, baseline: refreshed, now, localDate, currentDay: rawDay };
+  return { profile, baseline: refreshed, now, localDate, currentDay: rawDay, calendarReachedNow };
 }
 
 export async function currentBaselineContext(repositories: DataRepositories, userId: string, clock: Clock): Promise<BaselineContext> {

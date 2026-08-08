@@ -6,7 +6,6 @@ import {
   Activity,
   Bell,
   ChartNoAxesCombined,
-  ChevronDown,
   Compass,
   Home,
   PanelsTopLeft,
@@ -20,6 +19,7 @@ import { BrandMark } from '@/components/ScreenLayout';
 import { usePrototype } from '@/features/prototype/PrototypeContext';
 import { screenHref } from '@/utils/routes';
 import { useResponsiveLayout } from '@/hooks/useResponsiveLayout';
+import { useAuth } from '@/providers/AuthProvider';
 
 type ShellIcon = React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
 
@@ -115,12 +115,10 @@ export function AppShell({
   subtitle?: string;
 }) {
   const { isDesktop, isTablet, isMobile } = useResponsiveLayout();
-  const { activeProfile, profiles, setActiveProfile, elderMode } = usePrototype();
-
-  const cycleProfile = () => {
-    const currentIndex = profiles.findIndex((profile) => profile.id === activeProfile.id);
-    setActiveProfile(profiles[(currentIndex + 1) % profiles.length]!);
-  };
+  const { elderMode } = usePrototype();
+  const { session } = useAuth();
+  const email = session?.email ?? 'Profil pengguna';
+  const initials = email.slice(0, 2).toUpperCase();
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
@@ -140,9 +138,9 @@ export function AppShell({
             </View>
             {!isTablet ? (
               <View style={styles.sidebarDemoCard}>
-                <Chip label="PHASE 3" tone="lime" />
-                <AppText variant="label" style={{ color: colors.white }}>Onboarding nyata</AppText>
-                <AppText variant="caption" style={{ color: '#BDD0C4' }}>Profil, consent, safety, goal, dan questionnaire aktif; Starter Journey, AI, kamera, dan perangkat tetap Demo.</AppText>
+                <Chip label="PHASE 4" tone="lime" />
+                <AppText variant="label" style={{ color: colors.white }}>Baseline nyata</AppText>
+                <AppText variant="caption" style={{ color: '#BDD0C4' }}>Tracking, kelengkapan data, checkpoint, dan readiness aktif. AI, Pattern Map, nutrition engine, kamera, dan wearable tetap Demo.</AppText>
               </View>
             ) : null}
           </View>
@@ -163,18 +161,17 @@ export function AppShell({
               <IconButton icon={Bell} label="Notifikasi, 2 belum dibaca" onPress={() => router.push(screenHref('weekly-action') as never)} />
               <Pressable
                 accessibilityRole="button"
-                accessibilityLabel={`Profil aktif ${activeProfile.name}. Tekan untuk ganti profil.`}
-                onPress={cycleProfile}
+                accessibilityLabel={`Profil aktif ${email}. Buka profil.`}
+                onPress={() => router.push('/profile' as never)}
                 style={({ pressed }) => [styles.profileSwitcher, pressed && { opacity: 0.72 }]}
               >
-                <View style={styles.avatar}><AppText variant="caption" style={{ color: colors.white, fontFamily: 'Inter_700Bold' }}>{activeProfile.initials}</AppText></View>
+                <View style={styles.avatar}><AppText variant="caption" style={{ color: colors.white, fontFamily: 'Inter_700Bold' }}>{initials}</AppText></View>
                 {!isMobile ? (
                   <View style={{ gap: 1 }}>
                     <AppText variant="caption">Profil aktif</AppText>
-                    <AppText variant="label">{activeProfile.name}</AppText>
+                    <AppText variant="label" numberOfLines={1} style={{ maxWidth: 180 }}>{email}</AppText>
                   </View>
                 ) : null}
-                <ChevronDown size={17} color={colors.textSecondary} />
               </Pressable>
             </View>
           </View>

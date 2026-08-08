@@ -34,7 +34,7 @@ export const createOnboardingRoutes = (repositories: DataRepositories): FastifyP
         selectedGoal: summary.goal?.code,
         programPreference: summary.programPreference?.program,
         safetyStatus: summary.safetyResult?.status,
-        simulatedJourney: true,
+        simulatedJourney: false,
       },
     });
   });
