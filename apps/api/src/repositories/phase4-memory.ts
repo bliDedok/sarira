@@ -136,6 +136,7 @@ export function createMemoryBaselineRepository(): BaselineRepository {
       return day.checkIn;
     },
     async listMeals(profileId, baselineId, localDate) { return allLogs((day) => day.mealLogs, profileId, baselineId, localDate); },
+    async getMealById(profileId, baselineId, mealId) { return allLogs((day) => day.mealLogs, profileId, baselineId).find((meal) => meal.id === mealId) ?? null; },
     async createMeal(profileId, baselineId, dayIndex, input, calculatedAt) {
       const day = ensureDay(profileId, baselineId, input.localDate, dayIndex, calculatedAt);
       const value: MealLogRecord = { id: id(), profileId, baselineSessionId: baselineId, dailyRecordId: day.id!, source: 'MANUAL', ...input, createdAt: calculatedAt, updatedAt: calculatedAt };

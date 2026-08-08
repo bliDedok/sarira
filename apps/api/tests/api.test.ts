@@ -76,9 +76,9 @@ describe('SARIRA API v1 Phase 4', () => {
   beforeAll(async () => { app = await buildApp({ env: { APP_ENV: 'test', NODE_ENV: 'test', USE_MOCK_DATA: 'true', LOG_LEVEL: 'silent' }, logger: false }); await app.ready(); });
   afterAll(async () => app.close());
 
-  it('menyediakan health/version Phase 4 dan melindungi route private', async () => {
+  it('menyediakan health/version Phase 5 dan melindungi route private', async () => {
     expect((await app.inject({ method: 'GET', url: '/api/v1/health' })).statusCode).toBe(200);
-    expect((await app.inject({ method: 'GET', url: '/api/v1/version' })).json().data).toMatchObject({ apiVersion: 'v1', phase: 4, status: 'baseline-tracking-real' });
+    expect((await app.inject({ method: 'GET', url: '/api/v1/version' })).json().data).toMatchObject({ apiVersion: 'v1', phase: 5, status: 'nutrition-engine-real' });
     const denied = await app.inject({ method: 'GET', url: '/api/v1/me' });
     expect(denied.statusCode).toBe(401);
     const accepted = await app.inject({ method: 'GET', url: '/api/v1/me', headers: { authorization: 'Bearer mock-user-token' } });

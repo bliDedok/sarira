@@ -18,6 +18,7 @@ import { calculateAge, classifyAge, phase3GoalConfigurations, PHASE_3_CONTENT_ST
 import type { AccountRecord, DataRepositories, ProfileRecord } from '../contracts';
 import { ConflictError, NotFoundError } from '../errors';
 import { createMemoryBaselineRepository } from './phase4-memory';
+import { createMemoryNutritionRepository } from './nutrition-memory';
 
 const now = () => new Date().toISOString();
 
@@ -25,7 +26,7 @@ const consentDefinitions: ConsentDefinition[] = [
   { id: '20000000-0000-4000-8000-000000000001', type: 'TERMS_OF_SERVICE', version: 'phase3-dev-v1', displayName: 'Ketentuan Layanan', description: 'Ketentuan penggunaan layanan SARIRA.', required: true, contentStatus: PHASE_3_CONTENT_STATUS, expertValidationRequired: true },
   { id: '20000000-0000-4000-8000-000000000002', type: 'PRIVACY_POLICY', version: 'phase3-dev-v1', displayName: 'Kebijakan Privasi', description: 'Cara data profil diproses dan hak pengguna.', required: true, contentStatus: PHASE_3_CONTENT_STATUS, expertValidationRequired: true },
   { id: '20000000-0000-4000-8000-000000000003', type: 'HEALTH_PROFILE', version: 'phase3-dev-v1', displayName: 'Profil Kesehatan', description: 'Pemrosesan jawaban safety dan kuesioner untuk onboarding.', required: true, contentStatus: PHASE_3_CONTENT_STATUS, expertValidationRequired: true },
-  { id: '20000000-0000-4000-8000-000000000004', type: 'NUTRITION_DATA', version: 'phase3-dev-v1', displayName: 'Data Nutrisi', description: 'Opsional; fitur rekomendasi nutrisi masih demo.', required: false, contentStatus: PHASE_3_CONTENT_STATUS, expertValidationRequired: true },
+  { id: '20000000-0000-4000-8000-000000000004', type: 'NUTRITION_DATA', version: 'phase3-dev-v1', displayName: 'Data Nutrisi', description: 'Opsional; pemrosesan catatan pangan, target, dan indikator nutrisi.', required: false, contentStatus: PHASE_3_CONTENT_STATUS, expertValidationRequired: true },
   { id: '20000000-0000-4000-8000-000000000005', type: 'ACTIVITY_DATA', version: 'phase3-dev-v1', displayName: 'Data Aktivitas', description: 'Opsional; dapat diubah dari Settings.', required: false, contentStatus: PHASE_3_CONTENT_STATUS, expertValidationRequired: true },
   { id: '20000000-0000-4000-8000-000000000006', type: 'SLEEP_DATA', version: 'phase3-dev-v1', displayName: 'Data Tidur', description: 'Opsional; dapat diubah dari Settings.', required: false, contentStatus: PHASE_3_CONTENT_STATUS, expertValidationRequired: true },
   { id: '20000000-0000-4000-8000-000000000007', type: 'WEARABLE', version: 'phase3-dev-v1', displayName: 'Perangkat Wearable', description: 'Opsional dan tidak diminta pada onboarding.', required: false, contentStatus: PHASE_3_CONTENT_STATUS, expertValidationRequired: true },
@@ -90,6 +91,12 @@ export function createMemoryRepositories(): DataRepositories {
   const questionnaireSessions = new Map<string, QuestionnaireSessionRecord>();
   const programs = new Map<string, ProgramPreferenceRecord>();
   const auditEvents: Array<{ event: string; entityId?: string }> = [];
+  const baseline = createMemoryBaselineRepository();
+  const nutrition = createMemoryNutritionRepository((profileId) => {
+    const session = [...questionnaireSessions.values()].filter((item) => item.profileId === profileId && item.status === 'COMPLETED').sort((a, b) => (b.completedAt ?? '').localeCompare(a.completedAt ?? ''))[0];
+    const value = session?.answers.find((answer) => answer.questionCode === 'allergy_details')?.value;
+    return typeof value === 'string' ? value : '';
+  });
 
   const getProfile = (userId: string) => {
     const profile = profiles.get(userId);
@@ -320,7 +327,8 @@ export function createMemoryRepositories(): DataRepositories {
         return record;
       },
     },
-    baseline: createMemoryBaselineRepository(),
+    baseline,
+    nutrition,
     admin: {
       async configurationVersions() {
         return {

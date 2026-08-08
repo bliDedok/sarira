@@ -38,6 +38,13 @@ import type {
   SleepLogRecord,
   StarterJourneyRecord,
   StepRecordValue,
+  DailyNutritionSummaryRecord,
+  FoodItemRecord,
+  FoodServingRecord,
+  MealLogItemRecord,
+  NutritionHistoryRecord,
+  NutritionSnapshotRecord,
+  NutritionTargetProfileRecord,
 } from '@sarira/shared-types';
 import type { ApiResponse } from '@sarira/shared-types';
 
@@ -155,5 +162,20 @@ export function createApiClient({ baseUrl, getAccessToken, fetcher = fetch }: Ap
     updateDailyTask: (id: string, status: DailyTaskRecord['status']) => request<DailyTaskRecord>(`/daily-tasks/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) }),
     getDay7Checkpoint: (id: string) => request<Day7CheckpointRecord>(`/baseline/${id}/day-7-checkpoint`),
     saveDay7Feedback: (id: string, input: { easeRating: number; hardestDomains: Array<'checkIn' | 'food' | 'sleep' | 'activity'>; wantsToContinue: boolean; notes?: string }) => request<Day7FeedbackRecord>(`/baseline/${id}/day-7-feedback`, { method: 'POST', body: JSON.stringify(input) }),
+    searchFoods: (input: { q?: string; category?: FoodItemRecord['category']; verified?: boolean; page?: number; pageSize?: number } = {}) => {
+      const query = new URLSearchParams(); if (input.q) query.set('q', input.q); if (input.category) query.set('category', input.category); if (input.verified !== undefined) query.set('verified', String(input.verified)); query.set('page', String(input.page ?? 1)); query.set('pageSize', String(input.pageSize ?? 20));
+      return request<{ items: FoodItemRecord[]; total: number; page: number; pageSize: number }>(`/foods?${query.toString()}`);
+    },
+    getFood: (id: string) => request<FoodItemRecord>(`/foods/${id}`),
+    getFoodServings: (id: string) => request<FoodServingRecord[]>(`/foods/${id}/servings`),
+    previewNutrition: (input: { foodItemId: string; servingId: string; quantity: number }) => request<{ food: FoodItemRecord; serving: FoodServingRecord; quantity: number; gramAmount: number; nutrition: NutritionSnapshotRecord; allergenWarnings: MealLogItemRecord['allergenWarnings'] }>('/nutrition/preview', { method: 'POST', body: JSON.stringify(input) }),
+    getNutritionTarget: () => request<NutritionTargetProfileRecord>('/nutrition/targets/current'),
+    recalculateNutritionTarget: () => request<NutritionTargetProfileRecord>('/nutrition/targets/recalculate', { method: 'POST' }),
+    getDailyNutrition: (localDate: string) => request<DailyNutritionSummaryRecord>(`/nutrition/daily/${localDate}`),
+    getNutritionHistory: (from: string, to: string) => request<NutritionHistoryRecord>(`/nutrition/history?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`),
+    addMealLogItem: (mealLogId: string, input: { foodItemId: string; servingId: string; quantity: number }) => request<MealLogItemRecord>(`/meal-logs/${mealLogId}/items`, { method: 'POST', body: JSON.stringify(input) }),
+    addCustomMealLogItem: (mealLogId: string, input: { customName: string; servingDescription: string; quantity: number }) => request<MealLogItemRecord>(`/meal-logs/${mealLogId}/items/custom`, { method: 'POST', body: JSON.stringify(input) }),
+    updateMealLogItem: (id: string, input: { servingId?: string; quantity?: number }) => request<MealLogItemRecord>(`/meal-log-items/${id}`, { method: 'PATCH', body: JSON.stringify(input) }),
+    deleteMealLogItem: (id: string) => request<{ deleted: boolean }>(`/meal-log-items/${id}`, { method: 'DELETE' }),
   };
 }

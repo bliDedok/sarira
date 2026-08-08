@@ -35,6 +35,12 @@ import type {
   MealLogRecord,
   SleepLogRecord,
   StepRecordValue,
+  FoodItemRecord,
+  FoodServingRecord,
+  MealLogItemRecord,
+  NutrientCode,
+  NutritionSnapshotRecord,
+  NutritionTargetProfileRecord,
 } from '@sarira/shared-types';
 import type {
   ActivityLogInput,
@@ -133,10 +139,44 @@ export interface DataRepositories {
     set(profileId: string, program: ProgramPreferenceRecord['program']): Promise<ProgramPreferenceRecord>;
   };
   baseline: BaselineRepository;
+  nutrition: NutritionRepository;
   admin: { configurationVersions(): Promise<AdminConfigurationVersions> };
   audit: {
     record(input: { actorUserId?: string; event: string; entityType: string; entityId?: string; requestId?: string; metadata?: Record<string, string | boolean | number> }): Promise<void>;
   };
+}
+
+export interface NutritionPolicyRecord {
+  id: string;
+  code: string;
+  version: string;
+  ageMin: number;
+  ageMax: number;
+  applicableSex?: ProfileRecord['gender'];
+  applicableGoals: string[];
+  applicableSafetyStatuses: string[];
+  targetConfiguration: Record<string, unknown>;
+  requiresExpertValidation: boolean;
+}
+
+export interface NutritionFoodDetail extends FoodItemRecord {
+  nutrients: Array<{ nutrientCode: NutrientCode; amount: number; unit: string; basisAmount: number; basisUnit: 'G'; sourceVersion: string }>;
+}
+
+export interface NutritionRepository {
+  listNutrients(): Promise<Array<{ code: NutrientCode; displayName: string; unit: string; category: string; decimalPrecision: number }>>;
+  searchFoods(input: { query?: string; category?: string; verified?: boolean; page: number; pageSize: number }): Promise<{ items: FoodItemRecord[]; total: number; page: number; pageSize: number }>;
+  getFood(id: string): Promise<NutritionFoodDetail | null>;
+  getServings(foodItemId: string): Promise<FoodServingRecord[]>;
+  getItem(id: string): Promise<MealLogItemRecord | null>;
+  createItem(input: { mealLogId: string; profileId: string; localDate: string; foodItemId?: string; servingId?: string; itemSource: 'DATABASE_FOOD' | 'CUSTOM_FOOD' | 'USER_ENTERED'; customName?: string; quantity: number; gramAmount?: number; sourceVersion: string; snapshot: Omit<NutritionSnapshotRecord, 'id'>; allergenWarnings: MealLogItemRecord['allergenWarnings'] }): Promise<MealLogItemRecord>;
+  updateItem(id: string, input: { servingId?: string; quantity: number; gramAmount?: number; sourceVersion: string; snapshot: Omit<NutritionSnapshotRecord, 'id'>; allergenWarnings: MealLogItemRecord['allergenWarnings'] }): Promise<MealLogItemRecord>;
+  deleteItem(id: string): Promise<void>;
+  listItemsForDate(profileId: string, localDate: string): Promise<MealLogItemRecord[]>;
+  getProfileAllergenText(profileId: string): Promise<string>;
+  getActivePolicies(): Promise<NutritionPolicyRecord[]>;
+  getCurrentTarget(profileId: string, localDate: string): Promise<NutritionTargetProfileRecord | null>;
+  saveTarget(input: { profileId: string; policy: NutritionPolicyRecord; target: Omit<NutritionTargetProfileRecord, 'id'> }): Promise<NutritionTargetProfileRecord>;
 }
 
 export interface BaselineRepository {
@@ -151,6 +191,7 @@ export interface BaselineRepository {
   getCheckIn(profileId: string, baselineId: string, localDate: string, dayIndex: number, calculatedAt: string): Promise<DailyCheckInRecord | null>;
   putCheckIn(profileId: string, baselineId: string, localDate: string, dayIndex: number, input: DailyCheckInInput, calculatedAt: string): Promise<DailyCheckInRecord>;
   listMeals(profileId: string, baselineId: string, localDate?: string): Promise<MealLogRecord[]>;
+  getMealById(profileId: string, baselineId: string, id: string): Promise<MealLogRecord | null>;
   createMeal(profileId: string, baselineId: string, dayIndex: number, input: MealLogInput, calculatedAt: string): Promise<MealLogRecord>;
   updateMeal(profileId: string, baselineId: string, id: string, input: Partial<MealLogInput>, calculatedAt: string): Promise<MealLogRecord>;
   deleteMeal(profileId: string, baselineId: string, id: string, calculatedAt: string): Promise<void>;

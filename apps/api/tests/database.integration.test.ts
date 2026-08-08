@@ -73,10 +73,19 @@ describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–4 integration', 
     expect(baselineResponse.statusCode).toBe(201);
     const baseline = baselineResponse.json().data as { id: string; startLocalDate: string };
     expect((await app.inject({ method: 'PUT', url: `/api/v1/daily-checkins/${baseline.startLocalDate}`, headers, payload: { mood: 'GOOD', hunger: 3, fullness: 4, barriers: [] } })).statusCode).toBe(200);
-    expect((await app.inject({ method: 'POST', url: '/api/v1/meal-logs', headers, payload: { localDate: baseline.startLocalDate, mealType: 'BREAKFAST', description: 'Sarapan integration', skipped: false } })).statusCode).toBe(201);
+    const mealLogResponse = await app.inject({ method: 'POST', url: '/api/v1/meal-logs', headers, payload: { localDate: baseline.startLocalDate, mealType: 'BREAKFAST', description: 'Sarapan integration', skipped: false } });
+    expect(mealLogResponse.statusCode).toBe(201);
     expect((await app.inject({ method: 'POST', url: '/api/v1/sleep-logs', headers, payload: { localDate: baseline.startLocalDate, sleepStartedAt: `${baseline.startLocalDate}T00:00:00+08:00`, wokeUpAt: `${baseline.startLocalDate}T07:00:00+08:00`, perceivedQuality: 'GOOD' } })).statusCode).toBe(201);
     expect((await app.inject({ method: 'POST', url: '/api/v1/activity-logs', headers, payload: { localDate: baseline.startLocalDate, activityType: 'WALKING', durationMinutes: 20, perceivedIntensity: 'LIGHT' } })).statusCode).toBe(201);
     expect((await app.inject({ method: 'GET', url: `/api/v1/baseline/${baseline.id}/completeness`, headers })).json().data).toMatchObject({ score: 100, completedDays: 1 });
+
+    const foods = (await app.inject({ method: 'GET', url: '/api/v1/foods?q=nasi%20putih', headers })).json().data.items as Array<{ id: string; servings: Array<{ id: string }> }>;
+    expect(foods).toHaveLength(1);
+    const nutritionItem = await app.inject({ method: 'POST', url: `/api/v1/meal-logs/${mealLogResponse.json().data.id as string}/items`, headers, payload: { foodItemId: foods[0]!.id, servingId: foods[0]!.servings[0]!.id, quantity: 1 } });
+    expect(nutritionItem.statusCode, nutritionItem.body).toBe(201);
+    const dailyNutrition = (await app.inject({ method: 'GET', url: `/api/v1/nutrition/daily/${baseline.startLocalDate}`, headers })).json().data;
+    expect(dailyNutrition).toMatchObject({ itemCount: 1, mealCount: 1, totals: { ENERGY_KCAL: 195 } });
+    expect(dailyNutrition.target).toMatchObject({ policyCode: 'ADULT_GENERAL', safetyStatus: 'GREEN' });
 
     expect(await prisma!.profile.count({ where: { id: profileId, onboardingStatus: 'COMPLETED' } })).toBe(1);
     expect(await prisma!.auditLog.count({ where: { actorUserId: userId } })).toBeGreaterThanOrEqual(10);
@@ -85,6 +94,8 @@ describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–4 integration', 
     expect(await prisma!.baselineSession.count({ where: { id: baseline.id, profileId } })).toBe(1);
     expect(await prisma!.dailyRecord.count({ where: { baselineSessionId: baseline.id, completenessStatus: 'COMPLETE' } })).toBe(1);
     expect(await prisma!.dataCompletenessSnapshot.count({ where: { baselineSessionId: baseline.id } })).toBeGreaterThanOrEqual(2);
+    expect(await prisma!.mealLogItem.count({ where: { profileId, snapshot: { is: { sourceVersion: 'phase5-synthetic-v1' } } } })).toBe(1);
+    expect(await prisma!.nutritionTargetProfile.count({ where: { profileId, policyVersion: 'phase5-dev-v1' } })).toBe(1);
     const extension = await prisma!.$queryRaw<Array<{ extname: string }>>`select extname from pg_extension where extname = 'vector'`;
     expect(extension[0]?.extname).toBe('vector');
   });
