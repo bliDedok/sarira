@@ -19,12 +19,15 @@ import { createSafetyRoutes } from './routes/safety';
 import { createGoalRoutes } from './routes/goals';
 import { createQuestionnaireRoutes } from './routes/questionnaires';
 import { createProgramRoutes } from './routes/programs';
+import { createBaselineRoutes } from './routes/baseline';
+import { SystemClock, type Clock } from '@sarira/baseline';
 
 export interface BuildAppOptions {
   env?: Record<string, string | undefined>;
   auth?: AuthPort;
   repositories?: DataRepositories;
   logger?: boolean;
+  clock?: Clock;
 }
 
 export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyInstance> {
@@ -46,6 +49,7 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
   const auth = options.auth ?? (useMock
     ? new MockAuthAdapter()
     : new SupabaseAuthAdapter(env.SUPABASE_URL!, env.SUPABASE_ANON_KEY!));
+  const clock = options.clock ?? new SystemClock();
 
   await app.register(helmet, { global: true, contentSecurityPolicy: false });
   await app.register(cors, {
@@ -77,6 +81,7 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
     await v1.register(createGoalRoutes(repositories));
     await v1.register(createQuestionnaireRoutes(repositories));
     await v1.register(createProgramRoutes(repositories));
+    await v1.register(createBaselineRoutes(repositories, clock));
   }, { prefix: '/api/v1' });
 
   app.addHook('onClose', async () => { if (prisma) await prisma.$disconnect(); });

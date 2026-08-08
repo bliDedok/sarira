@@ -17,6 +17,7 @@ import type {
 import { calculateAge, classifyAge, phase3GoalConfigurations, PHASE_3_CONTENT_STATUS, PHASE_3_RULE_VERSION } from '@sarira/expert-system';
 import type { AccountRecord, DataRepositories, ProfileRecord } from '../contracts';
 import { ConflictError, NotFoundError } from '../errors';
+import { createMemoryBaselineRepository } from './phase4-memory';
 
 const now = () => new Date().toISOString();
 
@@ -319,6 +320,7 @@ export function createMemoryRepositories(): DataRepositories {
         return record;
       },
     },
+    baseline: createMemoryBaselineRepository(),
     admin: {
       async configurationVersions() {
         return {
