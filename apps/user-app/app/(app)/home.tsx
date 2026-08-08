@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { router } from 'expo-router';
 import { Activity, CalendarDays, Check, ChevronRight, Clock3, Lightbulb, MoonStar, RefreshCw, Utensils } from 'lucide-react-native';
@@ -6,6 +6,8 @@ import { breakpoints, colors, radius, spacing } from '@sarira/design-tokens';
 import { AppText, Button, Card, Chip, ErrorState, Loading, ProgressBar, ProgressRing, SectionHeader, SimulatedBadge } from '@sarira/ui';
 import { AppShell } from '@/layouts/AppShell';
 import { useBaseline } from '@/features/baseline/useBaseline';
+import type { DailyNutritionSummaryRecord } from '@sarira/shared-types';
+import { api } from '@/services/api';
 
 const taskRoutes = { checkIn: '/daily-check-in', food: '/food', sleep: '/sleep', activity: '/activity' } as const;
 const labels = { checkIn: 'Check-in', food: 'Makanan', sleep: 'Tidur', activity: 'Aktivitas' } as const;
@@ -14,6 +16,8 @@ export default function HomeScreen() {
   const { width } = useWindowDimensions();
   const desktop = width >= breakpoints.desktop;
   const { profile, current, loading, error, reload } = useBaseline();
+  const [nutrition, setNutrition] = useState<DailyNutritionSummaryRecord>();
+  useEffect(() => { if (!current) return; const timer = setTimeout(() => void api.getDailyNutrition(current.localDate).then(setNutrition).catch(() => setNutrition(undefined)), 0); return () => clearTimeout(timer); }, [current]);
 
   return (
     <AppShell title="Beranda" subtitle="Ringkasan prioritas hari ini">
@@ -70,9 +74,11 @@ export default function HomeScreen() {
           </Card>
         </View>
 
-        <Card tone="cream" style={styles.demoCard} accessibilityLabel="Ringkasan nutrisi Demo">
-          <View style={styles.rowBetween}><View style={styles.flex}><AppText variant="eyebrow">NUTRITION RECOMMENDATION</AppText><AppText variant="h3">Perhitungan nutrisi belum aktif</AppText></View><SimulatedBadge label="DEMO" /></View>
-          <AppText variant="body">Food log dasar sudah nyata, tetapi kalori, makro, natrium, rekomendasi Guided Meal, dan Flex Kitchen tetap Demo sampai fase berikutnya.</AppText>
+        <Card tone="cream" style={styles.demoCard} accessibilityLabel={`Ringkasan nutrisi nyata, ${nutrition?.itemCount ?? 0} item`}>
+          <View style={styles.rowBetween}><View style={styles.flex}><AppText variant="eyebrow">NUTRITION INDICATOR · REAL</AppText><AppText variant="h3">Ringkasan nutrisi hari ini</AppText></View><Chip label={`${nutrition?.itemCount ?? 0} ITEM`} tone="mint" /></View>
+          <View style={styles.chips}>{(['ENERGY_KCAL', 'PROTEIN_G', 'FIBER_G', 'SODIUM_MG'] as const).map((code) => { const indicator = nutrition?.indicators.find((item) => item.nutrientCode === code); return <Chip key={code} label={`${indicator?.displayName ?? code} · ${indicator?.amount === null || indicator?.amount === undefined ? 'belum tersedia' : `${indicator.amount} ${indicator.unit}`}`} tone={indicator?.amount === null || indicator?.amount === undefined ? 'warning' : 'neutral'} />; })}</View>
+          <AppText variant="body">Angka berasal dari item database dan snapshot porsi. Guided Meal, Flex Kitchen, serta saran AI tetap Demo.</AppText>
+          <Button label="Buka indikator nutrisi" variant="secondary" onPress={() => router.push('/nutrition' as never)} />
         </Card>
       </>}
     </AppShell>

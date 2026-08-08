@@ -30,7 +30,7 @@ export default function SplashPage() {
   const desktop = width >= breakpoints.tablet;
   return (
     <PublicScreen scroll>
-      <View style={styles.header}><BrandMark /><Chip label="PHASE 4 · BASELINE NYATA" tone="lime" /></View>
+      <View style={styles.header}><BrandMark /><Chip label="PHASE 5 · NUTRISI NYATA" tone="lime" /></View>
       <View style={[styles.content, desktop && styles.contentDesktop]}>
         <View style={styles.copy}>
           <AppText variant="eyebrow">SARIRA ACTIVE BALANCE</AppText>
@@ -38,7 +38,7 @@ export default function SplashPage() {
           <AppText variant="bodyLarge">Pendamping keseimbangan tubuh dan pertumbuhan keluarga yang membantu memilih satu perubahan realistis, aman, dan dapat dijelaskan.</AppText>
           <View style={styles.promiseList}>{['Rules decide', 'Evidence supports', 'AI explains'].map((label) => <View key={label} style={styles.promise}><View style={styles.check}><Check size={15} color={colors.primaryDark} strokeWidth={3} /></View><AppText variant="label">{label}</AppText></View>)}</View>
           <View style={styles.buttons}><Button label="Mulai perjalanan" icon={ArrowRight} variant="lime" onPress={() => router.push('/register' as never)} /><Button label="Masuk ke aplikasi" variant="secondary" onPress={() => router.push('/login' as never)} /></View>
-          <View style={styles.safetyLine}><ShieldCheck size={18} color={colors.primary} /><AppText variant="caption" style={{ flex: 1 }}>SARIRA bukan alat diagnosis dan tidak menggantikan dokter atau ahli gizi. Onboarding dan baseline tersimpan nyata; fitur yang berlabel Demo tetap simulasi.</AppText></View>
+          <View style={styles.safetyLine}><ShieldCheck size={18} color={colors.primary} /><AppText variant="caption" style={{ flex: 1 }}>SARIRA bukan alat diagnosis dan tidak menggantikan dokter atau ahli gizi. Onboarding, baseline, serta kalkulasi nutrisi deterministic tersimpan nyata; fitur yang berlabel Demo tetap simulasi.</AppText></View>
         </View>
         <View style={styles.heroWrap}><BalanceHero /></View>
       </View>

@@ -138,9 +138,9 @@ export function AppShell({
             </View>
             {!isTablet ? (
               <View style={styles.sidebarDemoCard}>
-                <Chip label="PHASE 4" tone="lime" />
-                <AppText variant="label" style={{ color: colors.white }}>Baseline nyata</AppText>
-                <AppText variant="caption" style={{ color: '#BDD0C4' }}>Tracking, kelengkapan data, checkpoint, dan readiness aktif. AI, Pattern Map, nutrition engine, kamera, dan wearable tetap Demo.</AppText>
+                <Chip label="PHASE 5" tone="lime" />
+                <AppText variant="label" style={{ color: colors.white }}>Baseline & nutrisi nyata</AppText>
+                <AppText variant="caption" style={{ color: '#BDD0C4' }}>Food database, porsi, target, dan indikator aktif. AI, Pattern Map, Guided Meal, kamera, dan wearable tetap Demo.</AppText>
               </View>
             ) : null}
           </View>
