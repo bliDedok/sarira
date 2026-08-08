@@ -269,6 +269,7 @@ export function Chip({
       onPress={onPress}
       style={({ pressed }) => [
         styles.chip,
+        onPress ? styles.chipInteractive : null,
         {
           backgroundColor: selected ? colors.lime : toneStyle.background,
           borderColor: selected ? colors.lime : toneStyle.border,
@@ -689,6 +690,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
+  chipInteractive: { minHeight: 44 },
   progressTrack: {
     height: 9,
     borderRadius: radius.pill,
