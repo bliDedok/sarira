@@ -1,6 +1,8 @@
-# SARIRA — Phase 5 Real Nutrition Engine
+# SARIRA — Phase 6 Guided Meal & Flex Kitchen
 
-SARIRA Phase 5 extends the real onboarding and 14-day baseline with a deterministic, versioned nutrition domain: a traceable food database, food-specific servings, nutrient calculations, stable meal snapshots, daily aggregation, age- and safety-aware targets, indicators, allergen warnings, history, ownership, consent enforcement, and audit events.
+SARIRA Phase 6 extends the real onboarding, 14-day baseline, and Phase 5 Nutrition Engine with deterministic meal planning: versioned recipes, nutrition snapshots, remaining nutrition, Guided Meal hard/soft constraints, alternatives, Cooking Mode, partial/idempotent consumption, Flex Kitchen, substitutions, and private personal recipes.
+
+Guided Meal and Flex Kitchen use the same `@sarira/nutrition-engine`; there is no AI/LLM/RAG selection and no second nutrition calculator. Development foods, recipes, and policy weights remain clearly synthetic and require expert/product validation.
 
 Nutrition calculations and indicators are real application paths. Development foods and policies are explicitly synthetic and require expert validation. Guided Meal recommendations, Flex Kitchen recommendations, AI/RAG, Pattern Map, Weekly Action, food vision, barcode production, wearables, Motion Coach, growth analysis, and digestive analysis remain clearly labeled Demo or out of scope.
 
@@ -52,7 +54,7 @@ pnpm migration:check
 
 ## Environment modes
 
-Mock infrastructure is the safe local default and uses the same Phase 5 API contract and deterministic nutrition engine. Set `EXPO_PUBLIC_USE_MOCK_DATA=false` and `USE_MOCK_DATA=false` only after Supabase/database variables are configured. Public client values use `EXPO_PUBLIC_*` or `NEXT_PUBLIC_*`; service-role keys and database URLs are server-only.
+Mock infrastructure is the safe local default and uses the same Phase 6 API contract, repositories, and deterministic engine. Set `EXPO_PUBLIC_USE_MOCK_DATA=false` and `USE_MOCK_DATA=false` only after Supabase/database variables are configured. Public client values use `EXPO_PUBLIC_*` or `NEXT_PUBLIC_*`; service-role keys and database URLs are server-only.
 
 Templates live in `infrastructure/environments`. Do not commit populated `.env` files.
 
@@ -64,6 +66,7 @@ Templates live in `infrastructure/environments`. Do not commit populated `.env` 
 - Phase 3 implementation, decisions, and final report: `docs/phase-3`
 - Phase 4 baseline implementation and final report: `docs/phase-4`
 - Phase 5 nutrition architecture, provenance, policy, tests, and final report: `docs/phase-5`
+- Phase 6 recipes, meal planning, Flex Kitchen, migrations, tests, and final report: `docs/phase-6`
 - API contract: `docs/api`
 - Database model/migrations: `docs/database`
 - Historical Phase 2 report: `PHASE_2_FINAL_REPORT.md`
