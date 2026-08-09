@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Modal as NativeModal,
@@ -15,8 +15,8 @@ import {
   Switch,
 } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
-import { Check, ChevronRight, Info, Search, TriangleAlert, WifiOff, X } from 'lucide-react-native';
-import { accessibility, colors, radius, spacing, typography } from '@sarira/design-tokens';
+import { Check, ChevronDown, ChevronRight, ChevronUp, Clock3, Info, Minus, Plus, Search, TriangleAlert, WifiOff, X } from 'lucide-react-native';
+import { accessibility, colors, controlSizes, radius, spacing, typography } from '@sarira/design-tokens';
 import type { SafetyDisplayStatus, SafetyStatus } from '@sarira/shared-types';
 
 type IconComponent = React.ComponentType<{ color?: string; size?: number; strokeWidth?: number }>;
@@ -32,28 +32,28 @@ export const textStyles = StyleSheet.create({
   display: {
     fontFamily: font.bold,
     fontSize: typography.display,
-    lineHeight: 46,
+    lineHeight: 40,
     letterSpacing: -1.2,
     color: colors.textPrimary,
   },
   h1: {
     fontFamily: font.bold,
     fontSize: typography.h1,
-    lineHeight: 38,
+    lineHeight: 36,
     letterSpacing: -0.7,
     color: colors.textPrimary,
   },
   h2: {
     fontFamily: font.bold,
     fontSize: typography.h2,
-    lineHeight: 32,
+    lineHeight: 30,
     letterSpacing: -0.4,
     color: colors.textPrimary,
   },
   h3: {
     fontFamily: font.semibold,
     fontSize: typography.h3,
-    lineHeight: 27,
+    lineHeight: 26,
     color: colors.textPrimary,
   },
   bodyLarge: {
@@ -445,6 +445,117 @@ export function NumberInput(props: Omit<TextInputProps, 'keyboardType'> & { labe
   return <Field {...props} keyboardType="numeric" />;
 }
 
+export interface NumericPickerProps {
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
+  min: number;
+  max: number;
+  step?: number;
+  unit: string;
+  decimals?: number;
+  helper?: string;
+  error?: string;
+  disabled?: boolean;
+  testID?: string;
+}
+
+const clampNumber = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+const formatNumericValue = (value: number, decimals: number) => decimals > 0 ? value.toFixed(decimals) : String(Math.round(value));
+
+export function NumericPicker({ label, value, onChange, min, max, step = 1, unit, decimals = 0, helper, error, disabled, testID }: NumericPickerProps) {
+  const [draft, setDraft] = useState(formatNumericValue(value, decimals));
+  useEffect(() => setDraft(formatNumericValue(value, decimals)), [decimals, value]);
+  const update = (next: number) => {
+    const precision = 10 ** decimals;
+    const normalized = Math.round(clampNumber(next, min, max) * precision) / precision;
+    onChange(normalized);
+    setDraft(formatNumericValue(normalized, decimals));
+  };
+  const commit = () => {
+    const parsed = Number(draft.replace(',', '.'));
+    if (!Number.isFinite(parsed)) return setDraft(formatNumericValue(value, decimals));
+    update(parsed);
+  };
+  return (
+    <View style={styles.pickerWrap} testID={testID}>
+      <AppText variant="label">{label}</AppText>
+      <View style={[styles.numericPicker, error && styles.inputError, disabled && styles.disabledControl]}>
+        <Pressable accessibilityRole="button" accessibilityLabel={`Kurangi ${label}`} accessibilityState={{ disabled: Boolean(disabled || value <= min) }} disabled={disabled || value <= min} onPress={() => update(value - step)} style={({ pressed }) => [styles.stepperButton, pressed && styles.stepperPressed]}>
+          <Minus size={22} color={colors.primaryDark} strokeWidth={2.5} />
+        </Pressable>
+        <View style={styles.numericValueWrap}>
+          <NativeTextInput
+            accessibilityLabel={`${label} dalam ${unit}`}
+            accessibilityValue={{ min, max, now: value, text: `${formatNumericValue(value, decimals)} ${unit}` }}
+            value={draft}
+            onChangeText={setDraft}
+            onBlur={commit}
+            onSubmitEditing={commit}
+            keyboardType={decimals > 0 ? 'decimal-pad' : 'number-pad'}
+            inputMode={decimals > 0 ? 'decimal' : 'numeric'}
+            editable={!disabled}
+            selectTextOnFocus
+            style={styles.numericInput}
+          />
+          <AppText variant="caption" style={styles.numericUnit}>{unit}</AppText>
+        </View>
+        <Pressable accessibilityRole="button" accessibilityLabel={`Tambah ${label}`} accessibilityState={{ disabled: Boolean(disabled || value >= max) }} disabled={disabled || value >= max} onPress={() => update(value + step)} style={({ pressed }) => [styles.stepperButton, pressed && styles.stepperPressed]}>
+          <Plus size={22} color={colors.primaryDark} strokeWidth={2.5} />
+        </Pressable>
+      </View>
+      {error ? <AppText variant="caption" accessibilityLiveRegion="polite" style={{ color: colors.danger }}>{error}</AppText> : helper ? <AppText variant="caption">{helper}</AppText> : null}
+    </View>
+  );
+}
+
+export function AgePicker(props: Omit<NumericPickerProps, 'min' | 'max' | 'step' | 'unit' | 'decimals'>) {
+  return <NumericPicker {...props} min={12} max={75} step={1} unit="tahun" />;
+}
+
+export function WeightPicker(props: Omit<NumericPickerProps, 'min' | 'max' | 'step' | 'unit' | 'decimals'>) {
+  return <NumericPicker {...props} min={20} max={300} step={0.5} decimals={1} unit="kg" />;
+}
+
+export function HeightPicker(props: Omit<NumericPickerProps, 'min' | 'max' | 'step' | 'unit' | 'decimals'>) {
+  return <NumericPicker {...props} min={80} max={250} step={1} unit="cm" />;
+}
+
+function TimeSegment({ label, value, onDecrease, onIncrease }: { label: string; value: string; onDecrease: () => void; onIncrease: () => void }) {
+  return (
+    <View style={styles.timeSegment}>
+      <AppText variant="caption">{label}</AppText>
+      <View style={styles.timeControls}>
+        <Pressable accessibilityRole="button" accessibilityLabel={`Kurangi ${label}`} onPress={onDecrease} style={({ pressed }) => [styles.timeButton, pressed && styles.stepperPressed]}><Minus size={18} color={colors.primaryDark} /></Pressable>
+        <AppText variant="h2" accessibilityLabel={`${label} ${value}`} style={styles.timeValue}>{value}</AppText>
+        <Pressable accessibilityRole="button" accessibilityLabel={`Tambah ${label}`} onPress={onIncrease} style={({ pressed }) => [styles.timeButton, pressed && styles.stepperPressed]}><Plus size={18} color={colors.primaryDark} /></Pressable>
+      </View>
+    </View>
+  );
+}
+
+export function TimePicker({ label, value, onChange, helper, error, minuteStep = 5 }: { label: string; value: string; onChange: (value: string) => void; helper?: string; error?: string; minuteStep?: 1 | 5 | 10 | 15 | 30 }) {
+  const match = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(value);
+  const hour = match ? Number(match[1]) : 7;
+  const minute = match ? Number(match[2]) : 0;
+  const update = (nextHour: number, nextMinute: number) => {
+    const minutesInDay = 24 * 60;
+    const normalized = ((nextHour * 60 + nextMinute) % minutesInDay + minutesInDay) % minutesInDay;
+    onChange(`${String(Math.floor(normalized / 60)).padStart(2, '0')}:${String(normalized % 60).padStart(2, '0')}`);
+  };
+  return (
+    <View style={styles.pickerWrap}>
+      <View style={styles.timeLabel}><Clock3 size={20} color={colors.primary} /><AppText variant="label">{label}</AppText></View>
+      <View style={[styles.timePicker, error && styles.inputError]}>
+        <TimeSegment label="Jam" value={String(hour).padStart(2, '0')} onDecrease={() => update(hour - 1, minute)} onIncrease={() => update(hour + 1, minute)} />
+        <AppText variant="h2" style={styles.timeDivider}>:</AppText>
+        <TimeSegment label="Menit" value={String(minute).padStart(2, '0')} onDecrease={() => update(hour, minute - minuteStep)} onIncrease={() => update(hour, minute + minuteStep)} />
+      </View>
+      {error ? <AppText variant="caption" style={{ color: colors.danger }}>{error}</AppText> : helper ? <AppText variant="caption">{helper}</AppText> : null}
+    </View>
+  );
+}
+
 export function SearchInput(props: Omit<TextInputProps, 'accessibilityLabel'> & { label?: string }) {
   const label = props.label ?? 'Cari';
   return (
@@ -468,7 +579,7 @@ export function Checkbox({ label, checked, onChange, disabled }: { label: string
       accessibilityLabel={label}
       accessibilityState={{ checked, disabled }}
       disabled={disabled}
-      onPress={() => onChange?.(!checked)}
+      onPress={disabled ? undefined : () => onChange?.(!checked)}
       style={({ pressed }) => [styles.choiceRow, pressed && { opacity: 0.72 }, disabled && { opacity: 0.45 }]}
     >
       <View style={[styles.checkbox, checked && styles.choiceSelected]}>{checked ? <Check size={15} color={colors.primaryDark} strokeWidth={3} /> : null}</View>
@@ -484,7 +595,7 @@ export function Radio({ label, selected, onPress, disabled }: { label: string; s
       accessibilityLabel={label}
       accessibilityState={{ checked: selected, disabled }}
       disabled={disabled}
-      onPress={onPress}
+      onPress={disabled ? undefined : onPress}
       style={({ pressed }) => [styles.choiceRow, pressed && { opacity: 0.72 }, disabled && { opacity: 0.45 }]}
     >
       <View style={[styles.radio, selected && styles.choiceSelected]}>{selected ? <View style={styles.radioDot} /> : null}</View>
@@ -558,6 +669,9 @@ export function SelectionCard({
   selected,
   onPress,
   tone = 'mint',
+  disabled = false,
+  error,
+  multiple = false,
 }: {
   title: string;
   description?: string;
@@ -565,16 +679,23 @@ export function SelectionCard({
   selected?: boolean;
   onPress?: () => void;
   tone?: 'mint' | 'lime' | 'cream' | 'blue' | 'peach' | 'lilac';
+  disabled?: boolean;
+  error?: string;
+  multiple?: boolean;
 }) {
+  const [focused, setFocused] = useState(false);
   return (
     <Pressable
-      accessibilityRole="radio"
+      accessibilityRole={multiple ? 'checkbox' : 'radio'}
       accessibilityLabel={title}
-      accessibilityState={{ checked: selected }}
-      onPress={onPress}
-      style={({ pressed }) => [styles.selectionPressable, pressed && { opacity: 0.78 }]}
+      accessibilityState={{ checked: selected, disabled }}
+      disabled={disabled}
+      onPress={disabled ? undefined : onPress}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      style={({ pressed }) => [styles.selectionPressable, focused && styles.focused, pressed && { opacity: 0.78 }, disabled && styles.disabledControl]}
     >
-      <Card tone={tone} style={[styles.selectionCard, selected && styles.selectionSelected]}>
+      <Card tone={tone} style={[styles.selectionCard, selected && styles.selectionSelected, error && styles.selectionError]}>
         {Icon ? (
           <View style={styles.selectionIcon}>
             <Icon size={23} color={colors.primary} strokeWidth={2.2} />
@@ -583,6 +704,7 @@ export function SelectionCard({
         <View style={{ flex: 1, gap: 3 }}>
           <AppText variant="label">{title}</AppText>
           {description ? <AppText variant="caption">{description}</AppText> : null}
+          {error ? <AppText variant="caption" style={{ color: colors.danger }}>{error}</AppText> : null}
         </View>
         {selected ? (
           <View style={styles.selectedCheck}>
@@ -593,6 +715,29 @@ export function SelectionCard({
         )}
       </Card>
     </Pressable>
+  );
+}
+
+export function MultiSelectionCard(props: Omit<React.ComponentProps<typeof SelectionCard>, 'multiple'>) {
+  return <SelectionCard {...props} multiple />;
+}
+
+export function ConsentCard({ title, summary, details, required, checked, onChange, disabled }: { title: string; summary: string; details?: string; required: boolean; checked: boolean; onChange: (value: boolean) => void; disabled?: boolean }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <View style={[styles.consentCard, disabled && styles.disabledControl]}>
+      <View style={styles.consentHeading}>
+        <View style={{ flex: 1, minWidth: 0, gap: 3 }}>
+          <AppText variant="label">{title}</AppText>
+          <Chip label={required ? 'WAJIB' : 'OPSIONAL'} tone={required ? 'neutral' : 'mint'} />
+        </View>
+      </View>
+      <AppText variant="body">{expanded && details ? details : summary}</AppText>
+      {details && details !== summary ? <Button label={expanded ? 'Tutup penjelasan' : 'Baca penjelasan'} variant="ghost" icon={expanded ? ChevronUp : ChevronDown} onPress={() => setExpanded((value) => !value)} /> : null}
+      <View style={styles.consentChoice}>
+        <Checkbox label={`Saya menyetujui ${title}`} checked={checked} disabled={disabled} onChange={onChange} />
+      </View>
+    </View>
   );
 }
 
@@ -645,7 +790,7 @@ export function InlineNotice({
 
 const styles = StyleSheet.create({
   button: {
-    minHeight: accessibility.minimumTouchTarget + 8,
+    minHeight: controlSizes.buttonMinHeight,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
     borderRadius: radius.button,
@@ -704,7 +849,7 @@ const styles = StyleSheet.create({
   rowBetween: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm },
   fieldWrap: { gap: spacing.xs },
   input: {
-    minHeight: 52,
+    minHeight: controlSizes.inputMinHeight,
     borderWidth: 1.5,
     borderColor: colors.border,
     borderRadius: radius.input,
@@ -719,13 +864,15 @@ const styles = StyleSheet.create({
   inputError: { borderColor: colors.danger },
   selectionPressable: { borderRadius: radius.card },
   selectionCard: {
-    minHeight: 84,
+    minHeight: controlSizes.selectionMinHeight,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
     padding: spacing.md,
   },
   selectionSelected: { borderWidth: 2, borderColor: colors.primary },
+  selectionError: { borderColor: colors.danger },
+  disabledControl: { opacity: 0.48 },
   selectionIcon: {
     width: 44,
     height: 44,
@@ -766,6 +913,23 @@ const styles = StyleSheet.create({
   state: { minHeight: 180, alignItems: 'center', justifyContent: 'center', gap: spacing.sm, padding: spacing.xl },
   navigationItem: { minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: spacing.sm, paddingHorizontal: spacing.md, borderRadius: radius.input },
   navigationSelected: { backgroundColor: colors.lime },
+  pickerWrap: { gap: spacing.xs },
+  numericPicker: { minHeight: 68, flexDirection: 'row', alignItems: 'stretch', borderWidth: 1.5, borderColor: colors.border, borderRadius: radius.input, overflow: 'hidden', backgroundColor: colors.white },
+  stepperButton: { width: controlSizes.stepperButton, minHeight: controlSizes.stepperButton, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.softLime },
+  stepperPressed: { opacity: 0.66, backgroundColor: '#DDF29C' },
+  numericValueWrap: { flex: 1, minWidth: 0, alignItems: 'center', justifyContent: 'center', paddingHorizontal: spacing.xs },
+  numericInput: { width: '100%', minHeight: 38, padding: 0, textAlign: 'center', color: colors.textPrimary, fontFamily: font.bold, fontSize: typography.h2 },
+  numericUnit: { marginTop: -2 },
+  timeLabel: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
+  timePicker: { minHeight: 116, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: spacing.sm, borderWidth: 1.5, borderColor: colors.border, borderRadius: radius.input, padding: spacing.sm, backgroundColor: colors.white },
+  timeSegment: { flex: 1, minWidth: 0, alignItems: 'center', gap: spacing.xs },
+  timeControls: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: spacing.xs },
+  timeButton: { width: 40, height: 44, borderRadius: radius.input, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.softLime },
+  timeValue: { minWidth: 42, textAlign: 'center' },
+  timeDivider: { paddingTop: spacing.lg },
+  consentCard: { width: '100%', gap: spacing.sm, padding: spacing.md, borderWidth: 1, borderColor: colors.border, borderRadius: radius.card, backgroundColor: colors.white },
+  consentHeading: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.sm },
+  consentChoice: { paddingTop: spacing.xs, borderTopWidth: 1, borderTopColor: colors.border },
 });
 
 export const uiFontFamilies = font;

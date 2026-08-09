@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import {
-  CalendarDays,
   CheckCircle2,
   ClipboardList,
   HeartHandshake,
@@ -31,22 +30,28 @@ import type {
   UserProfile,
 } from '@sarira/shared-types';
 import { ApiClientError } from '@sarira/api-client';
-import { colors, radius, spacing } from '@sarira/design-tokens';
+import { colors, spacing } from '@sarira/design-tokens';
 import {
   AppText,
+  AgePicker,
   Button,
   Card,
   Checkbox,
   Chip,
+  ConsentCard,
   ErrorState,
   Field,
+  HeightPicker,
   InlineNotice,
   Loading,
+  MultiSelectionCard,
   ProgressBar,
   Radio,
+  SelectionCard,
   StatusPill,
+  TimePicker,
   Toast,
-  Toggle,
+  WeightPicker,
 } from '@sarira/ui';
 import { PublicScreen } from '@/components/ScreenLayout';
 import { useAuth } from '@/providers/AuthProvider';
@@ -79,14 +84,14 @@ const aliases: Record<string, CanonicalStep> = {
 
 const stepMeta: Record<CanonicalStep, { eyebrow: string; title: string; description: string }> = {
   'role-selection': { eyebrow: 'Konteks profil', title: 'Siapa yang akan menggunakan SARIRA?', description: 'Pilih peran utama. Peran administratif tidak tersedia dari onboarding.' },
-  'birth-date': { eyebrow: 'Profil dasar', title: 'Tanggal lahir dan profil', description: 'Usia selalu dihitung dari tanggal lahir dan tidak disimpan sebagai angka permanen.' },
-  'guardian-consent': { eyebrow: 'Persetujuan wali', title: 'Dukungan wali untuk pengguna remaja', description: 'Flow staging yang transparan dan dapat diaudit; validasi legal masih diperlukan sebelum production.' },
+  'birth-date': { eyebrow: 'Profil dasar', title: 'Berapa usiamu?', description: 'Pilih usia saat ini. SARIRA menyimpan jawaban yang kamu konfirmasi tanpa membuat tanggal lahir perkiraan.' },
+  'guardian-consent': { eyebrow: 'Persetujuan wali', title: 'Dukungan wali untuk pengguna remaja', description: 'Wali perlu membaca penjelasan dan memberi persetujuan sebelum pengguna remaja melanjutkan.' },
   'privacy-consent': { eyebrow: 'Privasi dan consent', title: 'Kamu memegang kendali atas data', description: 'Consent wajib dan opsional dipisahkan. Izin opsional dapat dilewati.' },
   'safety-screening': { eyebrow: 'Safety screening', title: 'Jawab sesuai kondisi sebenarnya', description: 'Tidak perlu sempurna. Tidak yakin tidak pernah dianggap otomatis aman.' },
-  'safety-result': { eyebrow: 'Hasil safety', title: 'Jalur program awal', description: 'Status dibuat backend dengan rule deterministik dan selalu disertai label, ikon, dan deskripsi.' },
+  'safety-result': { eyebrow: 'Hasil safety', title: 'Jalur program awal', description: 'Hasil ditampilkan dengan label, ikon, dan penjelasan agar mudah dipahami.' },
   'goal-selection': { eyebrow: 'Tujuan', title: 'Apa yang ingin kamu prioritaskan?', description: 'Pilihan difilter berdasarkan usia, peran, dan hasil safety.' },
   'profile-questionnaire': { eyebrow: 'Kuesioner profil', title: 'Kenali rutinitasmu', description: 'Satu kelompok pertanyaan per langkah. Jawaban disimpan otomatis.' },
-  'program-preference': { eyebrow: 'Preferensi program', title: 'Pilih cara yang terasa realistis', description: 'Guided Meal dan Flex Kitchen memakai kalkulasi nutrisi serta aturan deterministik yang nyata.' },
+  'program-preference': { eyebrow: 'Preferensi program', title: 'Pilih cara yang terasa realistis', description: 'Kedua pilihan membantu merencanakan makan dengan tingkat panduan yang berbeda.' },
   'profile-summary': { eyebrow: 'Tinjau', title: 'Ringkasan profilmu', description: 'Periksa data sebelum menyelesaikan onboarding. Setiap bagian dapat diperbaiki.' },
 };
 
@@ -103,7 +108,7 @@ function StepFrame({ step, children, footer, saveStatus, onRetry }: { step: Cano
   const index = canonicalSteps.indexOf(step);
   const meta = stepMeta[step];
   return (
-    <PublicScreen showBack maxWidth={820}>
+    <PublicScreen showBack maxWidth={820} stickyFooter={footer}>
       <View style={styles.page}>
         <View style={styles.progressHeader}>
           <Chip label={`LANGKAH ${index + 1} DARI ${canonicalSteps.length}`} tone="lime" />
@@ -118,7 +123,6 @@ function StepFrame({ step, children, footer, saveStatus, onRetry }: { step: Cano
         {saveStatus && onRetry ? <SaveFeedback status={saveStatus} onRetry={onRetry} /> : null}
         {children}
         <InlineNotice title="Jawab apa adanya" text="Tidak perlu sempurna, cukup jawab sesuai kondisi sebenarnya. Kamu bisa mengubah jawaban ini nanti." tone="info" />
-        {footer ? <View style={styles.footer}>{footer}</View> : null}
       </View>
     </PublicScreen>
   );
@@ -145,31 +149,31 @@ function RoleStep() {
     catch (cause) { setError(errorMessage(cause)); }
     finally { setSubmitting(false); }
   };
-  return <StepFrame step="role-selection" footer={<Button label="Simpan peran" variant="lime" fullWidth loading={submitting} onPress={() => void submit()} />}><LoadBoundary loading={loading} error={error} retry={() => void load()}><View style={styles.stack}>{roles.map((item) => <Pressable key={item.role} accessibilityRole="radio" accessibilityState={{ checked: selected === item.role }} onPress={() => setSelected(item.role)} style={({ pressed }) => [styles.selectCard, selected === item.role && styles.selectCardActive, pressed && styles.pressed]}><View style={styles.iconBox}>{item.role === 'USER' ? <UserRound size={24} color={colors.primary} /> : <HeartHandshake size={24} color={colors.primary} />}</View><View style={styles.flex}><AppText variant="h3">{item.label}</AppText><AppText variant="body">{item.description}</AppText></View><View style={[styles.radioDotOuter, selected === item.role && styles.radioDotOuterActive]}>{selected === item.role ? <View style={styles.radioDotInner} /> : null}</View></Pressable>)}</View></LoadBoundary>{error && !loading ? <InlineNotice title="Belum dapat menyimpan" text={error} tone="danger" /> : null}</StepFrame>;
+  return <StepFrame step="role-selection" footer={<Button label="Simpan peran" variant="lime" fullWidth loading={submitting} onPress={() => void submit()} />}><LoadBoundary loading={loading} error={error} retry={() => void load()}><View style={styles.stack}>{roles.map((item) => <SelectionCard key={item.role} title={item.label} description={item.description} icon={item.role === 'USER' ? UserRound : HeartHandshake} selected={selected === item.role} onPress={() => setSelected(item.role)} />)}</View></LoadBoundary>{error && !loading ? <InlineNotice title="Belum dapat menyimpan" text={error} tone="danger" /> : null}</StepFrame>;
 }
 
-function BirthDateStep() {
+function AgeStep() {
   const [profile, setProfile] = useState<UserProfile>();
-  const [date, setDate] = useState('');
+  const [age, setAge] = useState(18);
   const [gender, setGender] = useState<UserProfile['gender']>();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>();
   const { refreshSession } = useAuth();
-  const load = async () => { setLoading(true); setError(undefined); try { const value = await api.getProfile(); setProfile(value); setDate(value.dateOfBirth ?? ''); setGender(value.gender); } catch (cause) { setError(errorMessage(cause)); } finally { setLoading(false); } };
+  const load = async () => { setLoading(true); setError(undefined); try { const value = await api.getProfile(); setProfile(value); setAge(value.declaredAge ?? value.age ?? 18); setGender(value.gender); } catch (cause) { setError(errorMessage(cause)); } finally { setLoading(false); } };
   useEffect(() => { void load(); }, []);
   const submit = async () => {
     setSubmitting(true); setError(undefined);
     try {
-      const value = await api.updateProfile({ dateOfBirth: date, ...(gender ? { gender } : {}) });
-      if (value.ageGroup === 'UNDER_12') return setError('Profil mandiri tersedia mulai usia 12 tahun. Profil tanggungan belum diaktifkan pada Phase 3.');
+      const value = await api.updateProfile({ declaredAge: age, ...(gender ? { gender } : {}) });
+      if (value.ageGroup === 'UNDER_12') return setError('Profil mandiri tersedia mulai usia 12 tahun.');
       if (value.ageGroup === 'OVER_75') return setError('Cakupan program mandiri MVP saat ini adalah usia 12–75 tahun.');
       await refreshSession();
       router.replace(`/setup/${value.ageGroup === 'TEEN' ? 'guardian-consent' : 'privacy-consent'}` as never);
     } catch (cause) { setError(errorMessage(cause)); }
     finally { setSubmitting(false); }
   };
-  return <StepFrame step="birth-date" footer={<Button label="Simpan profil dasar" variant="lime" fullWidth loading={submitting} onPress={() => void submit()} />}><LoadBoundary loading={loading} error={error} retry={() => void load()}><View style={styles.stack}><Field label="Nama lengkap" value={profile?.fullName ?? ''} editable={false} helper="Nama berasal dari akun dan dapat diubah dari profil." /><Field label="Tanggal lahir" value={date} onChangeText={setDate} placeholder="YYYY-MM-DD" keyboardType="numbers-and-punctuation" helper="Contoh: 1996-04-14" /><Card tone="mint" style={styles.iconRow}><CalendarDays size={24} color={colors.primary} /><View style={styles.flex}><AppText variant="label">Usia dihitung otomatis</AppText><AppText variant="caption">Teen 12–17 · Young Adult 18–25 · Adult Balance 26–59 · Healthy Aging 60–75</AppText></View></Card><AppText variant="label">Gender (opsional)</AppText><View style={styles.stack}>{(['FEMALE', 'MALE', 'OTHER', 'UNDISCLOSED'] as const).map((value) => <Radio key={value} label={{ FEMALE: 'Perempuan', MALE: 'Laki-laki', OTHER: 'Lainnya', UNDISCLOSED: 'Tidak ingin menyebutkan' }[value]} selected={gender === value} onPress={() => setGender(value)} />)}</View></View></LoadBoundary>{error && !loading ? <InlineNotice title="Periksa profil" text={error} tone="danger" /> : null}</StepFrame>;
+  return <StepFrame step="birth-date" footer={<Button label="Simpan usia dan lanjut" variant="lime" fullWidth loading={submitting} onPress={() => void submit()} />}><LoadBoundary loading={loading} error={error} retry={() => void load()}><View style={styles.stack}><Field label="Nama lengkap" value={profile?.fullName ?? ''} editable={false} helper="Nama berasal dari akun dan dapat diubah dari profil." /><AgePicker label="Usia saat ini" value={age} onChange={setAge} helper="Rentang program mandiri SARIRA: 12–75 tahun." /><Card tone="mint" style={styles.ageInfo}><AppText variant="label">Kenapa SARIRA menanyakan usia?</AppText><AppText variant="caption">Usia membantu menentukan alur wali, safety, serta pilihan tujuan. SARIRA tidak membuat tanggal lahir perkiraan dari jawaban ini.</AppText></Card><AppText variant="label">Gender (opsional)</AppText><View style={styles.stack}>{(['FEMALE', 'MALE', 'OTHER', 'UNDISCLOSED'] as const).map((value) => <Radio key={value} label={{ FEMALE: 'Perempuan', MALE: 'Laki-laki', OTHER: 'Lainnya', UNDISCLOSED: 'Tidak ingin menyebutkan' }[value]} selected={gender === value} onPress={() => setGender(value)} />)}</View></View></LoadBoundary>{error && !loading ? <InlineNotice title="Periksa profil" text={error} tone="danger" /> : null}</StepFrame>;
 }
 
 function GuardianStep() {
@@ -185,7 +189,7 @@ function GuardianStep() {
     catch (cause) { setError(errorMessage(cause)); }
     finally { setSubmitting(false); }
   };
-  return <StepFrame step="guardian-consent" footer={<Button label="Catat persetujuan wali" variant="lime" fullWidth loading={submitting} disabled={!confirmed || name.trim().length < 2} onPress={() => void submit()} />}><InlineNotice title="Perlu validasi legal" text="Flow ini mencatat persetujuan afirmatif dan versioning untuk staging. Metode verifikasi identitas dan kewenangan wali belum dianggap memenuhi regulasi secara otomatis." tone="warning" /><View style={styles.stack}><Field label="Nama wali" value={name} onChangeText={setName} autoComplete="name" /><Radio label="Orang tua" selected={relationship === 'PARENT'} onPress={() => setRelationship('PARENT')} /><Radio label="Wali yang sah" selected={relationship === 'LEGAL_GUARDIAN'} onPress={() => setRelationship('LEGAL_GUARDIAN')} /><Checkbox label="Saya mengonfirmasi telah membaca penjelasan dan memberi persetujuan sebagai wali." checked={confirmed} onChange={setConfirmed} /></View>{error ? <InlineNotice title="Persetujuan belum tercatat" text={error} tone="danger" /> : null}</StepFrame>;
+  return <StepFrame step="guardian-consent" footer={<Button label="Catat persetujuan wali" variant="lime" fullWidth loading={submitting} disabled={!confirmed || name.trim().length < 2} onPress={() => void submit()} />}><InlineNotice title="Konfirmasi wali diperlukan" text="Pastikan nama dan hubungan wali sesuai. Persetujuan ini bukan pengganti verifikasi identitas jika diwajibkan oleh layanan terkait." tone="warning" /><View style={styles.stack}><Field label="Nama wali" value={name} onChangeText={setName} autoComplete="name" /><Radio label="Orang tua" selected={relationship === 'PARENT'} onPress={() => setRelationship('PARENT')} /><Radio label="Wali yang sah" selected={relationship === 'LEGAL_GUARDIAN'} onPress={() => setRelationship('LEGAL_GUARDIAN')} /><Checkbox label="Saya mengonfirmasi telah membaca penjelasan dan memberi persetujuan sebagai wali." checked={confirmed} onChange={setConfirmed} /></View>{error ? <InlineNotice title="Persetujuan belum tercatat" text={error} tone="danger" /> : null}</StepFrame>;
 }
 
 function ConsentStep() {
@@ -222,7 +226,7 @@ function ConsentStep() {
     } catch (cause) { setError(errorMessage(cause)); }
     finally { setSubmitting(false); }
   };
-  return <StepFrame step="privacy-consent" saveStatus={autosave.status} onRetry={autosave.retry} footer={<Button label="Simpan consent dan lanjut" variant="lime" fullWidth loading={submitting} onPress={() => void submit()} />}><LoadBoundary loading={loading} error={error} retry={() => void load()}><Card style={styles.stack}>{definitions.map((definition) => <View key={definition.type} style={styles.consentRow}><View style={styles.flex}><View style={styles.inline}><AppText variant="label">{definition.displayName}</AppText><Chip label={definition.required ? 'WAJIB' : 'OPSIONAL'} tone={definition.required ? 'neutral' : 'mint'} /></View><AppText variant="caption">{definition.description}</AppText><AppText variant="caption">Versi {definition.version}</AppText></View><Toggle label={`Consent ${definition.displayName}`} value={Boolean(granted[definition.type])} onValueChange={(value) => toggle(definition, value)} /></View>)}</Card></LoadBoundary>{error && !loading ? <InlineNotice title="Consent belum lengkap" text={error} tone="danger" /> : null}</StepFrame>;
+  return <StepFrame step="privacy-consent" saveStatus={autosave.status} onRetry={autosave.retry} footer={<Button label="Simpan persetujuan dan lanjut" variant="lime" fullWidth loading={submitting} onPress={() => void submit()} />}><LoadBoundary loading={loading} error={error} retry={() => void load()}><View style={styles.stack}>{definitions.map((definition) => <ConsentCard key={definition.type} title={definition.displayName} summary={definition.description} details={`${definition.description} ${definition.required ? 'Persetujuan ini diperlukan untuk melanjutkan onboarding dan dapat ditinjau kembali dari pengaturan akun.' : 'Izin ini opsional, tidak menghalangi penyelesaian onboarding, dan dapat diubah kembali dari pengaturan akun.'}`} required={definition.required} checked={Boolean(granted[definition.type])} onChange={(value) => toggle(definition, value)} />)}</View></LoadBoundary>{error && !loading ? <InlineNotice title="Persetujuan belum lengkap" text={error} tone="danger" /> : null}</StepFrame>;
 }
 
 function SafetyStep() {
@@ -258,7 +262,7 @@ function SafetyStep() {
     } catch (cause) { setError(errorMessage(cause)); }
     finally { setSubmitting(false); }
   };
-  return <StepFrame step="safety-screening" saveStatus={autosave.status} onRetry={autosave.retry} footer={<Button label="Selesaikan safety screening" variant="lime" fullWidth loading={submitting} onPress={() => void submit()} />}><InlineNotice title="Development content" text="Pertanyaan dan trigger ini memvalidasi mekanisme deterministic routing, bukan daftar klinis final. Expert review wajib sebelum production." tone="warning" /><LoadBoundary loading={loading} error={error} retry={() => void load()}><View style={styles.stack}>{template?.questions.map((question) => <Card key={question.id} style={styles.questionCard}><AppText variant="h3">{question.prompt}</AppText>{question.helpText ? <AppText variant="caption">{question.helpText}</AppText> : null}<View style={styles.stack}><Radio label="Ya" selected={answers[question.id] === 'YES'} onPress={() => answer(question.id, 'YES')} /><Radio label="Tidak" selected={answers[question.id] === 'NO'} onPress={() => answer(question.id, 'NO')} /><Radio label="Tidak yakin" selected={answers[question.id] === 'NOT_SURE'} onPress={() => answer(question.id, 'NOT_SURE')} /></View></Card>)}</View></LoadBoundary>{error && !loading ? <InlineNotice title="Safety screening belum selesai" text={error} tone="danger" /> : null}</StepFrame>;
+  return <StepFrame step="safety-screening" saveStatus={autosave.status} onRetry={autosave.retry} footer={<Button label="Selesaikan safety screening" variant="lime" fullWidth loading={submitting} onPress={() => void submit()} />}><InlineNotice title="Perlu peninjauan ahli" text="Pertanyaan ini membantu menentukan jalur awal dan tidak menggantikan evaluasi profesional." tone="warning" /><LoadBoundary loading={loading} error={error} retry={() => void load()}><View style={styles.stack}>{template?.questions.map((question) => <Card key={question.id} style={styles.questionCard}><AppText variant="h3">{question.prompt}</AppText>{question.helpText ? <AppText variant="caption">{question.helpText}</AppText> : null}<View style={styles.stack}><SelectionCard title="Ya" selected={answers[question.id] === 'YES'} onPress={() => answer(question.id, 'YES')} /><SelectionCard title="Tidak" selected={answers[question.id] === 'NO'} onPress={() => answer(question.id, 'NO')} /><SelectionCard title="Tidak yakin" selected={answers[question.id] === 'NOT_SURE'} onPress={() => answer(question.id, 'NOT_SURE')} /></View></Card>)}</View></LoadBoundary>{error && !loading ? <InlineNotice title="Safety screening belum selesai" text={error} tone="danger" /> : null}</StepFrame>;
 }
 
 function SafetyResultStep() {
@@ -268,11 +272,11 @@ function SafetyResultStep() {
   const load = async () => { setLoading(true); setError(undefined); try { const value = await api.getSafetyCurrent(); if (!value.latestResult) throw new Error('Hasil safety belum tersedia.'); setResult(value.latestResult); } catch (cause) { setError(errorMessage(cause)); } finally { setLoading(false); } };
   useEffect(() => { void load(); }, []);
   const copy = result?.status === 'GREEN'
-    ? { title: 'Dapat melanjutkan', text: 'Tidak ada trigger kuning atau merah dari data development yang tersedia.', tone: 'mint' as const }
+    ? { title: 'Dapat melanjutkan', text: 'Jawaban yang tersedia tidak menunjukkan perlunya pembatasan tambahan pada tahap ini.', tone: 'mint' as const }
     : result?.status === 'YELLOW'
       ? { title: 'Lanjut dengan kehati-hatian', text: 'Ada informasi yang memerlukan penyesuaian atau perhatian tambahan.', tone: 'cream' as const }
       : { title: 'Tinjau bantuan profesional', text: 'Program terkait dibatasi. Acknowledgement bukan clearance untuk mengabaikan arahan.', tone: 'peach' as const };
-  return <StepFrame step="safety-result" footer={<Button label="Lihat tujuan yang tersedia" variant="lime" fullWidth disabled={!result} onPress={() => router.replace('/setup/goal-selection' as never)} />}><LoadBoundary loading={loading} error={error} retry={() => void load()}>{result ? <Card tone={copy.tone} style={styles.resultCard}><View style={styles.inline}>{result.status === 'GREEN' ? <CheckCircle2 size={30} color={colors.success} /> : <TriangleAlert size={30} color={result.status === 'RED' ? colors.danger : colors.warning} />}<StatusPill status={result.status} /></View><AppText variant="h2">{copy.title}</AppText><AppText variant="bodyLarge">{copy.text}</AppText><AppText variant="caption">Rule version: {result.ruleVersion}</AppText>{result.referralRequired ? <InlineNotice title="Referral diperlukan" text="SARIRA tidak membuat diagnosis. Gunakan tenaga atau layanan profesional yang tepercaya. Wording dan service registry masih perlu validasi ahli." tone="danger" /> : null}</Card> : null}</LoadBoundary></StepFrame>;
+  return <StepFrame step="safety-result" footer={<Button label="Lihat tujuan yang tersedia" variant="lime" fullWidth disabled={!result} onPress={() => router.replace('/setup/goal-selection' as never)} />}><LoadBoundary loading={loading} error={error} retry={() => void load()}>{result ? <Card tone={copy.tone} style={styles.resultCard}><View style={styles.inline}>{result.status === 'GREEN' ? <CheckCircle2 size={30} color={colors.success} /> : <TriangleAlert size={30} color={result.status === 'RED' ? colors.danger : colors.warning} />}<StatusPill status={result.status} /></View><AppText variant="h2">{copy.title}</AppText><AppText variant="bodyLarge">{copy.text}</AppText>{result.referralRequired ? <InlineNotice title="Pertimbangkan bantuan profesional" text="SARIRA tidak membuat diagnosis. Gunakan tenaga atau layanan profesional yang tepercaya." tone="danger" /> : null}</Card> : null}</LoadBoundary></StepFrame>;
 }
 
 function GoalStep() {
@@ -285,7 +289,7 @@ function GoalStep() {
   const load = async () => { setLoading(true); setError(undefined); try { setGoals(await api.getGoals()); } catch (cause) { setError(errorMessage(cause)); } finally { setLoading(false); } };
   useEffect(() => { void load(); }, []);
   const submit = async () => { if (!selected) return setError('Pilih tujuan yang tersedia.'); setSubmitting(true); setError(undefined); try { await api.setGoal(selected); await refreshSession(); router.replace('/setup/profile-questionnaire' as never); } catch (cause) { setError(errorMessage(cause)); } finally { setSubmitting(false); } };
-  return <StepFrame step="goal-selection" footer={<Button label="Simpan tujuan" variant="lime" fullWidth loading={submitting} onPress={() => void submit()} />}><LoadBoundary loading={loading} error={error} retry={() => void load()}><View style={styles.stack}>{goals.map((goal) => <Pressable key={goal.code} disabled={!goal.eligible} accessibilityRole="radio" accessibilityState={{ checked: selected === goal.code, disabled: !goal.eligible }} onPress={() => setSelected(goal.code)} style={({ pressed }) => [styles.selectCard, selected === goal.code && styles.selectCardActive, !goal.eligible && styles.disabledCard, pressed && styles.pressed]}><View style={styles.iconBox}><Target size={23} color={goal.eligible ? colors.primary : colors.textMuted} /></View><View style={styles.flex}><View style={styles.inline}><AppText variant="h3">{goal.label}</AppText>{goal.priority ? <Chip label="DIPRIORITASKAN" tone="lime" /> : null}</View><AppText variant="body">{goal.description}</AppText>{goal.disabledReason ? <AppText variant="caption" style={{ color: colors.danger }}>{goal.disabledReason}</AppText> : null}</View></Pressable>)}</View></LoadBoundary>{error && !loading ? <InlineNotice title="Tujuan belum tersimpan" text={error} tone="danger" /> : null}</StepFrame>;
+  return <StepFrame step="goal-selection" footer={<Button label="Simpan tujuan" variant="lime" fullWidth loading={submitting} onPress={() => void submit()} />}><LoadBoundary loading={loading} error={error} retry={() => void load()}><View style={styles.stack}>{goals.map((goal) => <SelectionCard key={goal.code} title={goal.label} description={`${goal.description}${goal.priority ? ' · Direkomendasikan untuk profilmu.' : ''}`} icon={Target} selected={selected === goal.code} disabled={!goal.eligible} error={goal.disabledReason} onPress={() => setSelected(goal.code)} />)}</View></LoadBoundary>{error && !loading ? <InlineNotice title="Tujuan belum tersimpan" text={error} tone="danger" /> : null}</StepFrame>;
 }
 
 const sectionLabels: Record<string, string> = { BODY_PROFILE: 'Profil tubuh', ROUTINE: 'Rutinitas', SLEEP: 'Tidur', FOOD_HABIT: 'Kebiasaan makan', DIET_PREFERENCE: 'Preferensi makan', ACTIVITY: 'Aktivitas' };
@@ -298,13 +302,17 @@ function visible(question: QuestionnaireQuestionRecord, answers: Record<string, 
 }
 
 function QuestionInput({ question, value, onChange }: { question: QuestionnaireQuestionRecord; value: QuestionnaireAnswerValue | undefined; onChange: (value: QuestionnaireAnswerValue, immediate?: boolean) => void }) {
-  if (question.valueType === 'BOOLEAN') return <View style={styles.stack}><Radio label="Ya" selected={value === true} onPress={() => onChange(true, true)} /><Radio label="Tidak" selected={value === false} onPress={() => onChange(false, true)} /></View>;
-  if (question.valueType === 'SINGLE_SELECT') return <View style={styles.stack}>{question.options.map((option) => <Radio key={option.id} label={option.label} selected={value === option.code} onPress={() => onChange(option.code, true)} />)}</View>;
+  if (question.valueType === 'BOOLEAN') return <View style={styles.stack}><SelectionCard title="Ya" selected={value === true} onPress={() => onChange(true, true)} /><SelectionCard title="Tidak" selected={value === false} onPress={() => onChange(false, true)} /></View>;
+  if (question.valueType === 'SINGLE_SELECT') return <View style={styles.stack}>{question.options.map((option) => <SelectionCard key={option.id} title={option.label} selected={value === option.code} onPress={() => onChange(option.code, true)} />)}</View>;
   if (question.valueType === 'MULTI_SELECT') {
     const selected = Array.isArray(value) ? value : [];
-    return <View style={styles.stack}>{question.options.map((option) => <Checkbox key={option.id} label={option.label} checked={selected.includes(option.code)} onChange={(checked) => onChange(checked ? [...selected, option.code] : selected.filter((item) => item !== option.code), true)} />)}</View>;
+    return <View style={styles.stack}>{question.options.map((option) => <MultiSelectionCard key={option.id} title={option.label} selected={selected.includes(option.code)} onPress={() => onChange(selected.includes(option.code) ? selected.filter((item) => item !== option.code) : [...selected, option.code], true)} />)}</View>;
   }
-  return <Field label={question.prompt} value={value === undefined || value === null ? '' : String(value)} onChangeText={(text) => onChange(question.valueType === 'NUMBER' ? (text === '' ? null : Number(text.replace(',', '.'))) : text)} keyboardType={question.valueType === 'NUMBER' ? 'decimal-pad' : question.valueType === 'TIME' ? 'numbers-and-punctuation' : 'default'} placeholder={question.valueType === 'TIME' ? 'HH:mm' : undefined} helper={question.helpText} />;
+  const numericValue = typeof value === 'number' && Number.isFinite(value) ? value : undefined;
+  if (question.code === 'weight_kg') return <WeightPicker label={question.prompt} value={numericValue ?? 60} onChange={(next) => onChange(next)} helper={question.helpText} />;
+  if (question.code === 'height_cm') return <HeightPicker label={question.prompt} value={numericValue ?? 165} onChange={(next) => onChange(next)} helper={question.helpText} />;
+  if (question.valueType === 'TIME') return <TimePicker label={question.prompt} value={typeof value === 'string' ? value : '07:00'} onChange={(next) => onChange(next, true)} helper={question.helpText} />;
+  return <Field label={question.prompt} value={value === undefined || value === null ? '' : String(value)} onChangeText={(text) => onChange(question.valueType === 'NUMBER' ? (text === '' ? null : Number(text.replace(',', '.'))) : text)} keyboardType={question.valueType === 'NUMBER' ? 'decimal-pad' : 'default'} helper={question.helpText} />;
 }
 
 function QuestionnaireStep() {
@@ -363,12 +371,22 @@ function ProgramStep() {
   useEffect(() => { void load(); }, []);
   const submit = async () => { setSubmitting(true); setError(undefined); try { if (options.every((item) => !item.eligible)) await api.skipProgramPreference(); else if (selected) await api.setProgramPreference(selected); else throw new Error('Pilih salah satu program yang tersedia.'); await refreshSession(); router.replace('/setup/profile-summary' as never); } catch (cause) { setError(errorMessage(cause)); } finally { setSubmitting(false); } };
   const allBlocked = options.length > 0 && options.every((item) => !item.eligible);
-  return <StepFrame step="program-preference" footer={<Button label={allBlocked ? 'Lanjut tanpa program' : 'Simpan preferensi'} variant="lime" fullWidth loading={submitting} onPress={() => void submit()} />}><InlineNotice title="Dua mode makan tersedia" text="Guided Meal memakai aturan deterministik; Flex Kitchen menghitung komposisi bahan secara real-time. Keduanya memakai Nutrition Engine yang sama." tone="info" /><LoadBoundary loading={loading} error={error} retry={() => void load()}><View style={styles.stack}>{options.map((item) => <Pressable key={item.code} disabled={!item.eligible} accessibilityRole="radio" accessibilityState={{ checked: selected === item.code, disabled: !item.eligible }} onPress={() => setSelected(item.code)} style={({ pressed }) => [styles.selectCard, selected === item.code && styles.selectCardActive, !item.eligible && styles.disabledCard, pressed && styles.pressed]}><View style={styles.iconBox}>{item.code === 'GUIDED_MEAL' ? <Utensils size={24} color={colors.primary} /> : <ShieldCheck size={24} color={colors.primary} />}</View><View style={styles.flex}><View style={styles.inline}><AppText variant="h3">{item.label}</AppText><Chip label="REAL" tone="lime" /></View><AppText variant="body">{item.description}</AppText>{item.reasonCodes.length ? <AppText variant="caption" style={{ color: colors.danger }}>{item.reasonCodes.join(' · ')}</AppText> : null}</View></Pressable>)}</View></LoadBoundary>{error && !loading ? <InlineNotice title="Preferensi belum tersimpan" text={error} tone="danger" /> : null}</StepFrame>;
+  return <StepFrame step="program-preference" footer={<Button label={allBlocked ? 'Lanjut tanpa program' : 'Simpan preferensi'} variant="lime" fullWidth loading={submitting} onPress={() => void submit()} />}><InlineNotice title="Dua mode makan tersedia" text="Pilih pendekatan yang paling realistis untuk rutinitasmu." tone="info" /><LoadBoundary loading={loading} error={error} retry={() => void load()}><View style={styles.stack}>{options.map((item) => <SelectionCard key={item.code} title={item.label} description={item.eligible ? (item.code === 'GUIDED_MEAL' ? 'Dapatkan struktur pilihan makan yang lebih terarah.' : 'Susun makanan secara fleksibel dari bahan yang tersedia.') : 'Pilihan ini belum tersedia untuk profilmu saat ini.'} icon={item.code === 'GUIDED_MEAL' ? Utensils : ShieldCheck} selected={selected === item.code} disabled={!item.eligible} onPress={() => setSelected(item.code)} />)}</View></LoadBoundary>{error && !loading ? <InlineNotice title="Preferensi belum tersimpan" text={error} tone="danger" /> : null}</StepFrame>;
 }
 
 function SummaryRow({ title, value, edit }: { title: string; value: string; edit: CanonicalStep }) {
   return <View style={styles.summaryRow}><View style={styles.flex}><AppText variant="label">{title}</AppText><AppText variant="body">{value}</AppText></View><Button label="Edit" variant="ghost" onPress={() => router.push(`/setup/${edit}` as never)} /></View>;
 }
+
+const ageGroupLabels: Record<string, string> = { TEEN: 'Remaja 12–17', YOUNG_ADULT: 'Dewasa muda 18–25', ADULT_BALANCE: 'Dewasa 26–59', HEALTHY_AGING: 'Usia sehat 60–75' };
+const roleLabels: Record<string, string> = { USER: 'Untuk diri sendiri', PARENT: 'Orang tua', GUARDIAN: 'Wali', CAREGIVER: 'Pendamping' };
+const safetyLabels: Record<string, string> = { GREEN: 'Dapat melanjutkan', YELLOW: 'Perlu kehati-hatian', RED: 'Perlu bantuan profesional', UNKNOWN: 'Belum ditentukan' };
+const programLabels: Record<string, string> = { GUIDED_MEAL: 'Guided Meal', FLEX_KITCHEN: 'Flex Kitchen' };
+const consentLabels: Record<string, string> = {
+  TERMS_OF_SERVICE: 'Ketentuan Layanan', PRIVACY_POLICY: 'Kebijakan Privasi', HEALTH_PROFILE: 'Profil Kesehatan',
+  NUTRITION_DATA: 'Data Nutrisi', ACTIVITY_DATA: 'Data Aktivitas', SLEEP_DATA: 'Data Tidur',
+};
+const readableCode = (value: unknown) => String(value ?? '—').toLocaleLowerCase('id-ID').replaceAll('_', ' ').replace(/^./, (character) => character.toLocaleUpperCase('id-ID'));
 
 function SummaryStep() {
   const [summary, setSummary] = useState<OnboardingSummaryRecord>();
@@ -381,7 +399,7 @@ function SummaryStep() {
   const complete = async () => { setSubmitting(true); setError(undefined); try { await api.completeOnboarding(); await refreshSession(); router.replace('/starter-journey' as never); } catch (cause) { setError(errorMessage(cause)); } finally { setSubmitting(false); } };
   const answers = summary?.questionnaire?.answers ?? [];
   const answer = (code: string) => answers.find((item) => item.questionCode === code)?.value;
-  return <StepFrame step="profile-summary" footer={<Button label="Selesaikan onboarding" variant="lime" fullWidth loading={submitting} disabled={!summary || summary.completionIssues.length > 0} onPress={() => void complete()} />}><LoadBoundary loading={loading} error={error} retry={() => void load()}>{summary ? <View style={styles.stack}><Card style={styles.stack}><SummaryRow title="Nama" value={summary.profile.fullName} edit="birth-date" /><SummaryRow title="Kelompok usia" value={summary.ageGroup ?? 'Belum tersedia'} edit="birth-date" /><SummaryRow title="Peran" value={summary.profile.primaryRole ?? 'Belum dipilih'} edit="role-selection" /><SummaryRow title="Tujuan" value={summary.goal?.label ?? 'Belum dipilih'} edit="goal-selection" /><SummaryRow title="Safety" value={summary.safetyResult?.status ?? 'Belum selesai'} edit="safety-screening" /></Card><Card style={styles.stack}><AppText variant="h3">Profil tubuh dan rutinitas</AppText><SummaryRow title="Tinggi / berat" value={`${String(answer('height_cm') ?? '—')} cm · ${String(answer('weight_kg') ?? '—')} kg`} edit="profile-questionnaire" /><SummaryRow title="Rutinitas" value={String(answer('daily_context') ?? '—')} edit="profile-questionnaire" /><SummaryRow title="Tidur" value={`${String(answer('sleep_time') ?? '—')}–${String(answer('wake_time') ?? '—')}`} edit="profile-questionnaire" /><SummaryRow title="Aktivitas" value={String(answer('activity_level') ?? '—')} edit="profile-questionnaire" /><SummaryRow title="Program" value={summary.programPreference?.program ?? 'Tidak dipilih karena dibatasi'} edit="program-preference" /></Card><Card tone="mint" style={styles.stack}><AppText variant="h3">Consent aktif</AppText>{summary.consents.filter((item) => item.status === 'GRANTED').map((item) => <View key={item.id} style={styles.inline}><CheckCircle2 size={18} color={colors.success} /><AppText variant="body">{item.type} · {item.version}</AppText></View>)}</Card>{summary.completionIssues.length ? <InlineNotice title="Masih ada yang perlu dilengkapi" text={summary.completionIssues.join(' · ')} tone="warning" /> : <InlineNotice title="Siap diselesaikan" text="Backend akan memvalidasi seluruh syarat sekali lagi sebelum onboarding ditandai selesai." tone="success" />}</View> : null}</LoadBoundary>{error && !loading ? <InlineNotice title="Onboarding belum dapat diselesaikan" text={error} tone="danger" /> : null}</StepFrame>;
+  return <StepFrame step="profile-summary" footer={<Button label="Selesaikan onboarding" variant="lime" fullWidth loading={submitting} disabled={!summary || summary.completionIssues.length > 0} onPress={() => void complete()} />}><LoadBoundary loading={loading} error={error} retry={() => void load()}>{summary ? <View style={styles.stack}><Card style={styles.stack}><SummaryRow title="Nama" value={summary.profile.fullName} edit="birth-date" /><SummaryRow title="Usia" value={`${summary.profile.age ?? '—'} tahun · ${ageGroupLabels[summary.ageGroup ?? ''] ?? 'Belum tersedia'}`} edit="birth-date" /><SummaryRow title="Peran" value={roleLabels[summary.profile.primaryRole ?? ''] ?? 'Belum dipilih'} edit="role-selection" /><SummaryRow title="Tujuan" value={summary.goal?.label ?? 'Belum dipilih'} edit="goal-selection" /><SummaryRow title="Safety" value={safetyLabels[summary.safetyResult?.status ?? ''] ?? 'Belum selesai'} edit="safety-screening" /></Card><Card style={styles.stack}><AppText variant="h3">Profil tubuh dan rutinitas</AppText><SummaryRow title="Tinggi / berat" value={`${String(answer('height_cm') ?? '—')} cm · ${String(answer('weight_kg') ?? '—')} kg`} edit="profile-questionnaire" /><SummaryRow title="Rutinitas" value={readableCode(answer('daily_context'))} edit="profile-questionnaire" /><SummaryRow title="Tidur" value={`${String(answer('sleep_time') ?? '—')}–${String(answer('wake_time') ?? '—')}`} edit="profile-questionnaire" /><SummaryRow title="Aktivitas" value={readableCode(answer('activity_level'))} edit="profile-questionnaire" /><SummaryRow title="Program" value={programLabels[summary.programPreference?.program ?? ''] ?? 'Belum dipilih'} edit="program-preference" /></Card><Card tone="mint" style={styles.stack}><AppText variant="h3">Persetujuan aktif</AppText>{summary.consents.filter((item) => item.status === 'GRANTED').map((item) => <View key={item.id} style={styles.inline}><CheckCircle2 size={18} color={colors.success} /><AppText variant="body">{consentLabels[item.type] ?? readableCode(item.type)}</AppText></View>)}</Card>{summary.completionIssues.length ? <InlineNotice title="Masih ada yang perlu dilengkapi" text="Periksa kembali bagian profil yang belum selesai sebelum melanjutkan." tone="warning" /> : <InlineNotice title="Siap diselesaikan" text="SARIRA akan memeriksa seluruh syarat sekali lagi sebelum onboarding selesai." tone="success" />}</View> : null}</LoadBoundary>{error && !loading ? <InlineNotice title="Onboarding belum dapat diselesaikan" text={error} tone="danger" /> : null}</StepFrame>;
 }
 
 export function OnboardingStepScreen({ requestedStep }: { requestedStep: string }) {
@@ -389,7 +407,7 @@ export function OnboardingStepScreen({ requestedStep }: { requestedStep: string 
   if (!canonicalSteps.includes(step)) return <PublicScreen><ErrorState title="Tahap tidak ditemukan" description="Kembali ke status onboarding untuk melanjutkan." onRetry={() => router.replace('/setup/role-selection' as never)} /></PublicScreen>;
   const screens: Record<CanonicalStep, React.ReactNode> = {
     'role-selection': <RoleStep />,
-    'birth-date': <BirthDateStep />,
+    'birth-date': <AgeStep />,
     'guardian-consent': <GuardianStep />,
     'privacy-consent': <ConsentStep />,
     'safety-screening': <SafetyStep />,
@@ -409,20 +427,10 @@ const styles = StyleSheet.create({
   stack: { gap: spacing.md },
   flex: { flex: 1, minWidth: 0, gap: 3 },
   inline: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, flexWrap: 'wrap' },
-  iconRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
-  selectCard: { minHeight: 92, padding: spacing.md, borderWidth: 1, borderColor: colors.border, borderRadius: radius.card, flexDirection: 'row', alignItems: 'center', gap: spacing.md, backgroundColor: colors.white },
-  selectCardActive: { borderColor: colors.primary, backgroundColor: colors.softMint },
-  disabledCard: { opacity: 0.55, backgroundColor: colors.surfaceSoft },
-  pressed: { opacity: 0.75 },
-  iconBox: { width: 48, height: 48, borderRadius: 16, backgroundColor: colors.softLime, alignItems: 'center', justifyContent: 'center' },
-  radioDotOuter: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: colors.border, alignItems: 'center', justifyContent: 'center' },
-  radioDotOuterActive: { borderColor: colors.primary },
-  radioDotInner: { width: 12, height: 12, borderRadius: 6, backgroundColor: colors.primary },
-  consentRow: { minHeight: 98, flexDirection: 'row', alignItems: 'center', gap: spacing.md, borderBottomWidth: 1, borderBottomColor: colors.border, paddingVertical: spacing.sm, flexWrap: 'wrap' },
+  ageInfo: { gap: spacing.xs },
   questionCard: { gap: spacing.md, padding: spacing.lg },
   resultCard: { gap: spacing.lg, padding: spacing.xl, minHeight: 300, justifyContent: 'center' },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, borderBottomWidth: 1, borderBottomColor: colors.border, paddingBottom: spacing.md },
-  footer: { borderTopWidth: 1, borderTopColor: colors.border, paddingTop: spacing.lg },
   footerActions: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: spacing.md, flexWrap: 'wrap' },
   summaryRow: { minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: spacing.md, borderBottomWidth: 1, borderBottomColor: colors.border, paddingVertical: spacing.xs },
 });
