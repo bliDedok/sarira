@@ -19,6 +19,7 @@ import type { AccountRecord, DataRepositories, ProfileRecord } from '../contract
 import { ConflictError, NotFoundError } from '../errors';
 import { createMemoryBaselineRepository } from './phase4-memory';
 import { createMemoryNutritionRepository } from './nutrition-memory';
+import { createMemoryMealPlanningRepository } from './meal-planning-memory';
 
 const now = () => new Date().toISOString();
 
@@ -97,6 +98,7 @@ export function createMemoryRepositories(): DataRepositories {
     const value = session?.answers.find((answer) => answer.questionCode === 'allergy_details')?.value;
     return typeof value === 'string' ? value : '';
   });
+  const mealPlanning = createMemoryMealPlanningRepository(nutrition, baseline);
 
   const getProfile = (userId: string) => {
     const profile = profiles.get(userId);
@@ -329,6 +331,7 @@ export function createMemoryRepositories(): DataRepositories {
     },
     baseline,
     nutrition,
+    mealPlanning,
     admin: {
       async configurationVersions() {
         return {

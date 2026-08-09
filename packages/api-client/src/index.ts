@@ -45,6 +45,12 @@ import type {
   NutritionHistoryRecord,
   NutritionSnapshotRecord,
   NutritionTargetProfileRecord,
+  DailyMealPlanRecord,
+  FlexKitchenIngredientInput,
+  FlexKitchenPreviewRecord,
+  FoodSubstitutionRecord,
+  MealAlternativeRecord,
+  RecipeRecord,
 } from '@sarira/shared-types';
 import type { ApiResponse } from '@sarira/shared-types';
 
@@ -177,5 +183,22 @@ export function createApiClient({ baseUrl, getAccessToken, fetcher = fetch }: Ap
     addCustomMealLogItem: (mealLogId: string, input: { customName: string; servingDescription: string; quantity: number }) => request<MealLogItemRecord>(`/meal-logs/${mealLogId}/items/custom`, { method: 'POST', body: JSON.stringify(input) }),
     updateMealLogItem: (id: string, input: { servingId?: string; quantity?: number }) => request<MealLogItemRecord>(`/meal-log-items/${id}`, { method: 'PATCH', body: JSON.stringify(input) }),
     deleteMealLogItem: (id: string) => request<{ deleted: boolean }>(`/meal-log-items/${id}`, { method: 'DELETE' }),
+    searchRecipes: (input: { q?: string; mealType?: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK'; page?: number; pageSize?: number } = {}) => { const query = new URLSearchParams(); if (input.q) query.set('q', input.q); if (input.mealType) query.set('mealType', input.mealType); query.set('page', String(input.page ?? 1)); query.set('pageSize', String(input.pageSize ?? 20)); return request<{ items: RecipeRecord[]; total: number; page: number; pageSize: number }>(`/recipes?${query.toString()}`); },
+    getRecipe: (id: string) => request<RecipeRecord>(`/recipes/${id}`),
+    getRecipeNutrition: (id: string) => request<RecipeRecord['currentVersion']['nutrition']>(`/recipes/${id}/nutrition`),
+    getCurrentMealPlan: (localDate?: string) => request<DailyMealPlanRecord | null>(`/meal-plans/current${localDate ? `?localDate=${encodeURIComponent(localDate)}` : ''}`),
+    generateMealPlan: (localDate: string) => request<DailyMealPlanRecord>('/meal-plans/generate', { method: 'POST', body: JSON.stringify({ localDate }) }),
+    getMealPlan: (id: string) => request<DailyMealPlanRecord>(`/meal-plans/${id}`),
+    getMealAlternatives: (planId: string, itemId: string) => request<MealAlternativeRecord[]>(`/meal-plans/${planId}/items/${itemId}/alternatives`),
+    replaceMeal: (planId: string, itemId: string, input: { recipeId: string; reason?: 'DISLIKED' | 'UNAVAILABLE' | 'TOO_LONG' | 'TOO_EXPENSIVE' | 'VARIETY' | 'OTHER' }) => request<DailyMealPlanRecord>(`/meal-plans/${planId}/items/${itemId}/replace`, { method: 'POST', body: JSON.stringify(input) }),
+    startCooking: (planId: string, itemId: string) => request<DailyMealPlanRecord['items'][number]>(`/meal-plans/${planId}/items/${itemId}/cooking`, { method: 'POST' }),
+    consumeMealPlanItem: (planId: string, itemId: string, fraction: 1 | 0.75 | 0.5 | 0.25) => request<{ plan: DailyMealPlanRecord; mealLogId: string; alreadyConsumed: boolean; nutrition: DailyNutritionSummaryRecord }>(`/meal-plans/${planId}/items/${itemId}/consume`, { method: 'POST', body: JSON.stringify({ fraction }) }),
+    previewFlexKitchen: (input: { localDate: string; servings: number; ingredients: FlexKitchenIngredientInput[] }) => request<FlexKitchenPreviewRecord>('/flex-kitchen/preview', { method: 'POST', body: JSON.stringify(input) }),
+    getSubstitutions: (input: { localDate: string; ingredient: FlexKitchenIngredientInput; replacementFoodItemId?: string }) => request<FoodSubstitutionRecord[]>('/flex-kitchen/substitutions', { method: 'POST', body: JSON.stringify(input) }),
+    getPersonalRecipes: () => request<RecipeRecord[]>('/profiles/me/recipes'),
+    savePersonalRecipe: (input: { name: string; description?: string; servings: number; prepTimeMinutes?: number; cookTimeMinutes?: number; difficulty?: 'EASY' | 'MEDIUM' | 'HARD'; estimatedCostCategory?: 'LOW' | 'MEDIUM' | 'HIGH'; cookingMethod: 'RAW' | 'BOILED' | 'STEAMED' | 'GRILLED' | 'BAKED' | 'FRIED' | 'STIR_FRIED' | 'OTHER'; mealTypes: Array<'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK'>; ingredients: FlexKitchenIngredientInput[]; notes?: string; steps?: Array<{ instruction: string; timerSeconds?: number }> }) => request<RecipeRecord>('/profiles/me/recipes', { method: 'POST', body: JSON.stringify(input) }),
+    updatePersonalRecipe: (id: string, input: Record<string, unknown>) => request<RecipeRecord>(`/profiles/me/recipes/${id}`, { method: 'PATCH', body: JSON.stringify(input) }),
+    duplicatePersonalRecipe: (id: string) => request<RecipeRecord>(`/profiles/me/recipes/${id}/duplicate`, { method: 'POST' }),
+    archivePersonalRecipe: (id: string) => request<RecipeRecord>(`/profiles/me/recipes/${id}/archive`, { method: 'POST' }),
   };
 }
