@@ -346,3 +346,53 @@ export type Day7Feedback = Prisma.Day7FeedbackModel
  * 
  */
 export type BaselineReadinessResult = Prisma.BaselineReadinessResultModel
+/**
+ * Model FeatureSnapshot
+ * 
+ */
+export type FeatureSnapshot = Prisma.FeatureSnapshotModel
+/**
+ * Model PatternScoringPolicy
+ * 
+ */
+export type PatternScoringPolicy = Prisma.PatternScoringPolicyModel
+/**
+ * Model PatternRuleDefinition
+ * 
+ */
+export type PatternRuleDefinition = Prisma.PatternRuleDefinitionModel
+/**
+ * Model DecisionRecord
+ * 
+ */
+export type DecisionRecord = Prisma.DecisionRecordModel
+/**
+ * Model RuleEvaluation
+ * 
+ */
+export type RuleEvaluation = Prisma.RuleEvaluationModel
+/**
+ * Model PatternMap
+ * 
+ */
+export type PatternMap = Prisma.PatternMapModel
+/**
+ * Model PatternMapFeedback
+ * 
+ */
+export type PatternMapFeedback = Prisma.PatternMapFeedbackModel
+/**
+ * Model WeeklyActionDefinition
+ * 
+ */
+export type WeeklyActionDefinition = Prisma.WeeklyActionDefinitionModel
+/**
+ * Model WeeklyActionAssignment
+ * 
+ */
+export type WeeklyActionAssignment = Prisma.WeeklyActionAssignmentModel
+/**
+ * Model WeeklyActionCheckIn
+ * 
+ */
+export type WeeklyActionCheckIn = Prisma.WeeklyActionCheckInModel

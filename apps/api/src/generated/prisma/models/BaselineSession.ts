@@ -336,6 +336,9 @@ export type BaselineSessionWhereInput = {
   day7Checkpoint?: Prisma.XOR<Prisma.Day7CheckpointNullableScalarRelationFilter, Prisma.Day7CheckpointWhereInput> | null
   day7Feedback?: Prisma.XOR<Prisma.Day7FeedbackNullableScalarRelationFilter, Prisma.Day7FeedbackWhereInput> | null
   readinessResult?: Prisma.XOR<Prisma.BaselineReadinessResultNullableScalarRelationFilter, Prisma.BaselineReadinessResultWhereInput> | null
+  featureSnapshots?: Prisma.FeatureSnapshotListRelationFilter
+  decisionRecords?: Prisma.DecisionRecordListRelationFilter
+  patternMaps?: Prisma.PatternMapListRelationFilter
 }
 
 export type BaselineSessionOrderByWithRelationInput = {
@@ -368,6 +371,9 @@ export type BaselineSessionOrderByWithRelationInput = {
   day7Checkpoint?: Prisma.Day7CheckpointOrderByWithRelationInput
   day7Feedback?: Prisma.Day7FeedbackOrderByWithRelationInput
   readinessResult?: Prisma.BaselineReadinessResultOrderByWithRelationInput
+  featureSnapshots?: Prisma.FeatureSnapshotOrderByRelationAggregateInput
+  decisionRecords?: Prisma.DecisionRecordOrderByRelationAggregateInput
+  patternMaps?: Prisma.PatternMapOrderByRelationAggregateInput
 }
 
 export type BaselineSessionWhereUniqueInput = Prisma.AtLeast<{
@@ -403,6 +409,9 @@ export type BaselineSessionWhereUniqueInput = Prisma.AtLeast<{
   day7Checkpoint?: Prisma.XOR<Prisma.Day7CheckpointNullableScalarRelationFilter, Prisma.Day7CheckpointWhereInput> | null
   day7Feedback?: Prisma.XOR<Prisma.Day7FeedbackNullableScalarRelationFilter, Prisma.Day7FeedbackWhereInput> | null
   readinessResult?: Prisma.XOR<Prisma.BaselineReadinessResultNullableScalarRelationFilter, Prisma.BaselineReadinessResultWhereInput> | null
+  featureSnapshots?: Prisma.FeatureSnapshotListRelationFilter
+  decisionRecords?: Prisma.DecisionRecordListRelationFilter
+  patternMaps?: Prisma.PatternMapListRelationFilter
 }, "id">
 
 export type BaselineSessionOrderByWithAggregationInput = {
@@ -482,6 +491,9 @@ export type BaselineSessionCreateInput = {
   day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateInput = {
@@ -513,6 +525,9 @@ export type BaselineSessionUncheckedCreateInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUpdateInput = {
@@ -544,6 +559,9 @@ export type BaselineSessionUpdateInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateInput = {
@@ -575,6 +593,9 @@ export type BaselineSessionUncheckedUpdateInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionCreateManyInput = {
@@ -937,6 +958,48 @@ export type BaselineSessionUpdateOneRequiredWithoutReadinessResultNestedInput = 
   update?: Prisma.XOR<Prisma.XOR<Prisma.BaselineSessionUpdateToOneWithWhereWithoutReadinessResultInput, Prisma.BaselineSessionUpdateWithoutReadinessResultInput>, Prisma.BaselineSessionUncheckedUpdateWithoutReadinessResultInput>
 }
 
+export type BaselineSessionCreateNestedOneWithoutFeatureSnapshotsInput = {
+  create?: Prisma.XOR<Prisma.BaselineSessionCreateWithoutFeatureSnapshotsInput, Prisma.BaselineSessionUncheckedCreateWithoutFeatureSnapshotsInput>
+  connectOrCreate?: Prisma.BaselineSessionCreateOrConnectWithoutFeatureSnapshotsInput
+  connect?: Prisma.BaselineSessionWhereUniqueInput
+}
+
+export type BaselineSessionUpdateOneRequiredWithoutFeatureSnapshotsNestedInput = {
+  create?: Prisma.XOR<Prisma.BaselineSessionCreateWithoutFeatureSnapshotsInput, Prisma.BaselineSessionUncheckedCreateWithoutFeatureSnapshotsInput>
+  connectOrCreate?: Prisma.BaselineSessionCreateOrConnectWithoutFeatureSnapshotsInput
+  upsert?: Prisma.BaselineSessionUpsertWithoutFeatureSnapshotsInput
+  connect?: Prisma.BaselineSessionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BaselineSessionUpdateToOneWithWhereWithoutFeatureSnapshotsInput, Prisma.BaselineSessionUpdateWithoutFeatureSnapshotsInput>, Prisma.BaselineSessionUncheckedUpdateWithoutFeatureSnapshotsInput>
+}
+
+export type BaselineSessionCreateNestedOneWithoutDecisionRecordsInput = {
+  create?: Prisma.XOR<Prisma.BaselineSessionCreateWithoutDecisionRecordsInput, Prisma.BaselineSessionUncheckedCreateWithoutDecisionRecordsInput>
+  connectOrCreate?: Prisma.BaselineSessionCreateOrConnectWithoutDecisionRecordsInput
+  connect?: Prisma.BaselineSessionWhereUniqueInput
+}
+
+export type BaselineSessionUpdateOneRequiredWithoutDecisionRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.BaselineSessionCreateWithoutDecisionRecordsInput, Prisma.BaselineSessionUncheckedCreateWithoutDecisionRecordsInput>
+  connectOrCreate?: Prisma.BaselineSessionCreateOrConnectWithoutDecisionRecordsInput
+  upsert?: Prisma.BaselineSessionUpsertWithoutDecisionRecordsInput
+  connect?: Prisma.BaselineSessionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BaselineSessionUpdateToOneWithWhereWithoutDecisionRecordsInput, Prisma.BaselineSessionUpdateWithoutDecisionRecordsInput>, Prisma.BaselineSessionUncheckedUpdateWithoutDecisionRecordsInput>
+}
+
+export type BaselineSessionCreateNestedOneWithoutPatternMapsInput = {
+  create?: Prisma.XOR<Prisma.BaselineSessionCreateWithoutPatternMapsInput, Prisma.BaselineSessionUncheckedCreateWithoutPatternMapsInput>
+  connectOrCreate?: Prisma.BaselineSessionCreateOrConnectWithoutPatternMapsInput
+  connect?: Prisma.BaselineSessionWhereUniqueInput
+}
+
+export type BaselineSessionUpdateOneRequiredWithoutPatternMapsNestedInput = {
+  create?: Prisma.XOR<Prisma.BaselineSessionCreateWithoutPatternMapsInput, Prisma.BaselineSessionUncheckedCreateWithoutPatternMapsInput>
+  connectOrCreate?: Prisma.BaselineSessionCreateOrConnectWithoutPatternMapsInput
+  upsert?: Prisma.BaselineSessionUpsertWithoutPatternMapsInput
+  connect?: Prisma.BaselineSessionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BaselineSessionUpdateToOneWithWhereWithoutPatternMapsInput, Prisma.BaselineSessionUpdateWithoutPatternMapsInput>, Prisma.BaselineSessionUncheckedUpdateWithoutPatternMapsInput>
+}
+
 export type BaselineSessionCreateWithoutProfileInput = {
   id?: string
   status?: $Enums.BaselineStatus
@@ -965,6 +1028,9 @@ export type BaselineSessionCreateWithoutProfileInput = {
   day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateWithoutProfileInput = {
@@ -995,6 +1061,9 @@ export type BaselineSessionUncheckedCreateWithoutProfileInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionCreateOrConnectWithoutProfileInput = {
@@ -1074,6 +1143,9 @@ export type BaselineSessionCreateWithoutDailyRecordsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateWithoutDailyRecordsInput = {
@@ -1104,6 +1176,9 @@ export type BaselineSessionUncheckedCreateWithoutDailyRecordsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionCreateOrConnectWithoutDailyRecordsInput = {
@@ -1150,6 +1225,9 @@ export type BaselineSessionUpdateWithoutDailyRecordsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateWithoutDailyRecordsInput = {
@@ -1180,6 +1258,9 @@ export type BaselineSessionUncheckedUpdateWithoutDailyRecordsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionCreateWithoutMealLogsInput = {
@@ -1210,6 +1291,9 @@ export type BaselineSessionCreateWithoutMealLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateWithoutMealLogsInput = {
@@ -1240,6 +1324,9 @@ export type BaselineSessionUncheckedCreateWithoutMealLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionCreateOrConnectWithoutMealLogsInput = {
@@ -1286,6 +1373,9 @@ export type BaselineSessionUpdateWithoutMealLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateWithoutMealLogsInput = {
@@ -1316,6 +1406,9 @@ export type BaselineSessionUncheckedUpdateWithoutMealLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionCreateWithoutSleepLogsInput = {
@@ -1346,6 +1439,9 @@ export type BaselineSessionCreateWithoutSleepLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateWithoutSleepLogsInput = {
@@ -1376,6 +1472,9 @@ export type BaselineSessionUncheckedCreateWithoutSleepLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionCreateOrConnectWithoutSleepLogsInput = {
@@ -1422,6 +1521,9 @@ export type BaselineSessionUpdateWithoutSleepLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateWithoutSleepLogsInput = {
@@ -1452,6 +1554,9 @@ export type BaselineSessionUncheckedUpdateWithoutSleepLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionCreateWithoutActivityLogsInput = {
@@ -1482,6 +1587,9 @@ export type BaselineSessionCreateWithoutActivityLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateWithoutActivityLogsInput = {
@@ -1512,6 +1620,9 @@ export type BaselineSessionUncheckedCreateWithoutActivityLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionCreateOrConnectWithoutActivityLogsInput = {
@@ -1558,6 +1669,9 @@ export type BaselineSessionUpdateWithoutActivityLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateWithoutActivityLogsInput = {
@@ -1588,6 +1702,9 @@ export type BaselineSessionUncheckedUpdateWithoutActivityLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionCreateWithoutStepRecordsInput = {
@@ -1618,6 +1735,9 @@ export type BaselineSessionCreateWithoutStepRecordsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateWithoutStepRecordsInput = {
@@ -1648,6 +1768,9 @@ export type BaselineSessionUncheckedCreateWithoutStepRecordsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionCreateOrConnectWithoutStepRecordsInput = {
@@ -1694,6 +1817,9 @@ export type BaselineSessionUpdateWithoutStepRecordsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateWithoutStepRecordsInput = {
@@ -1724,6 +1850,9 @@ export type BaselineSessionUncheckedUpdateWithoutStepRecordsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionCreateWithoutBodyMeasurementsInput = {
@@ -1754,6 +1883,9 @@ export type BaselineSessionCreateWithoutBodyMeasurementsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateWithoutBodyMeasurementsInput = {
@@ -1784,6 +1916,9 @@ export type BaselineSessionUncheckedCreateWithoutBodyMeasurementsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionCreateOrConnectWithoutBodyMeasurementsInput = {
@@ -1830,6 +1965,9 @@ export type BaselineSessionUpdateWithoutBodyMeasurementsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateWithoutBodyMeasurementsInput = {
@@ -1860,6 +1998,9 @@ export type BaselineSessionUncheckedUpdateWithoutBodyMeasurementsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionCreateWithoutDigestiveLogsInput = {
@@ -1890,6 +2031,9 @@ export type BaselineSessionCreateWithoutDigestiveLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateWithoutDigestiveLogsInput = {
@@ -1920,6 +2064,9 @@ export type BaselineSessionUncheckedCreateWithoutDigestiveLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionCreateOrConnectWithoutDigestiveLogsInput = {
@@ -1966,6 +2113,9 @@ export type BaselineSessionUpdateWithoutDigestiveLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateWithoutDigestiveLogsInput = {
@@ -1996,6 +2146,9 @@ export type BaselineSessionUncheckedUpdateWithoutDigestiveLogsInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionCreateWithoutCompletenessInput = {
@@ -2026,6 +2179,9 @@ export type BaselineSessionCreateWithoutCompletenessInput = {
   day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateWithoutCompletenessInput = {
@@ -2056,6 +2212,9 @@ export type BaselineSessionUncheckedCreateWithoutCompletenessInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionCreateOrConnectWithoutCompletenessInput = {
@@ -2102,6 +2261,9 @@ export type BaselineSessionUpdateWithoutCompletenessInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateWithoutCompletenessInput = {
@@ -2132,6 +2294,9 @@ export type BaselineSessionUncheckedUpdateWithoutCompletenessInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionCreateWithoutDay7CheckpointInput = {
@@ -2162,6 +2327,9 @@ export type BaselineSessionCreateWithoutDay7CheckpointInput = {
   completeness?: Prisma.DataCompletenessSnapshotCreateNestedManyWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateWithoutDay7CheckpointInput = {
@@ -2192,6 +2360,9 @@ export type BaselineSessionUncheckedCreateWithoutDay7CheckpointInput = {
   completeness?: Prisma.DataCompletenessSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionCreateOrConnectWithoutDay7CheckpointInput = {
@@ -2238,6 +2409,9 @@ export type BaselineSessionUpdateWithoutDay7CheckpointInput = {
   completeness?: Prisma.DataCompletenessSnapshotUpdateManyWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateWithoutDay7CheckpointInput = {
@@ -2268,6 +2442,9 @@ export type BaselineSessionUncheckedUpdateWithoutDay7CheckpointInput = {
   completeness?: Prisma.DataCompletenessSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionCreateWithoutDay7FeedbackInput = {
@@ -2298,6 +2475,9 @@ export type BaselineSessionCreateWithoutDay7FeedbackInput = {
   completeness?: Prisma.DataCompletenessSnapshotCreateNestedManyWithoutBaselineSessionInput
   day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateWithoutDay7FeedbackInput = {
@@ -2328,6 +2508,9 @@ export type BaselineSessionUncheckedCreateWithoutDay7FeedbackInput = {
   completeness?: Prisma.DataCompletenessSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionCreateOrConnectWithoutDay7FeedbackInput = {
@@ -2374,6 +2557,9 @@ export type BaselineSessionUpdateWithoutDay7FeedbackInput = {
   completeness?: Prisma.DataCompletenessSnapshotUpdateManyWithoutBaselineSessionNestedInput
   day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateWithoutDay7FeedbackInput = {
@@ -2404,6 +2590,9 @@ export type BaselineSessionUncheckedUpdateWithoutDay7FeedbackInput = {
   completeness?: Prisma.DataCompletenessSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionCreateWithoutReadinessResultInput = {
@@ -2434,6 +2623,9 @@ export type BaselineSessionCreateWithoutReadinessResultInput = {
   completeness?: Prisma.DataCompletenessSnapshotCreateNestedManyWithoutBaselineSessionInput
   day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionUncheckedCreateWithoutReadinessResultInput = {
@@ -2464,6 +2656,9 @@ export type BaselineSessionUncheckedCreateWithoutReadinessResultInput = {
   completeness?: Prisma.DataCompletenessSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
 }
 
 export type BaselineSessionCreateOrConnectWithoutReadinessResultInput = {
@@ -2510,6 +2705,9 @@ export type BaselineSessionUpdateWithoutReadinessResultInput = {
   completeness?: Prisma.DataCompletenessSnapshotUpdateManyWithoutBaselineSessionNestedInput
   day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateWithoutReadinessResultInput = {
@@ -2540,6 +2738,453 @@ export type BaselineSessionUncheckedUpdateWithoutReadinessResultInput = {
   completeness?: Prisma.DataCompletenessSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
+}
+
+export type BaselineSessionCreateWithoutFeatureSnapshotsInput = {
+  id?: string
+  status?: $Enums.BaselineStatus
+  startedAt?: Date | string
+  startLocalDate: Date | string
+  timezone: string
+  currentDay?: number
+  targetDays?: number
+  calendarCompletedAt?: Date | string | null
+  completedAt?: Date | string | null
+  readinessStatus?: $Enums.BaselineReadinessStatus
+  completenessScore?: number
+  extensionAllowed?: boolean
+  extensionDays?: number
+  configVersion: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile: Prisma.ProfileCreateNestedOneWithoutBaselineSessionsInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutBaselineSessionInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutBaselineSessionInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutBaselineSessionInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutBaselineSessionInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutBaselineSessionInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutBaselineSessionInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutBaselineSessionInput
+  completeness?: Prisma.DataCompletenessSnapshotCreateNestedManyWithoutBaselineSessionInput
+  day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
+  day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
+  readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
+}
+
+export type BaselineSessionUncheckedCreateWithoutFeatureSnapshotsInput = {
+  id?: string
+  profileId: string
+  status?: $Enums.BaselineStatus
+  startedAt?: Date | string
+  startLocalDate: Date | string
+  timezone: string
+  currentDay?: number
+  targetDays?: number
+  calendarCompletedAt?: Date | string | null
+  completedAt?: Date | string | null
+  readinessStatus?: $Enums.BaselineReadinessStatus
+  completenessScore?: number
+  extensionAllowed?: boolean
+  extensionDays?: number
+  configVersion: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutBaselineSessionInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutBaselineSessionInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutBaselineSessionInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutBaselineSessionInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutBaselineSessionInput
+  completeness?: Prisma.DataCompletenessSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
+  day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
+  readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
+}
+
+export type BaselineSessionCreateOrConnectWithoutFeatureSnapshotsInput = {
+  where: Prisma.BaselineSessionWhereUniqueInput
+  create: Prisma.XOR<Prisma.BaselineSessionCreateWithoutFeatureSnapshotsInput, Prisma.BaselineSessionUncheckedCreateWithoutFeatureSnapshotsInput>
+}
+
+export type BaselineSessionUpsertWithoutFeatureSnapshotsInput = {
+  update: Prisma.XOR<Prisma.BaselineSessionUpdateWithoutFeatureSnapshotsInput, Prisma.BaselineSessionUncheckedUpdateWithoutFeatureSnapshotsInput>
+  create: Prisma.XOR<Prisma.BaselineSessionCreateWithoutFeatureSnapshotsInput, Prisma.BaselineSessionUncheckedCreateWithoutFeatureSnapshotsInput>
+  where?: Prisma.BaselineSessionWhereInput
+}
+
+export type BaselineSessionUpdateToOneWithWhereWithoutFeatureSnapshotsInput = {
+  where?: Prisma.BaselineSessionWhereInput
+  data: Prisma.XOR<Prisma.BaselineSessionUpdateWithoutFeatureSnapshotsInput, Prisma.BaselineSessionUncheckedUpdateWithoutFeatureSnapshotsInput>
+}
+
+export type BaselineSessionUpdateWithoutFeatureSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumBaselineStatusFieldUpdateOperationsInput | $Enums.BaselineStatus
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startLocalDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currentDay?: Prisma.IntFieldUpdateOperationsInput | number
+  targetDays?: Prisma.IntFieldUpdateOperationsInput | number
+  calendarCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readinessStatus?: Prisma.EnumBaselineReadinessStatusFieldUpdateOperationsInput | $Enums.BaselineReadinessStatus
+  completenessScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  extensionAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  extensionDays?: Prisma.IntFieldUpdateOperationsInput | number
+  configVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneRequiredWithoutBaselineSessionsNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutBaselineSessionNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutBaselineSessionNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutBaselineSessionNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutBaselineSessionNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutBaselineSessionNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutBaselineSessionNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutBaselineSessionNestedInput
+  completeness?: Prisma.DataCompletenessSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
+  day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
+  readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
+}
+
+export type BaselineSessionUncheckedUpdateWithoutFeatureSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumBaselineStatusFieldUpdateOperationsInput | $Enums.BaselineStatus
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startLocalDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currentDay?: Prisma.IntFieldUpdateOperationsInput | number
+  targetDays?: Prisma.IntFieldUpdateOperationsInput | number
+  calendarCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readinessStatus?: Prisma.EnumBaselineReadinessStatusFieldUpdateOperationsInput | $Enums.BaselineReadinessStatus
+  completenessScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  extensionAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  extensionDays?: Prisma.IntFieldUpdateOperationsInput | number
+  configVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  completeness?: Prisma.DataCompletenessSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
+}
+
+export type BaselineSessionCreateWithoutDecisionRecordsInput = {
+  id?: string
+  status?: $Enums.BaselineStatus
+  startedAt?: Date | string
+  startLocalDate: Date | string
+  timezone: string
+  currentDay?: number
+  targetDays?: number
+  calendarCompletedAt?: Date | string | null
+  completedAt?: Date | string | null
+  readinessStatus?: $Enums.BaselineReadinessStatus
+  completenessScore?: number
+  extensionAllowed?: boolean
+  extensionDays?: number
+  configVersion: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile: Prisma.ProfileCreateNestedOneWithoutBaselineSessionsInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutBaselineSessionInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutBaselineSessionInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutBaselineSessionInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutBaselineSessionInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutBaselineSessionInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutBaselineSessionInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutBaselineSessionInput
+  completeness?: Prisma.DataCompletenessSnapshotCreateNestedManyWithoutBaselineSessionInput
+  day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
+  day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
+  readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutBaselineSessionInput
+}
+
+export type BaselineSessionUncheckedCreateWithoutDecisionRecordsInput = {
+  id?: string
+  profileId: string
+  status?: $Enums.BaselineStatus
+  startedAt?: Date | string
+  startLocalDate: Date | string
+  timezone: string
+  currentDay?: number
+  targetDays?: number
+  calendarCompletedAt?: Date | string | null
+  completedAt?: Date | string | null
+  readinessStatus?: $Enums.BaselineReadinessStatus
+  completenessScore?: number
+  extensionAllowed?: boolean
+  extensionDays?: number
+  configVersion: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutBaselineSessionInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutBaselineSessionInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutBaselineSessionInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutBaselineSessionInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutBaselineSessionInput
+  completeness?: Prisma.DataCompletenessSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
+  day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
+  readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutBaselineSessionInput
+}
+
+export type BaselineSessionCreateOrConnectWithoutDecisionRecordsInput = {
+  where: Prisma.BaselineSessionWhereUniqueInput
+  create: Prisma.XOR<Prisma.BaselineSessionCreateWithoutDecisionRecordsInput, Prisma.BaselineSessionUncheckedCreateWithoutDecisionRecordsInput>
+}
+
+export type BaselineSessionUpsertWithoutDecisionRecordsInput = {
+  update: Prisma.XOR<Prisma.BaselineSessionUpdateWithoutDecisionRecordsInput, Prisma.BaselineSessionUncheckedUpdateWithoutDecisionRecordsInput>
+  create: Prisma.XOR<Prisma.BaselineSessionCreateWithoutDecisionRecordsInput, Prisma.BaselineSessionUncheckedCreateWithoutDecisionRecordsInput>
+  where?: Prisma.BaselineSessionWhereInput
+}
+
+export type BaselineSessionUpdateToOneWithWhereWithoutDecisionRecordsInput = {
+  where?: Prisma.BaselineSessionWhereInput
+  data: Prisma.XOR<Prisma.BaselineSessionUpdateWithoutDecisionRecordsInput, Prisma.BaselineSessionUncheckedUpdateWithoutDecisionRecordsInput>
+}
+
+export type BaselineSessionUpdateWithoutDecisionRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumBaselineStatusFieldUpdateOperationsInput | $Enums.BaselineStatus
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startLocalDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currentDay?: Prisma.IntFieldUpdateOperationsInput | number
+  targetDays?: Prisma.IntFieldUpdateOperationsInput | number
+  calendarCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readinessStatus?: Prisma.EnumBaselineReadinessStatusFieldUpdateOperationsInput | $Enums.BaselineReadinessStatus
+  completenessScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  extensionAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  extensionDays?: Prisma.IntFieldUpdateOperationsInput | number
+  configVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneRequiredWithoutBaselineSessionsNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutBaselineSessionNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutBaselineSessionNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutBaselineSessionNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutBaselineSessionNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutBaselineSessionNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutBaselineSessionNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutBaselineSessionNestedInput
+  completeness?: Prisma.DataCompletenessSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
+  day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
+  readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
+}
+
+export type BaselineSessionUncheckedUpdateWithoutDecisionRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumBaselineStatusFieldUpdateOperationsInput | $Enums.BaselineStatus
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startLocalDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currentDay?: Prisma.IntFieldUpdateOperationsInput | number
+  targetDays?: Prisma.IntFieldUpdateOperationsInput | number
+  calendarCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readinessStatus?: Prisma.EnumBaselineReadinessStatusFieldUpdateOperationsInput | $Enums.BaselineReadinessStatus
+  completenessScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  extensionAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  extensionDays?: Prisma.IntFieldUpdateOperationsInput | number
+  configVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  completeness?: Prisma.DataCompletenessSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
+}
+
+export type BaselineSessionCreateWithoutPatternMapsInput = {
+  id?: string
+  status?: $Enums.BaselineStatus
+  startedAt?: Date | string
+  startLocalDate: Date | string
+  timezone: string
+  currentDay?: number
+  targetDays?: number
+  calendarCompletedAt?: Date | string | null
+  completedAt?: Date | string | null
+  readinessStatus?: $Enums.BaselineReadinessStatus
+  completenessScore?: number
+  extensionAllowed?: boolean
+  extensionDays?: number
+  configVersion: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile: Prisma.ProfileCreateNestedOneWithoutBaselineSessionsInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutBaselineSessionInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutBaselineSessionInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutBaselineSessionInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutBaselineSessionInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutBaselineSessionInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutBaselineSessionInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutBaselineSessionInput
+  completeness?: Prisma.DataCompletenessSnapshotCreateNestedManyWithoutBaselineSessionInput
+  day7Checkpoint?: Prisma.Day7CheckpointCreateNestedOneWithoutBaselineSessionInput
+  day7Feedback?: Prisma.Day7FeedbackCreateNestedOneWithoutBaselineSessionInput
+  readinessResult?: Prisma.BaselineReadinessResultCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutBaselineSessionInput
+}
+
+export type BaselineSessionUncheckedCreateWithoutPatternMapsInput = {
+  id?: string
+  profileId: string
+  status?: $Enums.BaselineStatus
+  startedAt?: Date | string
+  startLocalDate: Date | string
+  timezone: string
+  currentDay?: number
+  targetDays?: number
+  calendarCompletedAt?: Date | string | null
+  completedAt?: Date | string | null
+  readinessStatus?: $Enums.BaselineReadinessStatus
+  completenessScore?: number
+  extensionAllowed?: boolean
+  extensionDays?: number
+  configVersion: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutBaselineSessionInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutBaselineSessionInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutBaselineSessionInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutBaselineSessionInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutBaselineSessionInput
+  completeness?: Prisma.DataCompletenessSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  day7Checkpoint?: Prisma.Day7CheckpointUncheckedCreateNestedOneWithoutBaselineSessionInput
+  day7Feedback?: Prisma.Day7FeedbackUncheckedCreateNestedOneWithoutBaselineSessionInput
+  readinessResult?: Prisma.BaselineReadinessResultUncheckedCreateNestedOneWithoutBaselineSessionInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutBaselineSessionInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutBaselineSessionInput
+}
+
+export type BaselineSessionCreateOrConnectWithoutPatternMapsInput = {
+  where: Prisma.BaselineSessionWhereUniqueInput
+  create: Prisma.XOR<Prisma.BaselineSessionCreateWithoutPatternMapsInput, Prisma.BaselineSessionUncheckedCreateWithoutPatternMapsInput>
+}
+
+export type BaselineSessionUpsertWithoutPatternMapsInput = {
+  update: Prisma.XOR<Prisma.BaselineSessionUpdateWithoutPatternMapsInput, Prisma.BaselineSessionUncheckedUpdateWithoutPatternMapsInput>
+  create: Prisma.XOR<Prisma.BaselineSessionCreateWithoutPatternMapsInput, Prisma.BaselineSessionUncheckedCreateWithoutPatternMapsInput>
+  where?: Prisma.BaselineSessionWhereInput
+}
+
+export type BaselineSessionUpdateToOneWithWhereWithoutPatternMapsInput = {
+  where?: Prisma.BaselineSessionWhereInput
+  data: Prisma.XOR<Prisma.BaselineSessionUpdateWithoutPatternMapsInput, Prisma.BaselineSessionUncheckedUpdateWithoutPatternMapsInput>
+}
+
+export type BaselineSessionUpdateWithoutPatternMapsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumBaselineStatusFieldUpdateOperationsInput | $Enums.BaselineStatus
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startLocalDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currentDay?: Prisma.IntFieldUpdateOperationsInput | number
+  targetDays?: Prisma.IntFieldUpdateOperationsInput | number
+  calendarCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readinessStatus?: Prisma.EnumBaselineReadinessStatusFieldUpdateOperationsInput | $Enums.BaselineReadinessStatus
+  completenessScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  extensionAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  extensionDays?: Prisma.IntFieldUpdateOperationsInput | number
+  configVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneRequiredWithoutBaselineSessionsNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutBaselineSessionNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutBaselineSessionNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutBaselineSessionNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutBaselineSessionNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutBaselineSessionNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutBaselineSessionNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutBaselineSessionNestedInput
+  completeness?: Prisma.DataCompletenessSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
+  day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
+  readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+}
+
+export type BaselineSessionUncheckedUpdateWithoutPatternMapsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumBaselineStatusFieldUpdateOperationsInput | $Enums.BaselineStatus
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startLocalDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  currentDay?: Prisma.IntFieldUpdateOperationsInput | number
+  targetDays?: Prisma.IntFieldUpdateOperationsInput | number
+  calendarCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readinessStatus?: Prisma.EnumBaselineReadinessStatusFieldUpdateOperationsInput | $Enums.BaselineReadinessStatus
+  completenessScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  extensionAllowed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  extensionDays?: Prisma.IntFieldUpdateOperationsInput | number
+  configVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  completeness?: Prisma.DataCompletenessSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionCreateManyProfileInput = {
@@ -2589,6 +3234,9 @@ export type BaselineSessionUpdateWithoutProfileInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateWithoutProfileInput = {
@@ -2619,6 +3267,9 @@ export type BaselineSessionUncheckedUpdateWithoutProfileInput = {
   day7Checkpoint?: Prisma.Day7CheckpointUncheckedUpdateOneWithoutBaselineSessionNestedInput
   day7Feedback?: Prisma.Day7FeedbackUncheckedUpdateOneWithoutBaselineSessionNestedInput
   readinessResult?: Prisma.BaselineReadinessResultUncheckedUpdateOneWithoutBaselineSessionNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutBaselineSessionNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutBaselineSessionNestedInput
 }
 
 export type BaselineSessionUncheckedUpdateManyWithoutProfileInput = {
@@ -2654,6 +3305,9 @@ export type BaselineSessionCountOutputType = {
   bodyMeasurements: number
   digestiveLogs: number
   completeness: number
+  featureSnapshots: number
+  decisionRecords: number
+  patternMaps: number
 }
 
 export type BaselineSessionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2665,6 +3319,9 @@ export type BaselineSessionCountOutputTypeSelect<ExtArgs extends runtime.Types.E
   bodyMeasurements?: boolean | BaselineSessionCountOutputTypeCountBodyMeasurementsArgs
   digestiveLogs?: boolean | BaselineSessionCountOutputTypeCountDigestiveLogsArgs
   completeness?: boolean | BaselineSessionCountOutputTypeCountCompletenessArgs
+  featureSnapshots?: boolean | BaselineSessionCountOutputTypeCountFeatureSnapshotsArgs
+  decisionRecords?: boolean | BaselineSessionCountOutputTypeCountDecisionRecordsArgs
+  patternMaps?: boolean | BaselineSessionCountOutputTypeCountPatternMapsArgs
 }
 
 /**
@@ -2733,6 +3390,27 @@ export type BaselineSessionCountOutputTypeCountCompletenessArgs<ExtArgs extends 
   where?: Prisma.DataCompletenessSnapshotWhereInput
 }
 
+/**
+ * BaselineSessionCountOutputType without action
+ */
+export type BaselineSessionCountOutputTypeCountFeatureSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FeatureSnapshotWhereInput
+}
+
+/**
+ * BaselineSessionCountOutputType without action
+ */
+export type BaselineSessionCountOutputTypeCountDecisionRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DecisionRecordWhereInput
+}
+
+/**
+ * BaselineSessionCountOutputType without action
+ */
+export type BaselineSessionCountOutputTypeCountPatternMapsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PatternMapWhereInput
+}
+
 
 export type BaselineSessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2764,6 +3442,9 @@ export type BaselineSessionSelect<ExtArgs extends runtime.Types.Extensions.Inter
   day7Checkpoint?: boolean | Prisma.BaselineSession$day7CheckpointArgs<ExtArgs>
   day7Feedback?: boolean | Prisma.BaselineSession$day7FeedbackArgs<ExtArgs>
   readinessResult?: boolean | Prisma.BaselineSession$readinessResultArgs<ExtArgs>
+  featureSnapshots?: boolean | Prisma.BaselineSession$featureSnapshotsArgs<ExtArgs>
+  decisionRecords?: boolean | Prisma.BaselineSession$decisionRecordsArgs<ExtArgs>
+  patternMaps?: boolean | Prisma.BaselineSession$patternMapsArgs<ExtArgs>
   _count?: boolean | Prisma.BaselineSessionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["baselineSession"]>
 
@@ -2843,6 +3524,9 @@ export type BaselineSessionInclude<ExtArgs extends runtime.Types.Extensions.Inte
   day7Checkpoint?: boolean | Prisma.BaselineSession$day7CheckpointArgs<ExtArgs>
   day7Feedback?: boolean | Prisma.BaselineSession$day7FeedbackArgs<ExtArgs>
   readinessResult?: boolean | Prisma.BaselineSession$readinessResultArgs<ExtArgs>
+  featureSnapshots?: boolean | Prisma.BaselineSession$featureSnapshotsArgs<ExtArgs>
+  decisionRecords?: boolean | Prisma.BaselineSession$decisionRecordsArgs<ExtArgs>
+  patternMaps?: boolean | Prisma.BaselineSession$patternMapsArgs<ExtArgs>
   _count?: boolean | Prisma.BaselineSessionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BaselineSessionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2867,6 +3551,9 @@ export type $BaselineSessionPayload<ExtArgs extends runtime.Types.Extensions.Int
     day7Checkpoint: Prisma.$Day7CheckpointPayload<ExtArgs> | null
     day7Feedback: Prisma.$Day7FeedbackPayload<ExtArgs> | null
     readinessResult: Prisma.$BaselineReadinessResultPayload<ExtArgs> | null
+    featureSnapshots: Prisma.$FeatureSnapshotPayload<ExtArgs>[]
+    decisionRecords: Prisma.$DecisionRecordPayload<ExtArgs>[]
+    patternMaps: Prisma.$PatternMapPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3292,6 +3979,9 @@ export interface Prisma__BaselineSessionClient<T, Null = never, ExtArgs extends 
   day7Checkpoint<T extends Prisma.BaselineSession$day7CheckpointArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BaselineSession$day7CheckpointArgs<ExtArgs>>): Prisma.Prisma__Day7CheckpointClient<runtime.Types.Result.GetResult<Prisma.$Day7CheckpointPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   day7Feedback<T extends Prisma.BaselineSession$day7FeedbackArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BaselineSession$day7FeedbackArgs<ExtArgs>>): Prisma.Prisma__Day7FeedbackClient<runtime.Types.Result.GetResult<Prisma.$Day7FeedbackPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   readinessResult<T extends Prisma.BaselineSession$readinessResultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BaselineSession$readinessResultArgs<ExtArgs>>): Prisma.Prisma__BaselineReadinessResultClient<runtime.Types.Result.GetResult<Prisma.$BaselineReadinessResultPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  featureSnapshots<T extends Prisma.BaselineSession$featureSnapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BaselineSession$featureSnapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeatureSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  decisionRecords<T extends Prisma.BaselineSession$decisionRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BaselineSession$decisionRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DecisionRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  patternMaps<T extends Prisma.BaselineSession$patternMapsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BaselineSession$patternMapsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PatternMapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3985,6 +4675,78 @@ export type BaselineSession$readinessResultArgs<ExtArgs extends runtime.Types.Ex
    */
   include?: Prisma.BaselineReadinessResultInclude<ExtArgs> | null
   where?: Prisma.BaselineReadinessResultWhereInput
+}
+
+/**
+ * BaselineSession.featureSnapshots
+ */
+export type BaselineSession$featureSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FeatureSnapshot
+   */
+  select?: Prisma.FeatureSnapshotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FeatureSnapshot
+   */
+  omit?: Prisma.FeatureSnapshotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FeatureSnapshotInclude<ExtArgs> | null
+  where?: Prisma.FeatureSnapshotWhereInput
+  orderBy?: Prisma.FeatureSnapshotOrderByWithRelationInput | Prisma.FeatureSnapshotOrderByWithRelationInput[]
+  cursor?: Prisma.FeatureSnapshotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FeatureSnapshotScalarFieldEnum | Prisma.FeatureSnapshotScalarFieldEnum[]
+}
+
+/**
+ * BaselineSession.decisionRecords
+ */
+export type BaselineSession$decisionRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DecisionRecord
+   */
+  select?: Prisma.DecisionRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DecisionRecord
+   */
+  omit?: Prisma.DecisionRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DecisionRecordInclude<ExtArgs> | null
+  where?: Prisma.DecisionRecordWhereInput
+  orderBy?: Prisma.DecisionRecordOrderByWithRelationInput | Prisma.DecisionRecordOrderByWithRelationInput[]
+  cursor?: Prisma.DecisionRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DecisionRecordScalarFieldEnum | Prisma.DecisionRecordScalarFieldEnum[]
+}
+
+/**
+ * BaselineSession.patternMaps
+ */
+export type BaselineSession$patternMapsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PatternMap
+   */
+  select?: Prisma.PatternMapSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PatternMap
+   */
+  omit?: Prisma.PatternMapOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PatternMapInclude<ExtArgs> | null
+  where?: Prisma.PatternMapWhereInput
+  orderBy?: Prisma.PatternMapOrderByWithRelationInput | Prisma.PatternMapOrderByWithRelationInput[]
+  cursor?: Prisma.PatternMapWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PatternMapScalarFieldEnum | Prisma.PatternMapScalarFieldEnum[]
 }
 
 /**

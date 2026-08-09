@@ -111,7 +111,17 @@ export const ModelName = {
   DataCompletenessSnapshot: 'DataCompletenessSnapshot',
   Day7Checkpoint: 'Day7Checkpoint',
   Day7Feedback: 'Day7Feedback',
-  BaselineReadinessResult: 'BaselineReadinessResult'
+  BaselineReadinessResult: 'BaselineReadinessResult',
+  FeatureSnapshot: 'FeatureSnapshot',
+  PatternScoringPolicy: 'PatternScoringPolicy',
+  PatternRuleDefinition: 'PatternRuleDefinition',
+  DecisionRecord: 'DecisionRecord',
+  RuleEvaluation: 'RuleEvaluation',
+  PatternMap: 'PatternMap',
+  PatternMapFeedback: 'PatternMapFeedback',
+  WeeklyActionDefinition: 'WeeklyActionDefinition',
+  WeeklyActionAssignment: 'WeeklyActionAssignment',
+  WeeklyActionCheckIn: 'WeeklyActionCheckIn'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1215,6 +1225,202 @@ export const BaselineReadinessResultScalarFieldEnum = {
 } as const
 
 export type BaselineReadinessResultScalarFieldEnum = (typeof BaselineReadinessResultScalarFieldEnum)[keyof typeof BaselineReadinessResultScalarFieldEnum]
+
+
+export const FeatureSnapshotScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  baselineSessionId: 'baselineSessionId',
+  featureEngineVersion: 'featureEngineVersion',
+  periodStart: 'periodStart',
+  periodEnd: 'periodEnd',
+  generatedAt: 'generatedAt',
+  inputCompleteness: 'inputCompleteness',
+  features: 'features',
+  missingFeatures: 'missingFeatures',
+  warnings: 'warnings',
+  inputSignature: 'inputSignature',
+  createdAt: 'createdAt'
+} as const
+
+export type FeatureSnapshotScalarFieldEnum = (typeof FeatureSnapshotScalarFieldEnum)[keyof typeof FeatureSnapshotScalarFieldEnum]
+
+
+export const PatternScoringPolicyScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  version: 'version',
+  configuration: 'configuration',
+  effectiveFrom: 'effectiveFrom',
+  effectiveTo: 'effectiveTo',
+  active: 'active',
+  requiresExpertValidation: 'requiresExpertValidation',
+  validationLabel: 'validationLabel',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PatternScoringPolicyScalarFieldEnum = (typeof PatternScoringPolicyScalarFieldEnum)[keyof typeof PatternScoringPolicyScalarFieldEnum]
+
+
+export const PatternRuleDefinitionScalarFieldEnum = {
+  id: 'id',
+  ruleId: 'ruleId',
+  version: 'version',
+  domain: 'domain',
+  description: 'description',
+  requiredFeatures: 'requiredFeatures',
+  condition: 'condition',
+  contribution: 'contribution',
+  strengthCategory: 'strengthCategory',
+  evidenceRequirement: 'evidenceRequirement',
+  exclusions: 'exclusions',
+  actionCandidateCodes: 'actionCandidateCodes',
+  agePacks: 'agePacks',
+  active: 'active',
+  requiresExpertValidation: 'requiresExpertValidation',
+  validationLabel: 'validationLabel',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PatternRuleDefinitionScalarFieldEnum = (typeof PatternRuleDefinitionScalarFieldEnum)[keyof typeof PatternRuleDefinitionScalarFieldEnum]
+
+
+export const DecisionRecordScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  baselineSessionId: 'baselineSessionId',
+  featureSnapshotId: 'featureSnapshotId',
+  expertSystemVersion: 'expertSystemVersion',
+  scoringPolicyVersion: 'scoringPolicyVersion',
+  weeklyActionPolicyVersion: 'weeklyActionPolicyVersion',
+  status: 'status',
+  primaryPatternCode: 'primaryPatternCode',
+  supportingPatternCodes: 'supportingPatternCodes',
+  selectedActionCode: 'selectedActionCode',
+  dataQuality: 'dataQuality',
+  domainScores: 'domainScores',
+  limitations: 'limitations',
+  ruleVersions: 'ruleVersions',
+  inputSignature: 'inputSignature',
+  generatedAt: 'generatedAt',
+  supersededAt: 'supersededAt',
+  createdAt: 'createdAt'
+} as const
+
+export type DecisionRecordScalarFieldEnum = (typeof DecisionRecordScalarFieldEnum)[keyof typeof DecisionRecordScalarFieldEnum]
+
+
+export const RuleEvaluationScalarFieldEnum = {
+  id: 'id',
+  decisionRecordId: 'decisionRecordId',
+  ruleDefinitionId: 'ruleDefinitionId',
+  ruleId: 'ruleId',
+  ruleVersion: 'ruleVersion',
+  domain: 'domain',
+  matched: 'matched',
+  contribution: 'contribution',
+  observedValues: 'observedValues',
+  reasonCodes: 'reasonCodes',
+  evidenceRefs: 'evidenceRefs',
+  limitations: 'limitations',
+  createdAt: 'createdAt'
+} as const
+
+export type RuleEvaluationScalarFieldEnum = (typeof RuleEvaluationScalarFieldEnum)[keyof typeof RuleEvaluationScalarFieldEnum]
+
+
+export const PatternMapScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  baselineSessionId: 'baselineSessionId',
+  featureSnapshotId: 'featureSnapshotId',
+  decisionRecordId: 'decisionRecordId',
+  status: 'status',
+  primaryPattern: 'primaryPattern',
+  supportingPatterns: 'supportingPatterns',
+  domains: 'domains',
+  dataQuality: 'dataQuality',
+  limitations: 'limitations',
+  generatedAt: 'generatedAt',
+  acknowledgedAt: 'acknowledgedAt',
+  version: 'version',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PatternMapScalarFieldEnum = (typeof PatternMapScalarFieldEnum)[keyof typeof PatternMapScalarFieldEnum]
+
+
+export const PatternMapFeedbackScalarFieldEnum = {
+  id: 'id',
+  patternMapId: 'patternMapId',
+  profileId: 'profileId',
+  value: 'value',
+  notes: 'notes',
+  createdAt: 'createdAt'
+} as const
+
+export type PatternMapFeedbackScalarFieldEnum = (typeof PatternMapFeedbackScalarFieldEnum)[keyof typeof PatternMapFeedbackScalarFieldEnum]
+
+
+export const WeeklyActionDefinitionScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  version: 'version',
+  domain: 'domain',
+  title: 'title',
+  description: 'description',
+  durationDays: 'durationDays',
+  targetCount: 'targetCount',
+  ageEligibility: 'ageEligibility',
+  safetyRestrictions: 'safetyRestrictions',
+  requiredEvidence: 'requiredEvidence',
+  actionability: 'actionability',
+  active: 'active',
+  requiresExpertValidation: 'requiresExpertValidation',
+  validationLabel: 'validationLabel',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WeeklyActionDefinitionScalarFieldEnum = (typeof WeeklyActionDefinitionScalarFieldEnum)[keyof typeof WeeklyActionDefinitionScalarFieldEnum]
+
+
+export const WeeklyActionAssignmentScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  patternMapId: 'patternMapId',
+  actionDefinitionId: 'actionDefinitionId',
+  assignedAt: 'assignedAt',
+  weekStart: 'weekStart',
+  weekEnd: 'weekEnd',
+  targetCount: 'targetCount',
+  progress: 'progress',
+  status: 'status',
+  completedAt: 'completedAt',
+  reasonCodes: 'reasonCodes',
+  alternatives: 'alternatives',
+  selectionVersion: 'selectionVersion',
+  why: 'why',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WeeklyActionAssignmentScalarFieldEnum = (typeof WeeklyActionAssignmentScalarFieldEnum)[keyof typeof WeeklyActionAssignmentScalarFieldEnum]
+
+
+export const WeeklyActionCheckInScalarFieldEnum = {
+  id: 'id',
+  assignmentId: 'assignmentId',
+  localDate: 'localDate',
+  source: 'source',
+  evidenceRef: 'evidenceRef',
+  createdAt: 'createdAt'
+} as const
+
+export type WeeklyActionCheckInScalarFieldEnum = (typeof WeeklyActionCheckInScalarFieldEnum)[keyof typeof WeeklyActionCheckInScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { createHash } from 'node:crypto';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { phase3DevelopmentSafetyRules, phase3GoalConfigurations, PHASE_3_CONTENT_STATUS, PHASE_3_RULE_VERSION } from '../packages/expert-system/src/index';
+import { PHASE_7_SCORING_POLICY_VERSION, PHASE_7_VALIDATION_LABEL, PHASE_7_WEEKLY_ACTION_POLICY_VERSION, ageRulePackVersions, phase7RuleDefinitions, phase7ScoringPolicy, phase7WeeklyActions } from '../packages/expert-system/src/phase7';
 import { calculateFoodNutrition, calculateRecipeNutrition, DEVELOPMENT_FOODS, DEVELOPMENT_POLICIES, DEVELOPMENT_SOURCE, NUTRITION_ENGINE_VERSION, nutrientCodes } from '../packages/nutrition-engine/src/index';
 import {
   ConsentType,
@@ -24,6 +25,7 @@ import {
   EstimatedCostCategory,
   CookingMethod,
   MealPlanningPolicyStatus,
+  PatternDomain,
 } from '../apps/api/src/generated/prisma/client';
 
 const connectionString = process.env.DIRECT_URL ?? process.env.DATABASE_URL ?? 'postgresql://sarira:sarira_dev_only@localhost:54322/sarira?schema=public';
@@ -256,6 +258,28 @@ async function seedPhase6MealPlanning() {
   }
 }
 
+async function seedPhase7Analysis() {
+  await prisma.patternScoringPolicy.upsert({
+    where: { code_version: { code: 'SIX_DOMAIN_PATTERN_SCORING', version: PHASE_7_SCORING_POLICY_VERSION } },
+    update: { active: true, requiresExpertValidation: true, validationLabel: PHASE_7_VALIDATION_LABEL, configuration: { entries: phase7ScoringPolicy, rulePacks: ageRulePackVersions } },
+    create: { code: 'SIX_DOMAIN_PATTERN_SCORING', version: PHASE_7_SCORING_POLICY_VERSION, configuration: { entries: phase7ScoringPolicy, rulePacks: ageRulePackVersions }, effectiveFrom: activeAt, active: true, requiresExpertValidation: true, validationLabel: PHASE_7_VALIDATION_LABEL },
+  });
+  for (const rule of phase7RuleDefinitions) {
+    await prisma.patternRuleDefinition.upsert({
+      where: { ruleId_version: { ruleId: rule.ruleId, version: rule.version } },
+      update: { domain: rule.domain as PatternDomain, description: rule.description, requiredFeatures: rule.requiredFeatures, condition: rule.condition, contribution: rule.contribution, strengthCategory: rule.strengthCategory, evidenceRequirement: { minimumCoverage: rule.minimumEvidence }, exclusions: rule.exclusions, actionCandidateCodes: rule.actionCandidateCodes, agePacks: rule.agePacks, active: true, requiresExpertValidation: true, validationLabel: PHASE_7_VALIDATION_LABEL },
+      create: { ruleId: rule.ruleId, version: rule.version, domain: rule.domain as PatternDomain, description: rule.description, requiredFeatures: rule.requiredFeatures, condition: rule.condition, contribution: rule.contribution, strengthCategory: rule.strengthCategory, evidenceRequirement: { minimumCoverage: rule.minimumEvidence }, exclusions: rule.exclusions, actionCandidateCodes: rule.actionCandidateCodes, agePacks: rule.agePacks, active: true, requiresExpertValidation: true, validationLabel: PHASE_7_VALIDATION_LABEL },
+    });
+  }
+  for (const action of phase7WeeklyActions) {
+    await prisma.weeklyActionDefinition.upsert({
+      where: { code_version: { code: action.code, version: PHASE_7_WEEKLY_ACTION_POLICY_VERSION } },
+      update: { domain: action.domain as PatternDomain, title: action.title, description: action.description, durationDays: action.durationDays, targetCount: action.targetCount, ageEligibility: action.ageEligibility, safetyRestrictions: action.safetyRestrictions, requiredEvidence: action.requiredEvidence, actionability: action.actionability, active: true, requiresExpertValidation: true, validationLabel: PHASE_7_VALIDATION_LABEL },
+      create: { code: action.code, version: PHASE_7_WEEKLY_ACTION_POLICY_VERSION, domain: action.domain as PatternDomain, title: action.title, description: action.description, durationDays: action.durationDays, targetCount: action.targetCount, ageEligibility: action.ageEligibility, safetyRestrictions: action.safetyRestrictions, requiredEvidence: action.requiredEvidence, actionability: action.actionability, active: true, requiresExpertValidation: true, validationLabel: PHASE_7_VALIDATION_LABEL },
+    });
+  }
+}
+
 const seedProfiles = [
   { key: 'day1', suffix: '01', email: 'phase4-day1@sarira.test', name: 'Dewasa Day 1', birthDate: '1996-01-01', startDate: '2026-08-08', currentDay: 1, status: 'ACTIVE' as const, mode: 'day1' },
   { key: 'day7', suffix: '02', email: 'phase4-day7-teen@sarira.test', name: 'Remaja Day 7', birthDate: '2011-01-01', startDate: '2026-08-02', currentDay: 7, status: 'DAY_7_REVIEW_AVAILABLE' as const, mode: 'missing' },
@@ -320,6 +344,7 @@ async function main() {
   await seedTaskDefinitions();
   await seedPhase5Nutrition();
   await seedPhase6MealPlanning();
+  await seedPhase7Analysis();
   if (process.env.SEED_REFERENCE_DATA_ONLY !== 'true') await seedPhase4Profiles();
 }
 
