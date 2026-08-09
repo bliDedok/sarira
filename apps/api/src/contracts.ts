@@ -41,6 +41,12 @@ import type {
   NutrientCode,
   NutritionSnapshotRecord,
   NutritionTargetProfileRecord,
+  DailyMealPlanRecord,
+  FlexKitchenIngredientInput,
+  MealPlanItemRecord,
+  NutrientAmountMap,
+  RecipeRecord,
+  RecipeStepRecord,
 } from '@sarira/shared-types';
 import type {
   ActivityLogInput,
@@ -140,10 +146,58 @@ export interface DataRepositories {
   };
   baseline: BaselineRepository;
   nutrition: NutritionRepository;
+  mealPlanning: MealPlanningRepository;
   admin: { configurationVersions(): Promise<AdminConfigurationVersions> };
   audit: {
     record(input: { actorUserId?: string; event: string; entityType: string; entityId?: string; requestId?: string; metadata?: Record<string, string | boolean | number> }): Promise<void>;
   };
+}
+
+export interface MealPlanningPolicyRecord {
+  id: string;
+  code: string;
+  version: string;
+  configuration: {
+    weights: { mealType: number; protein: number; fiber: number; upperLimits: number; time: number; cost: number; preference: number; dataQuality: number };
+    criticalNutrients: NutrientCode[];
+    snackEnabled: boolean;
+    alternativesMinimum: number;
+    alternativesMaximum: number;
+  };
+  requiresProductValidation: boolean;
+}
+
+export interface RecipeVersionWriteInput {
+  name: string;
+  description: string;
+  servings: number;
+  prepTimeMinutes: number;
+  cookTimeMinutes: number;
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  estimatedCostCategory: 'LOW' | 'MEDIUM' | 'HIGH';
+  cookingMethod: 'RAW' | 'BOILED' | 'STEAMED' | 'GRILLED' | 'BAKED' | 'FRIED' | 'STIR_FRIED' | 'OTHER';
+  mealTypes: Array<'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK'>;
+  notes?: string;
+  ingredients: Array<FlexKitchenIngredientInput & { foodName: string; gramAmount?: number; sourceType: 'OFFICIAL_DATABASE' | 'PRODUCT_LABEL' | 'INTERNAL_VERIFIED' | 'USER_ENTERED' | 'SYNTHETIC_TEST_DATA' }>;
+  steps: Array<Pick<RecipeStepRecord, 'instruction' | 'timerSeconds'>>;
+  nutrition: { total: NutrientAmountMap; perServing: NutrientAmountMap; missingNutrients: NutrientCode[]; complete: boolean; sourceVersions: string[]; calculationVersion: string; calculatedAt: string };
+}
+
+export interface MealPlanningRepository {
+  getActivePolicy(): Promise<MealPlanningPolicyRecord | null>;
+  listRecipes(input: { profileId: string; query?: string; mealType?: string; page: number; pageSize: number }): Promise<{ items: RecipeRecord[]; total: number; page: number; pageSize: number }>;
+  getRecipe(id: string, profileId: string): Promise<RecipeRecord | null>;
+  getCurrentPlan(profileId: string, localDate: string): Promise<DailyMealPlanRecord | null>;
+  getPlan(id: string, profileId: string): Promise<DailyMealPlanRecord | null>;
+  createPlan(input: { profileId: string; localDate: string; targetProfileId: string; policy: MealPlanningPolicyRecord; nutritionPolicyVersion: string; targetSnapshot: unknown; generatedAt: string; items: Array<{ mealType: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK'; recipe: RecipeRecord; reasonCodes: string[]; recommendationFit: 'HIGH' | 'MEDIUM' | 'LOW'; score: number; nutritionImpact: NutrientAmountMap }> }): Promise<DailyMealPlanRecord>;
+  replacePlanItem(input: { profileId: string; planId: string; itemId: string; recipe: RecipeRecord; reasonCodes: string[]; recommendationFit: 'HIGH' | 'MEDIUM' | 'LOW'; score: number; nutritionImpact: NutrientAmountMap; replacementReason?: string }): Promise<DailyMealPlanRecord>;
+  setCooking(input: { profileId: string; planId: string; itemId: string }): Promise<MealPlanItemRecord>;
+  consumePlanItem(input: { profileId: string; baselineSessionId: string; dayIndex: number; planId: string; itemId: string; localDate: string; mealType: 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK'; recipeName: string; fraction: number; consumedAt: string; ingredientItems: Array<{ foodItemId?: string; servingId?: string; itemSource: 'DATABASE_FOOD' | 'CUSTOM_FOOD' | 'USER_ENTERED'; customName?: string; quantity: number; gramAmount?: number; sourceVersion: string; snapshot: Omit<NutritionSnapshotRecord, 'id'>; allergenWarnings: MealLogItemRecord['allergenWarnings'] }> }): Promise<{ plan: DailyMealPlanRecord; mealLogId: string; alreadyConsumed: boolean }>;
+  listPersonalRecipes(profileId: string): Promise<RecipeRecord[]>;
+  createPersonalRecipe(profileId: string, input: RecipeVersionWriteInput): Promise<RecipeRecord>;
+  updatePersonalRecipe(profileId: string, recipeId: string, input: RecipeVersionWriteInput): Promise<RecipeRecord>;
+  duplicatePersonalRecipe(profileId: string, recipeId: string): Promise<RecipeRecord>;
+  archivePersonalRecipe(profileId: string, recipeId: string): Promise<RecipeRecord>;
 }
 
 export interface NutritionPolicyRecord {

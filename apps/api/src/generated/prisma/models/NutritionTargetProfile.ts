@@ -450,6 +450,7 @@ export type NutritionTargetProfileWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"NutritionTargetProfile"> | Date | string
   profile?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
   policy?: Prisma.XOR<Prisma.NutritionPolicyScalarRelationFilter, Prisma.NutritionPolicyWhereInput>
+  mealPlans?: Prisma.DailyMealPlanListRelationFilter
 }
 
 export type NutritionTargetProfileOrderByWithRelationInput = {
@@ -484,6 +485,7 @@ export type NutritionTargetProfileOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   profile?: Prisma.ProfileOrderByWithRelationInput
   policy?: Prisma.NutritionPolicyOrderByWithRelationInput
+  mealPlans?: Prisma.DailyMealPlanOrderByRelationAggregateInput
 }
 
 export type NutritionTargetProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -521,6 +523,7 @@ export type NutritionTargetProfileWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"NutritionTargetProfile"> | Date | string
   profile?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
   policy?: Prisma.XOR<Prisma.NutritionPolicyScalarRelationFilter, Prisma.NutritionPolicyWhereInput>
+  mealPlans?: Prisma.DailyMealPlanListRelationFilter
 }, "id">
 
 export type NutritionTargetProfileOrderByWithAggregationInput = {
@@ -625,6 +628,7 @@ export type NutritionTargetProfileCreateInput = {
   updatedAt?: Date | string
   profile: Prisma.ProfileCreateNestedOneWithoutNutritionTargetsInput
   policy: Prisma.NutritionPolicyCreateNestedOneWithoutTargetProfilesInput
+  mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutTargetProfileInput
 }
 
 export type NutritionTargetProfileUncheckedCreateInput = {
@@ -657,6 +661,7 @@ export type NutritionTargetProfileUncheckedCreateInput = {
   calculatedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutTargetProfileInput
 }
 
 export type NutritionTargetProfileUpdateInput = {
@@ -689,6 +694,7 @@ export type NutritionTargetProfileUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUpdateOneRequiredWithoutNutritionTargetsNestedInput
   policy?: Prisma.NutritionPolicyUpdateOneRequiredWithoutTargetProfilesNestedInput
+  mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutTargetProfileNestedInput
 }
 
 export type NutritionTargetProfileUncheckedUpdateInput = {
@@ -721,6 +727,7 @@ export type NutritionTargetProfileUncheckedUpdateInput = {
   calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutTargetProfileNestedInput
 }
 
 export type NutritionTargetProfileCreateManyInput = {
@@ -951,6 +958,11 @@ export type NutritionTargetProfileSumOrderByAggregateInput = {
   saturatedFatMax?: Prisma.SortOrder
 }
 
+export type NutritionTargetProfileScalarRelationFilter = {
+  is?: Prisma.NutritionTargetProfileWhereInput
+  isNot?: Prisma.NutritionTargetProfileWhereInput
+}
+
 export type NutritionTargetProfileCreateNestedManyWithoutProfileInput = {
   create?: Prisma.XOR<Prisma.NutritionTargetProfileCreateWithoutProfileInput, Prisma.NutritionTargetProfileUncheckedCreateWithoutProfileInput> | Prisma.NutritionTargetProfileCreateWithoutProfileInput[] | Prisma.NutritionTargetProfileUncheckedCreateWithoutProfileInput[]
   connectOrCreate?: Prisma.NutritionTargetProfileCreateOrConnectWithoutProfileInput | Prisma.NutritionTargetProfileCreateOrConnectWithoutProfileInput[]
@@ -1044,6 +1056,20 @@ export type NutritionTargetProfileUpdaterestrictionReasonsInput = {
   push?: string | string[]
 }
 
+export type NutritionTargetProfileCreateNestedOneWithoutMealPlansInput = {
+  create?: Prisma.XOR<Prisma.NutritionTargetProfileCreateWithoutMealPlansInput, Prisma.NutritionTargetProfileUncheckedCreateWithoutMealPlansInput>
+  connectOrCreate?: Prisma.NutritionTargetProfileCreateOrConnectWithoutMealPlansInput
+  connect?: Prisma.NutritionTargetProfileWhereUniqueInput
+}
+
+export type NutritionTargetProfileUpdateOneRequiredWithoutMealPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.NutritionTargetProfileCreateWithoutMealPlansInput, Prisma.NutritionTargetProfileUncheckedCreateWithoutMealPlansInput>
+  connectOrCreate?: Prisma.NutritionTargetProfileCreateOrConnectWithoutMealPlansInput
+  upsert?: Prisma.NutritionTargetProfileUpsertWithoutMealPlansInput
+  connect?: Prisma.NutritionTargetProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.NutritionTargetProfileUpdateToOneWithWhereWithoutMealPlansInput, Prisma.NutritionTargetProfileUpdateWithoutMealPlansInput>, Prisma.NutritionTargetProfileUncheckedUpdateWithoutMealPlansInput>
+}
+
 export type NutritionTargetProfileCreateWithoutProfileInput = {
   id?: string
   policyVersion: string
@@ -1073,6 +1099,7 @@ export type NutritionTargetProfileCreateWithoutProfileInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   policy: Prisma.NutritionPolicyCreateNestedOneWithoutTargetProfilesInput
+  mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutTargetProfileInput
 }
 
 export type NutritionTargetProfileUncheckedCreateWithoutProfileInput = {
@@ -1104,6 +1131,7 @@ export type NutritionTargetProfileUncheckedCreateWithoutProfileInput = {
   calculatedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutTargetProfileInput
 }
 
 export type NutritionTargetProfileCreateOrConnectWithoutProfileInput = {
@@ -1196,6 +1224,7 @@ export type NutritionTargetProfileCreateWithoutPolicyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   profile: Prisma.ProfileCreateNestedOneWithoutNutritionTargetsInput
+  mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutTargetProfileInput
 }
 
 export type NutritionTargetProfileUncheckedCreateWithoutPolicyInput = {
@@ -1227,6 +1256,7 @@ export type NutritionTargetProfileUncheckedCreateWithoutPolicyInput = {
   calculatedAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
+  mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutTargetProfileInput
 }
 
 export type NutritionTargetProfileCreateOrConnectWithoutPolicyInput = {
@@ -1253,6 +1283,150 @@ export type NutritionTargetProfileUpdateWithWhereUniqueWithoutPolicyInput = {
 export type NutritionTargetProfileUpdateManyWithWhereWithoutPolicyInput = {
   where: Prisma.NutritionTargetProfileScalarWhereInput
   data: Prisma.XOR<Prisma.NutritionTargetProfileUpdateManyMutationInput, Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutPolicyInput>
+}
+
+export type NutritionTargetProfileCreateWithoutMealPlansInput = {
+  id?: string
+  policyVersion: string
+  goal: string
+  ageGroup: string
+  effectiveFrom: Date | string
+  effectiveTo?: Date | string | null
+  energyMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  energyTarget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  energyMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  proteinMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  proteinTarget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  carbsMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  carbsMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fatMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fatMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fiberMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  sugarMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  sodiumMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  saturatedFatMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  inputValues: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  calculationReason: string
+  safetyStatus: $Enums.SafetyStatus
+  restrictionReasons?: Prisma.NutritionTargetProfileCreaterestrictionReasonsInput | string[]
+  requiresExpertValidation?: boolean
+  calculatedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile: Prisma.ProfileCreateNestedOneWithoutNutritionTargetsInput
+  policy: Prisma.NutritionPolicyCreateNestedOneWithoutTargetProfilesInput
+}
+
+export type NutritionTargetProfileUncheckedCreateWithoutMealPlansInput = {
+  id?: string
+  profileId: string
+  policyId: string
+  policyVersion: string
+  goal: string
+  ageGroup: string
+  effectiveFrom: Date | string
+  effectiveTo?: Date | string | null
+  energyMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  energyTarget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  energyMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  proteinMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  proteinTarget?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  carbsMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  carbsMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fatMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fatMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fiberMin?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  sugarMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  sodiumMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  saturatedFatMax?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  inputValues: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  calculationReason: string
+  safetyStatus: $Enums.SafetyStatus
+  restrictionReasons?: Prisma.NutritionTargetProfileCreaterestrictionReasonsInput | string[]
+  requiresExpertValidation?: boolean
+  calculatedAt?: Date | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type NutritionTargetProfileCreateOrConnectWithoutMealPlansInput = {
+  where: Prisma.NutritionTargetProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.NutritionTargetProfileCreateWithoutMealPlansInput, Prisma.NutritionTargetProfileUncheckedCreateWithoutMealPlansInput>
+}
+
+export type NutritionTargetProfileUpsertWithoutMealPlansInput = {
+  update: Prisma.XOR<Prisma.NutritionTargetProfileUpdateWithoutMealPlansInput, Prisma.NutritionTargetProfileUncheckedUpdateWithoutMealPlansInput>
+  create: Prisma.XOR<Prisma.NutritionTargetProfileCreateWithoutMealPlansInput, Prisma.NutritionTargetProfileUncheckedCreateWithoutMealPlansInput>
+  where?: Prisma.NutritionTargetProfileWhereInput
+}
+
+export type NutritionTargetProfileUpdateToOneWithWhereWithoutMealPlansInput = {
+  where?: Prisma.NutritionTargetProfileWhereInput
+  data: Prisma.XOR<Prisma.NutritionTargetProfileUpdateWithoutMealPlansInput, Prisma.NutritionTargetProfileUncheckedUpdateWithoutMealPlansInput>
+}
+
+export type NutritionTargetProfileUpdateWithoutMealPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  policyVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  goal?: Prisma.StringFieldUpdateOperationsInput | string
+  ageGroup?: Prisma.StringFieldUpdateOperationsInput | string
+  effectiveFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  energyMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  energyTarget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  energyMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  proteinMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  proteinTarget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  carbsMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  carbsMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fatMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fatMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fiberMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  sugarMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  sodiumMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  saturatedFatMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  inputValues?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  calculationReason?: Prisma.StringFieldUpdateOperationsInput | string
+  safetyStatus?: Prisma.EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+  restrictionReasons?: Prisma.NutritionTargetProfileUpdaterestrictionReasonsInput | string[]
+  requiresExpertValidation?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneRequiredWithoutNutritionTargetsNestedInput
+  policy?: Prisma.NutritionPolicyUpdateOneRequiredWithoutTargetProfilesNestedInput
+}
+
+export type NutritionTargetProfileUncheckedUpdateWithoutMealPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  policyId?: Prisma.StringFieldUpdateOperationsInput | string
+  policyVersion?: Prisma.StringFieldUpdateOperationsInput | string
+  goal?: Prisma.StringFieldUpdateOperationsInput | string
+  ageGroup?: Prisma.StringFieldUpdateOperationsInput | string
+  effectiveFrom?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  effectiveTo?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  energyMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  energyTarget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  energyMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  proteinMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  proteinTarget?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  carbsMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  carbsMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fatMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fatMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  fiberMin?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  sugarMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  sodiumMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  saturatedFatMax?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  inputValues?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  calculationReason?: Prisma.StringFieldUpdateOperationsInput | string
+  safetyStatus?: Prisma.EnumSafetyStatusFieldUpdateOperationsInput | $Enums.SafetyStatus
+  restrictionReasons?: Prisma.NutritionTargetProfileUpdaterestrictionReasonsInput | string[]
+  requiresExpertValidation?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type NutritionTargetProfileCreateManyProfileInput = {
@@ -1315,6 +1489,7 @@ export type NutritionTargetProfileUpdateWithoutProfileInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   policy?: Prisma.NutritionPolicyUpdateOneRequiredWithoutTargetProfilesNestedInput
+  mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutTargetProfileNestedInput
 }
 
 export type NutritionTargetProfileUncheckedUpdateWithoutProfileInput = {
@@ -1346,6 +1521,7 @@ export type NutritionTargetProfileUncheckedUpdateWithoutProfileInput = {
   calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutTargetProfileNestedInput
 }
 
 export type NutritionTargetProfileUncheckedUpdateManyWithoutProfileInput = {
@@ -1439,6 +1615,7 @@ export type NutritionTargetProfileUpdateWithoutPolicyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUpdateOneRequiredWithoutNutritionTargetsNestedInput
+  mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutTargetProfileNestedInput
 }
 
 export type NutritionTargetProfileUncheckedUpdateWithoutPolicyInput = {
@@ -1470,6 +1647,7 @@ export type NutritionTargetProfileUncheckedUpdateWithoutPolicyInput = {
   calculatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutTargetProfileNestedInput
 }
 
 export type NutritionTargetProfileUncheckedUpdateManyWithoutPolicyInput = {
@@ -1504,6 +1682,35 @@ export type NutritionTargetProfileUncheckedUpdateManyWithoutPolicyInput = {
 }
 
 
+/**
+ * Count Type NutritionTargetProfileCountOutputType
+ */
+
+export type NutritionTargetProfileCountOutputType = {
+  mealPlans: number
+}
+
+export type NutritionTargetProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  mealPlans?: boolean | NutritionTargetProfileCountOutputTypeCountMealPlansArgs
+}
+
+/**
+ * NutritionTargetProfileCountOutputType without action
+ */
+export type NutritionTargetProfileCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NutritionTargetProfileCountOutputType
+   */
+  select?: Prisma.NutritionTargetProfileCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * NutritionTargetProfileCountOutputType without action
+ */
+export type NutritionTargetProfileCountOutputTypeCountMealPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DailyMealPlanWhereInput
+}
+
 
 export type NutritionTargetProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1537,6 +1744,8 @@ export type NutritionTargetProfileSelect<ExtArgs extends runtime.Types.Extension
   updatedAt?: boolean
   profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
   policy?: boolean | Prisma.NutritionPolicyDefaultArgs<ExtArgs>
+  mealPlans?: boolean | Prisma.NutritionTargetProfile$mealPlansArgs<ExtArgs>
+  _count?: boolean | Prisma.NutritionTargetProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["nutritionTargetProfile"]>
 
 export type NutritionTargetProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1643,6 +1852,8 @@ export type NutritionTargetProfileOmit<ExtArgs extends runtime.Types.Extensions.
 export type NutritionTargetProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
   policy?: boolean | Prisma.NutritionPolicyDefaultArgs<ExtArgs>
+  mealPlans?: boolean | Prisma.NutritionTargetProfile$mealPlansArgs<ExtArgs>
+  _count?: boolean | Prisma.NutritionTargetProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type NutritionTargetProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
@@ -1658,6 +1869,7 @@ export type $NutritionTargetProfilePayload<ExtArgs extends runtime.Types.Extensi
   objects: {
     profile: Prisma.$ProfilePayload<ExtArgs>
     policy: Prisma.$NutritionPolicyPayload<ExtArgs>
+    mealPlans: Prisma.$DailyMealPlanPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2085,6 +2297,7 @@ export interface Prisma__NutritionTargetProfileClient<T, Null = never, ExtArgs e
   readonly [Symbol.toStringTag]: "PrismaPromise"
   profile<T extends Prisma.ProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   policy<T extends Prisma.NutritionPolicyDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NutritionPolicyDefaultArgs<ExtArgs>>): Prisma.Prisma__NutritionPolicyClient<runtime.Types.Result.GetResult<Prisma.$NutritionPolicyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  mealPlans<T extends Prisma.NutritionTargetProfile$mealPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.NutritionTargetProfile$mealPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyMealPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2541,6 +2754,30 @@ export type NutritionTargetProfileDeleteManyArgs<ExtArgs extends runtime.Types.E
    * Limit how many NutritionTargetProfiles to delete.
    */
   limit?: number
+}
+
+/**
+ * NutritionTargetProfile.mealPlans
+ */
+export type NutritionTargetProfile$mealPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DailyMealPlan
+   */
+  select?: Prisma.DailyMealPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DailyMealPlan
+   */
+  omit?: Prisma.DailyMealPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DailyMealPlanInclude<ExtArgs> | null
+  where?: Prisma.DailyMealPlanWhereInput
+  orderBy?: Prisma.DailyMealPlanOrderByWithRelationInput | Prisma.DailyMealPlanOrderByWithRelationInput[]
+  cursor?: Prisma.DailyMealPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DailyMealPlanScalarFieldEnum | Prisma.DailyMealPlanScalarFieldEnum[]
 }
 
 /**

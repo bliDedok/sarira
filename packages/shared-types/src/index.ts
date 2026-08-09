@@ -657,6 +657,95 @@ export interface NutritionHistoryRecord {
   from: string; to: string; days: DailyNutritionSummaryRecord[];
 }
 
+export type RecipeSourceType = 'INTERNAL_CURATED' | 'OFFICIAL_GUIDE' | 'EXPERT_REVIEWED' | 'USER_CREATED' | 'SYNTHETIC_DEVELOPMENT';
+export type RecipeDifficulty = 'EASY' | 'MEDIUM' | 'HARD';
+export type EstimatedCostCategory = 'LOW' | 'MEDIUM' | 'HIGH';
+export type CookingMethod = 'RAW' | 'BOILED' | 'STEAMED' | 'GRILLED' | 'BAKED' | 'FRIED' | 'STIR_FRIED' | 'OTHER';
+export type RecipeVersionStatus = 'DRAFT' | 'ACTIVE' | 'RETIRED';
+export type MealPlanStatus = 'DRAFT' | 'ACTIVE' | 'COMPLETED' | 'REPLACED' | 'EXPIRED';
+export type MealPlanItemStatus = 'PLANNED' | 'REPLACED' | 'COOKING' | 'CONSUMED' | 'SKIPPED';
+export type RecipeEligibilityStatus = 'ELIGIBLE' | 'WARNING' | 'INELIGIBLE';
+export type RecommendationFit = 'HIGH' | 'MEDIUM' | 'LOW';
+
+export interface RecipeIngredientRecord {
+  id: string; foodItemId?: string; servingId?: string; customName?: string; foodName: string;
+  quantity: number; gramAmount?: number; preparationNote?: string; optional: boolean;
+  replacementGroup?: string; orderIndex: number; sourceType: FoodDataSourceRecord['sourceType'];
+  userNutrition?: Partial<NutrientAmountMap>;
+  food?: FoodItemRecord;
+}
+
+export interface RecipeStepRecord {
+  id: string; orderIndex: number; instruction: string; timerSeconds?: number;
+}
+
+export interface RecipeNutritionRecord {
+  id: string; recipeVersionId: string; total: NutrientAmountMap; perServing: NutrientAmountMap;
+  missingNutrients: NutrientCode[]; complete: boolean; sourceVersions: string[];
+  calculationVersion: string; calculatedAt: string;
+}
+
+export interface RecipeVersionRecord {
+  id: string; recipeId: string; version: number; status: RecipeVersionStatus; servings: number;
+  prepTimeMinutes: number; cookTimeMinutes: number; difficulty: RecipeDifficulty;
+  estimatedCostCategory: EstimatedCostCategory; cookingMethod: CookingMethod;
+  mealTypes: MealType[]; dietaryTags: DietaryTagCode[]; equipment: string[]; notes?: string;
+  verified: boolean; requiresExpertValidation: boolean; publishedAt?: string;
+  ingredients: RecipeIngredientRecord[]; steps: RecipeStepRecord[]; nutrition?: RecipeNutritionRecord;
+  createdAt: string; updatedAt: string;
+}
+
+export interface RecipeRecord {
+  id: string; code: string; ownerProfileId?: string; name: string; description: string;
+  sourceType: RecipeSourceType; sourceId: string; sourceVersion: string; verified: boolean;
+  active: boolean; private: boolean; archivedAt?: string; requiresExpertValidation: boolean;
+  currentVersion: RecipeVersionRecord; createdAt: string; updatedAt: string;
+  eligibility?: { status: RecipeEligibilityStatus; reasonCodes: string[]; allergenMessage?: string };
+}
+
+export interface RemainingNutrientRecord {
+  nutrientCode: NutrientCode; type: TargetType; consumed: number | null;
+  minimumRemaining?: number | null; maximumRemaining?: number | null;
+}
+export type RemainingNutritionRecord = Record<NutrientCode, RemainingNutrientRecord | undefined>;
+
+export interface MealPlanItemRecord {
+  id: string; mealType: MealType; position: number; status: MealPlanItemStatus;
+  recipe: RecipeRecord; recipeVersionId: string; reasonCodes: string[];
+  recommendationFit: RecommendationFit; score: number; nutritionImpact: NutrientAmountMap;
+  replacementReason?: string; consumedAt?: string;
+}
+
+export interface DailyMealPlanRecord {
+  id: string; profileId: string; localDate: string; targetProfileId: string;
+  policyVersion: string; nutritionPolicyVersion: string; generatedByPolicyVersion: string;
+  targetSnapshot: NutritionTargetProfileRecord; status: MealPlanStatus; source: string;
+  generatedAt: string; createdAt: string; updatedAt: string;
+  remainingNutrition: RemainingNutritionRecord; items: MealPlanItemRecord[];
+}
+
+export interface MealAlternativeRecord {
+  recipe: RecipeRecord; score: number; recommendationFit: RecommendationFit; reasonCodes: string[];
+  difference: NutrientAmountMap; differenceMessage: string;
+}
+
+export interface FlexKitchenIngredientInput {
+  foodItemId?: string; servingId?: string; customName?: string; quantity: number;
+  userNutrition?: Partial<NutrientAmountMap>;
+}
+
+export interface FlexKitchenPreviewRecord {
+  servings: number; ingredients: RecipeIngredientRecord[]; nutrition: RecipeNutritionRecord;
+  impact: NutrientAmountMap; remainingNutrition: RemainingNutritionRecord;
+  suggestions: Array<{ reasonCode: string; priority: number; message: string; candidateFood?: FoodItemRecord }>;
+}
+
+export interface FoodSubstitutionRecord {
+  original: RecipeIngredientRecord; replacement: RecipeIngredientRecord;
+  before: NutrientAmountMap; after: NutrientAmountMap; difference: NutrientAmountMap;
+  score: number; reasonCodes: string[]; requiresConfirmation: true;
+}
+
 export interface ActiveProfile {
   id: string;
   name: string;

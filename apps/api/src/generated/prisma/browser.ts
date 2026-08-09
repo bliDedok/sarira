@@ -218,6 +218,56 @@ export type NutritionPolicy = Prisma.NutritionPolicyModel
  */
 export type NutritionTargetProfile = Prisma.NutritionTargetProfileModel
 /**
+ * Model Recipe
+ * 
+ */
+export type Recipe = Prisma.RecipeModel
+/**
+ * Model RecipeVersion
+ * 
+ */
+export type RecipeVersion = Prisma.RecipeVersionModel
+/**
+ * Model RecipeIngredient
+ * 
+ */
+export type RecipeIngredient = Prisma.RecipeIngredientModel
+/**
+ * Model RecipeStep
+ * 
+ */
+export type RecipeStep = Prisma.RecipeStepModel
+/**
+ * Model RecipeNutritionSnapshot
+ * 
+ */
+export type RecipeNutritionSnapshot = Prisma.RecipeNutritionSnapshotModel
+/**
+ * Model MealPlanningPolicy
+ * 
+ */
+export type MealPlanningPolicy = Prisma.MealPlanningPolicyModel
+/**
+ * Model DailyMealPlan
+ * 
+ */
+export type DailyMealPlan = Prisma.DailyMealPlanModel
+/**
+ * Model DailyMealPlanItem
+ * 
+ */
+export type DailyMealPlanItem = Prisma.DailyMealPlanItemModel
+/**
+ * Model MealPlanItemSnapshot
+ * 
+ */
+export type MealPlanItemSnapshot = Prisma.MealPlanItemSnapshotModel
+/**
+ * Model MealPlanConsumption
+ * 
+ */
+export type MealPlanConsumption = Prisma.MealPlanConsumptionModel
+/**
  * Model SleepLog
  * 
  */

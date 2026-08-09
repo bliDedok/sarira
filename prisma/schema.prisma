@@ -327,6 +327,65 @@ enum NutritionPolicyStatus {
   DEPRECATED
 }
 
+enum RecipeSourceType {
+  INTERNAL_CURATED
+  OFFICIAL_GUIDE
+  EXPERT_REVIEWED
+  USER_CREATED
+  SYNTHETIC_DEVELOPMENT
+}
+
+enum RecipeDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum EstimatedCostCategory {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum CookingMethod {
+  RAW
+  BOILED
+  STEAMED
+  GRILLED
+  BAKED
+  FRIED
+  STIR_FRIED
+  OTHER
+}
+
+enum RecipeVersionStatus {
+  DRAFT
+  ACTIVE
+  RETIRED
+}
+
+enum MealPlanningPolicyStatus {
+  DRAFT
+  ACTIVE
+  DEPRECATED
+}
+
+enum MealPlanStatus {
+  DRAFT
+  ACTIVE
+  COMPLETED
+  REPLACED
+  EXPIRED
+}
+
+enum MealPlanItemStatus {
+  PLANNED
+  REPLACED
+  COOKING
+  CONSUMED
+  SKIPPED
+}
+
 enum AuditEvent {
   USER_REGISTERED
   USER_LOGGED_IN
@@ -372,45 +431,51 @@ enum AuditEvent {
   MEAL_LOG_ITEM_DELETED
   NUTRITION_TARGET_CALCULATED
   NUTRITION_DAILY_VIEWED
+  MEAL_PLAN_GENERATED
+  MEAL_PLAN_ITEM_REPLACED
+  MEAL_PLAN_ITEM_CONSUMED
+  PERSONAL_RECIPE_CREATED
+  PERSONAL_RECIPE_UPDATED
+  PERSONAL_RECIPE_ARCHIVED
 }
 
 model User {
-  id             String                 @id @default(uuid()) @db.Uuid
-  externalAuthId String                 @unique @db.Uuid
-  email          String                 @unique
-  status         AccountStatus          @default(PENDING)
-  createdAt      DateTime               @default(now()) @db.Timestamptz(3)
-  updatedAt      DateTime               @updatedAt @db.Timestamptz(3)
-  profiles       Profile[]
-  roles          RoleAssignment[]
-  dependents     DependentProfile[]
-  consents       UserConsent[]
-  goals          UserGoal[]
-  safetySessions SafetyScreeningSession[]
-  preferences    AppPreference[]
-  deviceSessions DeviceSession[]
+  id                    String                   @id @default(uuid()) @db.Uuid
+  externalAuthId        String                   @unique @db.Uuid
+  email                 String                   @unique
+  status                AccountStatus            @default(PENDING)
+  createdAt             DateTime                 @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime                 @updatedAt @db.Timestamptz(3)
+  profiles              Profile[]
+  roles                 RoleAssignment[]
+  dependents            DependentProfile[]
+  consents              UserConsent[]
+  goals                 UserGoal[]
+  safetySessions        SafetyScreeningSession[]
+  preferences           AppPreference[]
+  deviceSessions        DeviceSession[]
   questionnaireSessions QuestionnaireSession[]
-  onboardingProgress OnboardingProgress?
-  auditEvents    AuditLog[]             @relation("AuditActor")
+  onboardingProgress    OnboardingProgress?
+  auditEvents           AuditLog[]               @relation("AuditActor")
 
   @@index([status])
 }
 
 model Profile {
-  id                    String           @id @default(uuid()) @db.Uuid
-  userId                String           @unique @db.Uuid
+  id                    String                   @id @default(uuid()) @db.Uuid
+  userId                String                   @unique @db.Uuid
   fullName              String
-  dateOfBirth           DateTime?        @db.Date
+  dateOfBirth           DateTime?                @db.Date
   gender                Gender?
-  country               String           @default("ID") @db.VarChar(2)
-  timezone              String           @default("Asia/Makassar")
-  preferredLanguage     String           @default("id-ID")
+  country               String                   @default("ID") @db.VarChar(2)
+  timezone              String                   @default("Asia/Makassar")
+  preferredLanguage     String                   @default("id-ID")
   primaryRole           Role?
-  onboardingStatus      OnboardingStatus @default(ROLE_PENDING)
-  onboardingCompletedAt DateTime?        @db.Timestamptz(3)
-  createdAt             DateTime         @default(now()) @db.Timestamptz(3)
-  updatedAt             DateTime         @updatedAt @db.Timestamptz(3)
-  user                  User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  onboardingStatus      OnboardingStatus         @default(ROLE_PENDING)
+  onboardingCompletedAt DateTime?                @db.Timestamptz(3)
+  createdAt             DateTime                 @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime                 @updatedAt @db.Timestamptz(3)
+  user                  User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
   consents              UserConsent[]
   guardianConsents      GuardianConsent[]
   goals                 UserGoal[]
@@ -431,6 +496,8 @@ model Profile {
   digestiveLogs         DigestiveLog[]
   mealLogItems          MealLogItem[]
   nutritionTargets      NutritionTargetProfile[]
+  recipes               Recipe[]
+  mealPlans             DailyMealPlan[]
 
   @@index([onboardingStatus])
 }
@@ -448,15 +515,15 @@ model RoleAssignment {
 }
 
 model DependentProfile {
-  id          String   @id @default(uuid()) @db.Uuid
-  ownerUserId String   @db.Uuid
+  id          String        @id @default(uuid()) @db.Uuid
+  ownerUserId String        @db.Uuid
   name        String
-  dateOfBirth DateTime @db.Date
+  dateOfBirth DateTime      @db.Date
   gender      Gender?
   relation    String
-  createdAt   DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt   DateTime @updatedAt @db.Timestamptz(3)
-  owner       User     @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+  createdAt   DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime      @updatedAt @db.Timestamptz(3)
+  owner       User          @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
   consents    UserConsent[]
 
   @@index([ownerUserId])
@@ -473,10 +540,10 @@ model ConsentVersion {
   contentHash              String
   contentStatus            ContentStatus @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
   expertValidationRequired Boolean       @default(true)
-  activeAt                 DateTime       @db.Timestamptz(3)
-  retiredAt                DateTime?      @db.Timestamptz(3)
-  createdAt                DateTime       @default(now()) @db.Timestamptz(3)
-  updatedAt                DateTime       @updatedAt @db.Timestamptz(3)
+  activeAt                 DateTime      @db.Timestamptz(3)
+  retiredAt                DateTime?     @db.Timestamptz(3)
+  createdAt                DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime      @updatedAt @db.Timestamptz(3)
   consents                 UserConsent[]
 
   @@unique([type, version, locale])
@@ -485,21 +552,21 @@ model ConsentVersion {
 }
 
 model UserConsent {
-  id               String          @id @default(uuid()) @db.Uuid
-  userId           String          @db.Uuid
-  profileId        String?         @db.Uuid
-  dependentId      String?         @db.Uuid
-  consentVersionId String          @db.Uuid
+  id               String            @id @default(uuid()) @db.Uuid
+  userId           String            @db.Uuid
+  profileId        String?           @db.Uuid
+  dependentId      String?           @db.Uuid
+  consentVersionId String            @db.Uuid
   status           ConsentStatus
-  source           ConsentSource   @default(ONBOARDING)
-  grantedAt        DateTime?       @db.Timestamptz(3)
-  revokedAt        DateTime?       @db.Timestamptz(3)
-  createdAt        DateTime        @default(now()) @db.Timestamptz(3)
-  updatedAt        DateTime        @updatedAt @db.Timestamptz(3)
-  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  profile          Profile?        @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  source           ConsentSource     @default(ONBOARDING)
+  grantedAt        DateTime?         @db.Timestamptz(3)
+  revokedAt        DateTime?         @db.Timestamptz(3)
+  createdAt        DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime          @updatedAt @db.Timestamptz(3)
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile          Profile?          @relation(fields: [profileId], references: [id], onDelete: Cascade)
   dependent        DependentProfile? @relation(fields: [dependentId], references: [id], onDelete: Cascade)
-  consentVersion   ConsentVersion  @relation(fields: [consentVersionId], references: [id], onDelete: Restrict)
+  consentVersion   ConsentVersion    @relation(fields: [consentVersionId], references: [id], onDelete: Restrict)
 
   @@index([userId, status])
   @@index([profileId, status])
@@ -525,17 +592,17 @@ model GuardianConsent {
 }
 
 model SafetyScreeningTemplate {
-  id                       String        @id @default(uuid()) @db.Uuid
+  id                       String                   @id @default(uuid()) @db.Uuid
   code                     String
   version                  String
   title                    String
   description              String
-  contentStatus            ContentStatus @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
-  expertValidationRequired Boolean       @default(true)
-  activeAt                 DateTime       @db.Timestamptz(3)
-  retiredAt                DateTime?      @db.Timestamptz(3)
-  createdAt                DateTime       @default(now()) @db.Timestamptz(3)
-  updatedAt                DateTime       @updatedAt @db.Timestamptz(3)
+  contentStatus            ContentStatus            @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
+  expertValidationRequired Boolean                  @default(true)
+  activeAt                 DateTime                 @db.Timestamptz(3)
+  retiredAt                DateTime?                @db.Timestamptz(3)
+  createdAt                DateTime                 @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime                 @updatedAt @db.Timestamptz(3)
   questions                SafetyQuestion[]
   rules                    SafetyRuleDefinition[]
   sessions                 SafetyScreeningSession[]
@@ -545,28 +612,28 @@ model SafetyScreeningTemplate {
 }
 
 model SafetyQuestion {
-  id           String   @id @default(uuid()) @db.Uuid
-  templateId   String   @db.Uuid
-  code         String
-  category     String
-  prompt       String
-  helpText     String?
-  required     Boolean  @default(true)
-  allowsUnknown Boolean @default(true)
-  sortOrder    Int
+  id            String                  @id @default(uuid()) @db.Uuid
+  templateId    String                  @db.Uuid
+  code          String
+  category      String
+  prompt        String
+  helpText      String?
+  required      Boolean                 @default(true)
+  allowsUnknown Boolean                 @default(true)
+  sortOrder     Int
   applicability Json?
-  createdAt    DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt    DateTime @updatedAt @db.Timestamptz(3)
-  template     SafetyScreeningTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  answers      SafetyAnswer[]
+  createdAt     DateTime                @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime                @updatedAt @db.Timestamptz(3)
+  template      SafetyScreeningTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  answers       SafetyAnswer[]
 
   @@unique([templateId, code])
   @@index([templateId, sortOrder])
 }
 
 model SafetyRuleDefinition {
-  id                       String        @id @default(uuid()) @db.Uuid
-  templateId               String        @db.Uuid
+  id                       String                  @id @default(uuid()) @db.Uuid
+  templateId               String                  @db.Uuid
   ruleId                   String
   version                  String
   applicableAgeMin         Int
@@ -576,11 +643,11 @@ model SafetyRuleDefinition {
   result                   SafetyStatus
   restrictedPrograms       String[]
   messageKey               String
-  referralRequired         Boolean       @default(false)
-  contentStatus            ContentStatus @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
-  expertValidationRequired Boolean       @default(true)
-  createdAt                DateTime       @default(now()) @db.Timestamptz(3)
-  updatedAt                DateTime       @updatedAt @db.Timestamptz(3)
+  referralRequired         Boolean                 @default(false)
+  contentStatus            ContentStatus           @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
+  expertValidationRequired Boolean                 @default(true)
+  createdAt                DateTime                @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime                @updatedAt @db.Timestamptz(3)
   template                 SafetyScreeningTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
 
   @@unique([ruleId, version])
@@ -588,21 +655,21 @@ model SafetyRuleDefinition {
 }
 
 model SafetyScreeningSession {
-  id          String              @id @default(uuid()) @db.Uuid
-  userId      String              @db.Uuid
-  profileId   String?             @db.Uuid
-  templateId  String?             @db.Uuid
+  id          String                   @id @default(uuid()) @db.Uuid
+  userId      String                   @db.Uuid
+  profileId   String?                  @db.Uuid
+  templateId  String?                  @db.Uuid
   rulesetId   String
   rulesetHash String
-  ruleVersion String              @default("phase3-dev-v1")
-  status      SafetySessionStatus @default(IN_PROGRESS)
-  startedAt   DateTime            @default(now()) @db.Timestamptz(3)
-  expiresAt   DateTime?           @db.Timestamptz(3)
-  completedAt DateTime?           @db.Timestamptz(3)
-  createdAt   DateTime            @default(now()) @db.Timestamptz(3)
-  updatedAt   DateTime            @updatedAt @db.Timestamptz(3)
-  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  profile     Profile?            @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  ruleVersion String                   @default("phase3-dev-v1")
+  status      SafetySessionStatus      @default(IN_PROGRESS)
+  startedAt   DateTime                 @default(now()) @db.Timestamptz(3)
+  expiresAt   DateTime?                @db.Timestamptz(3)
+  completedAt DateTime?                @db.Timestamptz(3)
+  createdAt   DateTime                 @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime                 @updatedAt @db.Timestamptz(3)
+  user        User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile     Profile?                 @relation(fields: [profileId], references: [id], onDelete: Cascade)
   template    SafetyScreeningTemplate? @relation(fields: [templateId], references: [id], onDelete: Restrict)
   answers     SafetyAnswer[]
   result      SafetyResult?
@@ -613,42 +680,42 @@ model SafetyScreeningSession {
 }
 
 model SafetyAnswer {
-  id                   String           @id @default(uuid()) @db.Uuid
-  sessionId            String           @db.Uuid
+  id                   String                 @id @default(uuid()) @db.Uuid
+  sessionId            String                 @db.Uuid
   questionId           String
-  questionDefinitionId String?          @db.Uuid
+  questionDefinitionId String?                @db.Uuid
   answerCode           SafetyAnswerCode
-  createdAt            DateTime         @default(now()) @db.Timestamptz(3)
-  updatedAt            DateTime         @updatedAt @db.Timestamptz(3)
+  createdAt            DateTime               @default(now()) @db.Timestamptz(3)
+  updatedAt            DateTime               @updatedAt @db.Timestamptz(3)
   session              SafetyScreeningSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  questionDefinition   SafetyQuestion?  @relation(fields: [questionDefinitionId], references: [id], onDelete: Restrict)
+  questionDefinition   SafetyQuestion?        @relation(fields: [questionDefinitionId], references: [id], onDelete: Restrict)
 
   @@unique([sessionId, questionId])
   @@index([questionDefinitionId])
 }
 
 model SafetyResult {
-  id                 String       @id @default(uuid()) @db.Uuid
-  sessionId          String       @unique @db.Uuid
-  profileId          String?      @db.Uuid
+  id                 String                 @id @default(uuid()) @db.Uuid
+  sessionId          String                 @unique @db.Uuid
+  profileId          String?                @db.Uuid
   status             SafetyStatus
   triggeredRules     String[]
   restrictedPrograms String[]
-  referralRequired   Boolean      @default(false)
-  ruleVersion        String       @default("phase3-dev-v1")
-  evaluatedAt        DateTime     @default(now()) @db.Timestamptz(3)
-  completedAt        DateTime     @default(now()) @db.Timestamptz(3)
-  createdAt          DateTime     @default(now()) @db.Timestamptz(3)
-  updatedAt          DateTime     @updatedAt @db.Timestamptz(3)
+  referralRequired   Boolean                @default(false)
+  ruleVersion        String                 @default("phase3-dev-v1")
+  evaluatedAt        DateTime               @default(now()) @db.Timestamptz(3)
+  completedAt        DateTime               @default(now()) @db.Timestamptz(3)
+  createdAt          DateTime               @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime               @updatedAt @db.Timestamptz(3)
   session            SafetyScreeningSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  profile            Profile?     @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profile            Profile?               @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   @@index([profileId, status, completedAt])
 }
 
 model GoalDefinition {
-  id                       String        @id @default(uuid()) @db.Uuid
-  code                     String        @unique
+  id                       String         @id @default(uuid()) @db.Uuid
+  code                     String         @unique
   label                    String
   description              String
   minimumAge               Int
@@ -656,27 +723,27 @@ model GoalDefinition {
   allowedRoles             Role[]
   blockedSafetyStatuses    SafetyStatus[]
   priorityAgeGroups        String[]
-  contentStatus            ContentStatus @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
-  expertValidationRequired Boolean       @default(true)
-  active                   Boolean       @default(true)
-  createdAt                DateTime      @default(now()) @db.Timestamptz(3)
-  updatedAt                DateTime      @updatedAt @db.Timestamptz(3)
+  contentStatus            ContentStatus  @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
+  expertValidationRequired Boolean        @default(true)
+  active                   Boolean        @default(true)
+  createdAt                DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime       @updatedAt @db.Timestamptz(3)
   goals                    UserGoal[]
 
   @@index([active, minimumAge, maximumAge])
 }
 
 model UserGoal {
-  id           String     @id @default(uuid()) @db.Uuid
-  userId       String     @db.Uuid
-  profileId    String?    @db.Uuid
-  definitionId String?    @db.Uuid
+  id           String          @id @default(uuid()) @db.Uuid
+  userId       String          @db.Uuid
+  profileId    String?         @db.Uuid
+  definitionId String?         @db.Uuid
   code         String
-  status       GoalStatus @default(ACTIVE)
-  createdAt    DateTime   @default(now()) @db.Timestamptz(3)
-  updatedAt    DateTime   @updatedAt @db.Timestamptz(3)
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  profile      Profile?   @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  status       GoalStatus      @default(ACTIVE)
+  createdAt    DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime        @updatedAt @db.Timestamptz(3)
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile      Profile?        @relation(fields: [profileId], references: [id], onDelete: Cascade)
   definition   GoalDefinition? @relation(fields: [definitionId], references: [id], onDelete: Restrict)
 
   @@index([userId, status])
@@ -686,17 +753,17 @@ model UserGoal {
 }
 
 model QuestionnaireTemplate {
-  id                       String        @id @default(uuid()) @db.Uuid
+  id                       String                  @id @default(uuid()) @db.Uuid
   code                     String
   version                  String
   title                    String
   description              String
-  contentStatus            ContentStatus @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
-  expertValidationRequired Boolean       @default(true)
-  activeAt                 DateTime       @db.Timestamptz(3)
-  retiredAt                DateTime?      @db.Timestamptz(3)
-  createdAt                DateTime       @default(now()) @db.Timestamptz(3)
-  updatedAt                DateTime       @updatedAt @db.Timestamptz(3)
+  contentStatus            ContentStatus           @default(DEVELOPMENT_REQUIRES_EXPERT_VALIDATION)
+  expertValidationRequired Boolean                 @default(true)
+  activeAt                 DateTime                @db.Timestamptz(3)
+  retiredAt                DateTime?               @db.Timestamptz(3)
+  createdAt                DateTime                @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime                @updatedAt @db.Timestamptz(3)
   questions                QuestionnaireQuestion[]
   sessions                 QuestionnaireSession[]
 
@@ -705,35 +772,35 @@ model QuestionnaireTemplate {
 }
 
 model QuestionnaireQuestion {
-  id             String                 @id @default(uuid()) @db.Uuid
-  templateId     String                 @db.Uuid
-  code           String
-  section        String
-  prompt         String
-  helpText       String?
-  valueType      QuestionnaireValueType
-  required       Boolean                @default(false)
-  sortOrder      Int
-  validation     Json?
-  visibleWhen    Json?
-  createdAt      DateTime               @default(now()) @db.Timestamptz(3)
-  updatedAt      DateTime               @updatedAt @db.Timestamptz(3)
-  template       QuestionnaireTemplate  @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  options        QuestionnaireOption[]
-  answers        QuestionnaireAnswer[]
+  id          String                 @id @default(uuid()) @db.Uuid
+  templateId  String                 @db.Uuid
+  code        String
+  section     String
+  prompt      String
+  helpText    String?
+  valueType   QuestionnaireValueType
+  required    Boolean                @default(false)
+  sortOrder   Int
+  validation  Json?
+  visibleWhen Json?
+  createdAt   DateTime               @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime               @updatedAt @db.Timestamptz(3)
+  template    QuestionnaireTemplate  @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  options     QuestionnaireOption[]
+  answers     QuestionnaireAnswer[]
 
   @@unique([templateId, code])
   @@index([templateId, section, sortOrder])
 }
 
 model QuestionnaireOption {
-  id         String   @id @default(uuid()) @db.Uuid
-  questionId String   @db.Uuid
+  id         String                @id @default(uuid()) @db.Uuid
+  questionId String                @db.Uuid
   code       String
   label      String
   sortOrder  Int
-  createdAt  DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt  DateTime @updatedAt @db.Timestamptz(3)
+  createdAt  DateTime              @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime              @updatedAt @db.Timestamptz(3)
   question   QuestionnaireQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@unique([questionId, code])
@@ -761,13 +828,13 @@ model QuestionnaireSession {
 }
 
 model QuestionnaireAnswer {
-  id         String   @id @default(uuid()) @db.Uuid
-  sessionId  String   @db.Uuid
-  questionId String   @db.Uuid
+  id         String                @id @default(uuid()) @db.Uuid
+  sessionId  String                @db.Uuid
+  questionId String                @db.Uuid
   value      Json
-  createdAt  DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt  DateTime @updatedAt @db.Timestamptz(3)
-  session    QuestionnaireSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  createdAt  DateTime              @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime              @updatedAt @db.Timestamptz(3)
+  session    QuestionnaireSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   question   QuestionnaireQuestion @relation(fields: [questionId], references: [id], onDelete: Restrict)
 
   @@unique([sessionId, questionId])
@@ -853,24 +920,24 @@ model AuditLog {
 }
 
 model BaselineSession {
-  id                  String                      @id @default(uuid()) @db.Uuid
-  profileId           String                      @db.Uuid
-  status              BaselineStatus              @default(ACTIVE)
-  startedAt           DateTime                    @default(now()) @db.Timestamptz(3)
-  startLocalDate      DateTime                    @db.Date
+  id                  String                     @id @default(uuid()) @db.Uuid
+  profileId           String                     @db.Uuid
+  status              BaselineStatus             @default(ACTIVE)
+  startedAt           DateTime                   @default(now()) @db.Timestamptz(3)
+  startLocalDate      DateTime                   @db.Date
   timezone            String
-  currentDay          Int                         @default(1)
-  targetDays          Int                         @default(14)
-  calendarCompletedAt DateTime?                   @db.Timestamptz(3)
-  completedAt         DateTime?                   @db.Timestamptz(3)
-  readinessStatus     BaselineReadinessStatus     @default(PENDING)
-  completenessScore   Float                       @default(0)
-  extensionAllowed    Boolean                     @default(true)
-  extensionDays       Int                         @default(7)
+  currentDay          Int                        @default(1)
+  targetDays          Int                        @default(14)
+  calendarCompletedAt DateTime?                  @db.Timestamptz(3)
+  completedAt         DateTime?                  @db.Timestamptz(3)
+  readinessStatus     BaselineReadinessStatus    @default(PENDING)
+  completenessScore   Float                      @default(0)
+  extensionAllowed    Boolean                    @default(true)
+  extensionDays       Int                        @default(7)
   configVersion       String
-  createdAt           DateTime                    @default(now()) @db.Timestamptz(3)
-  updatedAt           DateTime                    @updatedAt @db.Timestamptz(3)
-  profile             Profile                     @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt           DateTime                   @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime                   @updatedAt @db.Timestamptz(3)
+  profile             Profile                    @relation(fields: [profileId], references: [id], onDelete: Cascade)
   dailyRecords        DailyRecord[]
   mealLogs            MealLog[]
   sleepLogs           SleepLog[]
@@ -888,25 +955,25 @@ model BaselineSession {
 }
 
 model DailyRecord {
-  id                  String                    @id @default(uuid()) @db.Uuid
-  baselineSessionId   String                    @db.Uuid
-  profileId           String                    @db.Uuid
-  localDate           DateTime                  @db.Date
-  dayIndex            Int
-  completenessStatus  DailyCompletenessStatus   @default(MISSING)
-  completedAt         DateTime?                 @db.Timestamptz(3)
-  createdAt           DateTime                  @default(now()) @db.Timestamptz(3)
-  updatedAt           DateTime                  @updatedAt @db.Timestamptz(3)
-  baselineSession     BaselineSession           @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
-  profile             Profile                   @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  checkIn             DailyCheckIn?
-  mealLogs            MealLog[]
-  sleepLogs           SleepLog[]
-  activityLogs        ActivityLog[]
-  stepRecord          StepRecord?
-  bodyMeasurements    BodyMeasurement[]
-  digestiveLogs       DigestiveLog[]
-  taskInstances       DailyTaskInstance[]
+  id                 String                  @id @default(uuid()) @db.Uuid
+  baselineSessionId  String                  @db.Uuid
+  profileId          String                  @db.Uuid
+  localDate          DateTime                @db.Date
+  dayIndex           Int
+  completenessStatus DailyCompletenessStatus @default(MISSING)
+  completedAt        DateTime?               @db.Timestamptz(3)
+  createdAt          DateTime                @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime                @updatedAt @db.Timestamptz(3)
+  baselineSession    BaselineSession         @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  profile            Profile                 @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  checkIn            DailyCheckIn?
+  mealLogs           MealLog[]
+  sleepLogs          SleepLog[]
+  activityLogs       ActivityLog[]
+  stepRecord         StepRecord?
+  bodyMeasurements   BodyMeasurement[]
+  digestiveLogs      DigestiveLog[]
+  taskInstances      DailyTaskInstance[]
 
   @@unique([baselineSessionId, localDate])
   @@index([profileId, localDate])
@@ -936,28 +1003,29 @@ model DailyCheckIn {
 }
 
 model MealLog {
-  id                    String          @id @default(uuid()) @db.Uuid
-  profileId             String          @db.Uuid
-  baselineSessionId     String          @db.Uuid
-  dailyRecordId         String          @db.Uuid
-  localDate             DateTime        @db.Date
-  mealType              MealType
-  eatenAt               DateTime?       @db.Timestamptz(3)
-  description           String?
-  source                TrackingSource  @default(MANUAL)
-  skipped               Boolean         @default(false)
-  sugaryDrinkConsumed   Boolean?
-  lateMeal              Boolean?
-  homeCooked            Boolean?
-  eatingContext         String?
-  notes                 String?
-  createdAt             DateTime        @default(now()) @db.Timestamptz(3)
-  updatedAt             DateTime        @updatedAt @db.Timestamptz(3)
-  profile               Profile         @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  baselineSession       BaselineSession @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
-  dailyRecord           DailyRecord     @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
-  digestiveLogs         DigestiveLog[]
-  items                 MealLogItem[]
+  id                  String               @id @default(uuid()) @db.Uuid
+  profileId           String               @db.Uuid
+  baselineSessionId   String               @db.Uuid
+  dailyRecordId       String               @db.Uuid
+  localDate           DateTime             @db.Date
+  mealType            MealType
+  eatenAt             DateTime?            @db.Timestamptz(3)
+  description         String?
+  source              TrackingSource       @default(MANUAL)
+  skipped             Boolean              @default(false)
+  sugaryDrinkConsumed Boolean?
+  lateMeal            Boolean?
+  homeCooked          Boolean?
+  eatingContext       String?
+  notes               String?
+  createdAt           DateTime             @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime             @updatedAt @db.Timestamptz(3)
+  profile             Profile              @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  baselineSession     BaselineSession      @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  dailyRecord         DailyRecord          @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
+  digestiveLogs       DigestiveLog[]
+  items               MealLogItem[]
+  mealPlanConsumption MealPlanConsumption?
 
   @@index([profileId, localDate])
   @@index([baselineSessionId, localDate])
@@ -985,28 +1053,29 @@ model FoodDataSource {
 }
 
 model FoodItem {
-  id               String            @id @default(uuid()) @db.Uuid
-  code             String            @unique
-  name             String
-  alternateNames   String[]
-  category         FoodCategory
-  description      String?
-  defaultServingId String?           @unique @db.Uuid
-  sourceId         String            @db.Uuid
-  sourceVersion    String
-  countryCode      String            @default("ID") @db.VarChar(2)
-  language         String            @default("id-ID")
-  verified         Boolean           @default(false)
-  active           Boolean           @default(true)
-  createdAt        DateTime          @default(now()) @db.Timestamptz(3)
-  updatedAt        DateTime          @updatedAt @db.Timestamptz(3)
-  source           FoodDataSource    @relation(fields: [sourceId], references: [id], onDelete: Restrict)
-  defaultServing   FoodServing?      @relation("DefaultServing", fields: [defaultServingId], references: [id], onDelete: SetNull)
-  servings         FoodServing[]     @relation("FoodServings")
-  nutrients        FoodNutrient[]
-  allergens        FoodAllergen[]
-  dietaryTags      FoodDietaryTag[]
-  mealLogItems     MealLogItem[]
+  id                String             @id @default(uuid()) @db.Uuid
+  code              String             @unique
+  name              String
+  alternateNames    String[]
+  category          FoodCategory
+  description       String?
+  defaultServingId  String?            @unique @db.Uuid
+  sourceId          String             @db.Uuid
+  sourceVersion     String
+  countryCode       String             @default("ID") @db.VarChar(2)
+  language          String             @default("id-ID")
+  verified          Boolean            @default(false)
+  active            Boolean            @default(true)
+  createdAt         DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime           @updatedAt @db.Timestamptz(3)
+  source            FoodDataSource     @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+  defaultServing    FoodServing?       @relation("DefaultServing", fields: [defaultServingId], references: [id], onDelete: SetNull)
+  servings          FoodServing[]      @relation("FoodServings")
+  nutrients         FoodNutrient[]
+  allergens         FoodAllergen[]
+  dietaryTags       FoodDietaryTag[]
+  mealLogItems      MealLogItem[]
+  recipeIngredients RecipeIngredient[]
 
   @@index([name])
   @@index([category, active])
@@ -1014,20 +1083,21 @@ model FoodItem {
 }
 
 model FoodServing {
-  id             String       @id @default(uuid()) @db.Uuid
-  foodItemId     String       @db.Uuid
-  label          String
-  quantity       Decimal      @db.Decimal(10, 3)
-  unit           FoodUnit
-  gramEquivalent Decimal?     @db.Decimal(10, 3)
-  defaultServing Boolean      @default(false)
-  source         String
-  verified       Boolean      @default(false)
-  createdAt      DateTime     @default(now()) @db.Timestamptz(3)
-  updatedAt      DateTime     @updatedAt @db.Timestamptz(3)
-  foodItem       FoodItem     @relation("FoodServings", fields: [foodItemId], references: [id], onDelete: Cascade)
-  defaultFor     FoodItem?    @relation("DefaultServing")
-  mealLogItems   MealLogItem[]
+  id                String             @id @default(uuid()) @db.Uuid
+  foodItemId        String             @db.Uuid
+  label             String
+  quantity          Decimal            @db.Decimal(10, 3)
+  unit              FoodUnit
+  gramEquivalent    Decimal?           @db.Decimal(10, 3)
+  defaultServing    Boolean            @default(false)
+  source            String
+  verified          Boolean            @default(false)
+  createdAt         DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime           @updatedAt @db.Timestamptz(3)
+  foodItem          FoodItem           @relation("FoodServings", fields: [foodItemId], references: [id], onDelete: Cascade)
+  defaultFor        FoodItem?          @relation("DefaultServing")
+  mealLogItems      MealLogItem[]
+  recipeIngredients RecipeIngredient[]
 
   @@unique([foodItemId, label])
   @@index([foodItemId, defaultServing])
@@ -1049,20 +1119,20 @@ model NutrientDefinition {
 }
 
 model FoodNutrient {
-  id               String             @id @default(uuid()) @db.Uuid
-  foodItemId       String             @db.Uuid
-  nutrientId       String             @db.Uuid
-  amount           Decimal            @db.Decimal(14, 6)
-  unit             String
-  basisAmount      Decimal            @default(100) @db.Decimal(10, 3)
-  basisUnit        FoodUnit           @default(G)
-  sourceId         String             @db.Uuid
-  sourceVersion    String
-  createdAt        DateTime           @default(now()) @db.Timestamptz(3)
-  updatedAt        DateTime           @updatedAt @db.Timestamptz(3)
-  foodItem         FoodItem           @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
-  nutrient         NutrientDefinition @relation(fields: [nutrientId], references: [id], onDelete: Restrict)
-  source           FoodDataSource     @relation(fields: [sourceId], references: [id], onDelete: Restrict)
+  id            String             @id @default(uuid()) @db.Uuid
+  foodItemId    String             @db.Uuid
+  nutrientId    String             @db.Uuid
+  amount        Decimal            @db.Decimal(14, 6)
+  unit          String
+  basisAmount   Decimal            @default(100) @db.Decimal(10, 3)
+  basisUnit     FoodUnit           @default(G)
+  sourceId      String             @db.Uuid
+  sourceVersion String
+  createdAt     DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime           @updatedAt @db.Timestamptz(3)
+  foodItem      FoodItem           @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
+  nutrient      NutrientDefinition @relation(fields: [nutrientId], references: [id], onDelete: Restrict)
+  source        FoodDataSource     @relation(fields: [sourceId], references: [id], onDelete: Restrict)
 
   @@unique([foodItemId, nutrientId])
   @@index([foodItemId])
@@ -1085,38 +1155,38 @@ model FoodAllergen {
 }
 
 model FoodDietaryTag {
-  id         String            @id @default(uuid()) @db.Uuid
-  foodItemId String            @db.Uuid
+  id         String           @id @default(uuid()) @db.Uuid
+  foodItemId String           @db.Uuid
   code       DietaryTagCode
-  status     DietaryTagStatus  @default(UNKNOWN)
+  status     DietaryTagStatus @default(UNKNOWN)
   sourceNote String?
-  createdAt  DateTime          @default(now()) @db.Timestamptz(3)
-  updatedAt  DateTime          @updatedAt @db.Timestamptz(3)
-  foodItem   FoodItem          @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
+  createdAt  DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime         @updatedAt @db.Timestamptz(3)
+  foodItem   FoodItem         @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
 
   @@unique([foodItemId, code])
   @@index([code, status])
 }
 
 model MealLogItem {
-  id            String           @id @default(uuid()) @db.Uuid
-  mealLogId     String           @db.Uuid
-  profileId     String           @db.Uuid
-  foodItemId    String?          @db.Uuid
-  servingId     String?          @db.Uuid
-  itemSource    MealItemSource   @default(DATABASE_FOOD)
-  customName    String?
-  quantity      Decimal          @db.Decimal(10, 3)
-  gramAmount    Decimal?         @db.Decimal(10, 3)
-  sourceVersion String
+  id               String             @id @default(uuid()) @db.Uuid
+  mealLogId        String             @db.Uuid
+  profileId        String             @db.Uuid
+  foodItemId       String?            @db.Uuid
+  servingId        String?            @db.Uuid
+  itemSource       MealItemSource     @default(DATABASE_FOOD)
+  customName       String?
+  quantity         Decimal            @db.Decimal(10, 3)
+  gramAmount       Decimal?           @db.Decimal(10, 3)
+  sourceVersion    String
   allergenWarnings Json
-  createdAt     DateTime         @default(now()) @db.Timestamptz(3)
-  updatedAt     DateTime         @updatedAt @db.Timestamptz(3)
-  mealLog       MealLog          @relation(fields: [mealLogId], references: [id], onDelete: Cascade)
-  profile       Profile          @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  foodItem      FoodItem?        @relation(fields: [foodItemId], references: [id], onDelete: Restrict)
-  serving       FoodServing?     @relation(fields: [servingId], references: [id], onDelete: Restrict)
-  snapshot      NutritionSnapshot?
+  createdAt        DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime           @updatedAt @db.Timestamptz(3)
+  mealLog          MealLog            @relation(fields: [mealLogId], references: [id], onDelete: Cascade)
+  profile          Profile            @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  foodItem         FoodItem?          @relation(fields: [foodItemId], references: [id], onDelete: Restrict)
+  serving          FoodServing?       @relation(fields: [servingId], references: [id], onDelete: Restrict)
+  snapshot         NutritionSnapshot?
 
   @@index([mealLogId])
   @@index([foodItemId])
@@ -1124,31 +1194,31 @@ model MealLogItem {
 }
 
 model NutritionSnapshot {
-  id                String       @id @default(uuid()) @db.Uuid
-  mealLogItemId     String       @unique @db.Uuid
-  sourceVersion     String
-  foodName          String
-  gramAmount        Decimal?     @db.Decimal(10, 3)
-  energyKcal        Decimal?     @db.Decimal(14, 6)
-  proteinG          Decimal?     @db.Decimal(14, 6)
-  carbohydrateG     Decimal?     @db.Decimal(14, 6)
-  fatG              Decimal?     @db.Decimal(14, 6)
-  saturatedFatG     Decimal?     @db.Decimal(14, 6)
-  fiberG            Decimal?     @db.Decimal(14, 6)
-  sugarG            Decimal?     @db.Decimal(14, 6)
-  sodiumMg          Decimal?     @db.Decimal(14, 6)
-  missingNutrients  String[]
-  complete          Boolean
+  id                 String      @id @default(uuid()) @db.Uuid
+  mealLogItemId      String      @unique @db.Uuid
+  sourceVersion      String
+  foodName           String
+  gramAmount         Decimal?    @db.Decimal(10, 3)
+  energyKcal         Decimal?    @db.Decimal(14, 6)
+  proteinG           Decimal?    @db.Decimal(14, 6)
+  carbohydrateG      Decimal?    @db.Decimal(14, 6)
+  fatG               Decimal?    @db.Decimal(14, 6)
+  saturatedFatG      Decimal?    @db.Decimal(14, 6)
+  fiberG             Decimal?    @db.Decimal(14, 6)
+  sugarG             Decimal?    @db.Decimal(14, 6)
+  sodiumMg           Decimal?    @db.Decimal(14, 6)
+  missingNutrients   String[]
+  complete           Boolean
   calculationVersion String
-  createdAt         DateTime     @default(now()) @db.Timestamptz(3)
-  updatedAt         DateTime     @updatedAt @db.Timestamptz(3)
-  mealLogItem       MealLogItem  @relation(fields: [mealLogItemId], references: [id], onDelete: Cascade)
+  createdAt          DateTime    @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime    @updatedAt @db.Timestamptz(3)
+  mealLogItem        MealLogItem @relation(fields: [mealLogItemId], references: [id], onDelete: Cascade)
 
   @@index([sourceVersion])
 }
 
 model NutritionPolicy {
-  id                       String                  @id @default(uuid()) @db.Uuid
+  id                       String                   @id @default(uuid()) @db.Uuid
   code                     String
   version                  String
   ageMin                   Int
@@ -1156,14 +1226,14 @@ model NutritionPolicy {
   applicableSex            Gender?
   applicableGoals          String[]
   applicableSafetyStatuses SafetyStatus[]
-  status                   NutritionPolicyStatus  @default(DRAFT)
-  effectiveFrom            DateTime                @db.Date
-  effectiveTo              DateTime?               @db.Date
+  status                   NutritionPolicyStatus    @default(DRAFT)
+  effectiveFrom            DateTime                 @db.Date
+  effectiveTo              DateTime?                @db.Date
   targetConfiguration      Json
   sourceMetadata           Json
-  requiresExpertValidation Boolean                 @default(true)
-  createdAt                DateTime                @default(now()) @db.Timestamptz(3)
-  updatedAt                DateTime                @updatedAt @db.Timestamptz(3)
+  requiresExpertValidation Boolean                  @default(true)
+  createdAt                DateTime                 @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime                 @updatedAt @db.Timestamptz(3)
   targetProfiles           NutritionTargetProfile[]
 
   @@unique([code, version])
@@ -1197,14 +1267,227 @@ model NutritionTargetProfile {
   safetyStatus             SafetyStatus
   restrictionReasons       String[]
   requiresExpertValidation Boolean         @default(true)
-  calculatedAt             DateTime         @default(now()) @db.Timestamptz(3)
-  createdAt                DateTime         @default(now()) @db.Timestamptz(3)
-  updatedAt                DateTime         @updatedAt @db.Timestamptz(3)
-  profile                  Profile          @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  policy                   NutritionPolicy  @relation(fields: [policyId], references: [id], onDelete: Restrict)
+  calculatedAt             DateTime        @default(now()) @db.Timestamptz(3)
+  createdAt                DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime        @updatedAt @db.Timestamptz(3)
+  profile                  Profile         @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  policy                   NutritionPolicy @relation(fields: [policyId], references: [id], onDelete: Restrict)
+  mealPlans                DailyMealPlan[]
 
   @@index([profileId, effectiveFrom, effectiveTo])
   @@index([policyId, calculatedAt])
+}
+
+model Recipe {
+  id                       String              @id @default(uuid()) @db.Uuid
+  code                     String              @unique
+  ownerProfileId           String?             @db.Uuid
+  name                     String
+  description              String
+  sourceType               RecipeSourceType
+  sourceId                 String
+  sourceVersion            String
+  verified                 Boolean             @default(false)
+  active                   Boolean             @default(true)
+  private                  Boolean             @default(false)
+  archivedAt               DateTime?           @db.Timestamptz(3)
+  requiresExpertValidation Boolean             @default(true)
+  createdAt                DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime            @updatedAt @db.Timestamptz(3)
+  ownerProfile             Profile?            @relation(fields: [ownerProfileId], references: [id], onDelete: Cascade)
+  versions                 RecipeVersion[]
+  mealPlanItems            DailyMealPlanItem[]
+
+  @@index([ownerProfileId, active, archivedAt])
+  @@index([sourceType, active])
+}
+
+model RecipeVersion {
+  id                       String                   @id @default(uuid()) @db.Uuid
+  recipeId                 String                   @db.Uuid
+  version                  Int
+  status                   RecipeVersionStatus      @default(DRAFT)
+  servings                 Decimal                  @db.Decimal(8, 2)
+  prepTimeMinutes          Int
+  cookTimeMinutes          Int
+  difficulty               RecipeDifficulty
+  estimatedCostCategory    EstimatedCostCategory
+  cookingMethod            CookingMethod
+  mealTypes                MealType[]
+  dietaryTags              DietaryTagCode[]
+  equipment                String[]
+  notes                    String?
+  verified                 Boolean                  @default(false)
+  requiresExpertValidation Boolean                  @default(true)
+  publishedAt              DateTime?                @db.Timestamptz(3)
+  createdAt                DateTime                 @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime                 @updatedAt @db.Timestamptz(3)
+  recipe                   Recipe                   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  ingredients              RecipeIngredient[]
+  steps                    RecipeStep[]
+  nutritionSnapshot        RecipeNutritionSnapshot?
+  mealPlanItems            DailyMealPlanItem[]
+  planSnapshots            MealPlanItemSnapshot[]
+
+  @@unique([recipeId, version])
+  @@index([status, mealTypes])
+}
+
+model RecipeIngredient {
+  id               String         @id @default(uuid()) @db.Uuid
+  recipeVersionId  String         @db.Uuid
+  foodItemId       String?        @db.Uuid
+  servingId        String?        @db.Uuid
+  customName       String?
+  quantity         Decimal        @db.Decimal(10, 3)
+  gramAmount       Decimal?       @db.Decimal(10, 3)
+  preparationNote  String?
+  optional         Boolean        @default(false)
+  replacementGroup String?
+  orderIndex       Int
+  sourceType       FoodSourceType @default(SYNTHETIC_TEST_DATA)
+  userNutrition    Json?
+  createdAt        DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime       @updatedAt @db.Timestamptz(3)
+  recipeVersion    RecipeVersion  @relation(fields: [recipeVersionId], references: [id], onDelete: Cascade)
+  foodItem         FoodItem?      @relation(fields: [foodItemId], references: [id], onDelete: Restrict)
+  serving          FoodServing?   @relation(fields: [servingId], references: [id], onDelete: Restrict)
+
+  @@unique([recipeVersionId, orderIndex])
+  @@index([foodItemId])
+}
+
+model RecipeStep {
+  id              String        @id @default(uuid()) @db.Uuid
+  recipeVersionId String        @db.Uuid
+  orderIndex      Int
+  instruction     String
+  timerSeconds    Int?
+  createdAt       DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime      @updatedAt @db.Timestamptz(3)
+  recipeVersion   RecipeVersion @relation(fields: [recipeVersionId], references: [id], onDelete: Cascade)
+
+  @@unique([recipeVersionId, orderIndex])
+}
+
+model RecipeNutritionSnapshot {
+  id                 String        @id @default(uuid()) @db.Uuid
+  recipeVersionId    String        @unique @db.Uuid
+  totalEnergyKcal    Decimal?      @db.Decimal(14, 6)
+  totalProteinG      Decimal?      @db.Decimal(14, 6)
+  totalCarbohydrateG Decimal?      @db.Decimal(14, 6)
+  totalFatG          Decimal?      @db.Decimal(14, 6)
+  totalSaturatedFatG Decimal?      @db.Decimal(14, 6)
+  totalFiberG        Decimal?      @db.Decimal(14, 6)
+  totalSugarG        Decimal?      @db.Decimal(14, 6)
+  totalSodiumMg      Decimal?      @db.Decimal(14, 6)
+  perServing         Json
+  missingNutrients   String[]
+  complete           Boolean
+  sourceVersions     String[]
+  calculationVersion String
+  calculatedAt       DateTime      @db.Timestamptz(3)
+  createdAt          DateTime      @default(now()) @db.Timestamptz(3)
+  recipeVersion      RecipeVersion @relation(fields: [recipeVersionId], references: [id], onDelete: Cascade)
+
+  @@index([complete, calculatedAt])
+}
+
+model MealPlanningPolicy {
+  id                        String                   @id @default(uuid()) @db.Uuid
+  code                      String
+  version                   String
+  status                    MealPlanningPolicyStatus @default(DRAFT)
+  configuration             Json
+  effectiveFrom             DateTime                 @db.Date
+  effectiveTo               DateTime?                @db.Date
+  requiresProductValidation Boolean                  @default(true)
+  createdAt                 DateTime                 @default(now()) @db.Timestamptz(3)
+  updatedAt                 DateTime                 @updatedAt @db.Timestamptz(3)
+  mealPlans                 DailyMealPlan[]
+
+  @@unique([code, version])
+  @@index([status, effectiveFrom, effectiveTo])
+}
+
+model DailyMealPlan {
+  id                       String                 @id @default(uuid()) @db.Uuid
+  profileId                String                 @db.Uuid
+  localDate                DateTime               @db.Date
+  targetProfileId          String                 @db.Uuid
+  mealPlanningPolicyId     String                 @db.Uuid
+  policyVersion            String
+  nutritionPolicyVersion   String
+  generatedByPolicyVersion String
+  targetSnapshot           Json
+  status                   MealPlanStatus         @default(ACTIVE)
+  source                   String                 @default("DETERMINISTIC_RULES")
+  generatedAt              DateTime               @db.Timestamptz(3)
+  createdAt                DateTime               @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime               @updatedAt @db.Timestamptz(3)
+  profile                  Profile                @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  targetProfile            NutritionTargetProfile @relation(fields: [targetProfileId], references: [id], onDelete: Restrict)
+  mealPlanningPolicy       MealPlanningPolicy     @relation(fields: [mealPlanningPolicyId], references: [id], onDelete: Restrict)
+  items                    DailyMealPlanItem[]
+
+  @@index([profileId, localDate, policyVersion])
+  @@index([profileId, localDate, status])
+}
+
+model DailyMealPlanItem {
+  id                 String                @id @default(uuid()) @db.Uuid
+  mealPlanId         String                @db.Uuid
+  mealType           MealType
+  recipeId           String                @db.Uuid
+  recipeVersionId    String                @db.Uuid
+  position           Int
+  status             MealPlanItemStatus    @default(PLANNED)
+  reasonCodes        String[]
+  recommendationFit  String
+  score              Decimal               @db.Decimal(10, 4)
+  nutritionImpact    Json
+  replacedFromItemId String?               @db.Uuid
+  replacementReason  String?
+  consumedAt         DateTime?             @db.Timestamptz(3)
+  createdAt          DateTime              @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime              @updatedAt @db.Timestamptz(3)
+  mealPlan           DailyMealPlan         @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  recipe             Recipe                @relation(fields: [recipeId], references: [id], onDelete: Restrict)
+  recipeVersion      RecipeVersion         @relation(fields: [recipeVersionId], references: [id], onDelete: Restrict)
+  snapshot           MealPlanItemSnapshot?
+  consumption        MealPlanConsumption?
+
+  @@unique([mealPlanId, mealType, position])
+  @@index([recipeVersionId, status])
+}
+
+model MealPlanItemSnapshot {
+  id                  String            @id @default(uuid()) @db.Uuid
+  mealPlanItemId      String            @unique @db.Uuid
+  recipeVersionId     String            @db.Uuid
+  recipeName          String
+  recipeVersion       Int
+  servings            Decimal           @db.Decimal(8, 2)
+  nutritionPerServing Json
+  ingredients         Json
+  sourceVersion       String
+  calculationVersion  String
+  createdAt           DateTime          @default(now()) @db.Timestamptz(3)
+  mealPlanItem        DailyMealPlanItem @relation(fields: [mealPlanItemId], references: [id], onDelete: Cascade)
+  recipeVersionRecord RecipeVersion     @relation(fields: [recipeVersionId], references: [id], onDelete: Restrict)
+
+  @@index([recipeVersionId])
+}
+
+model MealPlanConsumption {
+  id               String            @id @default(uuid()) @db.Uuid
+  mealPlanItemId   String            @unique @db.Uuid
+  mealLogId        String            @unique @db.Uuid
+  consumedFraction Decimal           @db.Decimal(4, 2)
+  consumedAt       DateTime          @db.Timestamptz(3)
+  createdAt        DateTime          @default(now()) @db.Timestamptz(3)
+  mealPlanItem     DailyMealPlanItem @relation(fields: [mealPlanItemId], references: [id], onDelete: Cascade)
+  mealLog          MealLog           @relation(fields: [mealLogId], references: [id], onDelete: Cascade)
 }
 
 model SleepLog {
@@ -1231,23 +1514,23 @@ model SleepLog {
 }
 
 model ActivityLog {
-  id                  String              @id @default(uuid()) @db.Uuid
-  profileId           String              @db.Uuid
-  baselineSessionId   String              @db.Uuid
-  dailyRecordId       String              @db.Uuid
-  localDate           DateTime            @db.Date
-  activityType        ActivityType
-  startedAt           DateTime?           @db.Timestamptz(3)
-  durationMinutes     Int
-  perceivedIntensity  PerceivedIntensity
-  description         String?
-  notes               String?
-  source              TrackingSource      @default(MANUAL)
-  createdAt           DateTime            @default(now()) @db.Timestamptz(3)
-  updatedAt           DateTime            @updatedAt @db.Timestamptz(3)
-  profile             Profile             @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  baselineSession     BaselineSession     @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
-  dailyRecord         DailyRecord         @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
+  id                 String             @id @default(uuid()) @db.Uuid
+  profileId          String             @db.Uuid
+  baselineSessionId  String             @db.Uuid
+  dailyRecordId      String             @db.Uuid
+  localDate          DateTime           @db.Date
+  activityType       ActivityType
+  startedAt          DateTime?          @db.Timestamptz(3)
+  durationMinutes    Int
+  perceivedIntensity PerceivedIntensity
+  description        String?
+  notes              String?
+  source             TrackingSource     @default(MANUAL)
+  createdAt          DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime           @updatedAt @db.Timestamptz(3)
+  profile            Profile            @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  baselineSession    BaselineSession    @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  dailyRecord        DailyRecord        @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
 
   @@index([profileId, localDate])
   @@index([baselineSessionId, localDate])
@@ -1295,22 +1578,22 @@ model BodyMeasurement {
 }
 
 model DigestiveLog {
-  id                String                   @id @default(uuid()) @db.Uuid
-  profileId         String                   @db.Uuid
-  baselineSessionId String                   @db.Uuid
-  dailyRecordId     String                   @db.Uuid
-  localDate         DateTime                 @db.Date
+  id                String               @id @default(uuid()) @db.Uuid
+  profileId         String               @db.Uuid
+  baselineSessionId String               @db.Uuid
+  dailyRecordId     String               @db.Uuid
+  localDate         DateTime             @db.Date
   symptomType       DigestiveSymptomType
-  occurredAt        DateTime                 @db.Timestamptz(3)
+  occurredAt        DateTime             @db.Timestamptz(3)
   intensity         Int
-  relatedMealId     String?                  @db.Uuid
+  relatedMealId     String?              @db.Uuid
   notes             String?
-  createdAt         DateTime                 @default(now()) @db.Timestamptz(3)
-  updatedAt         DateTime                 @updatedAt @db.Timestamptz(3)
-  profile           Profile                  @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  baselineSession   BaselineSession          @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
-  dailyRecord       DailyRecord              @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
-  relatedMeal       MealLog?                 @relation(fields: [relatedMealId], references: [id], onDelete: SetNull)
+  createdAt         DateTime             @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime             @updatedAt @db.Timestamptz(3)
+  profile           Profile              @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  baselineSession   BaselineSession      @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  dailyRecord       DailyRecord          @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
+  relatedMeal       MealLog?             @relation(fields: [relatedMealId], references: [id], onDelete: SetNull)
 
   @@index([profileId, localDate])
   @@index([baselineSessionId, localDate])
@@ -1337,29 +1620,29 @@ model DailyTaskDefinition {
 }
 
 model DailyTaskInstance {
-  id              String           @id @default(uuid()) @db.Uuid
-  dailyRecordId   String           @db.Uuid
-  definitionId    String           @db.Uuid
-  status          DailyTaskStatus  @default(PENDING)
-  progress        Int              @default(0)
-  target          Int              @default(1)
-  source          DailyTaskSource  @default(SYSTEM)
-  completedAt     DateTime?        @db.Timestamptz(3)
-  createdAt       DateTime         @default(now()) @db.Timestamptz(3)
-  updatedAt       DateTime         @updatedAt @db.Timestamptz(3)
-  dailyRecord     DailyRecord      @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
-  definition      DailyTaskDefinition @relation(fields: [definitionId], references: [id], onDelete: Restrict)
+  id            String              @id @default(uuid()) @db.Uuid
+  dailyRecordId String              @db.Uuid
+  definitionId  String              @db.Uuid
+  status        DailyTaskStatus     @default(PENDING)
+  progress      Int                 @default(0)
+  target        Int                 @default(1)
+  source        DailyTaskSource     @default(SYSTEM)
+  completedAt   DateTime?           @db.Timestamptz(3)
+  createdAt     DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime            @updatedAt @db.Timestamptz(3)
+  dailyRecord   DailyRecord         @relation(fields: [dailyRecordId], references: [id], onDelete: Cascade)
+  definition    DailyTaskDefinition @relation(fields: [definitionId], references: [id], onDelete: Restrict)
 
   @@unique([dailyRecordId, definitionId])
   @@index([status, updatedAt])
 }
 
 model DataCompletenessSnapshot {
-  id                String                    @id @default(uuid()) @db.Uuid
-  baselineSessionId String                    @db.Uuid
+  id                String                  @id @default(uuid()) @db.Uuid
+  baselineSessionId String                  @db.Uuid
   scope             CompletenessScope
   scopeKey          String
-  localDate         DateTime?                 @db.Date
+  localDate         DateTime?               @db.Date
   status            DailyCompletenessStatus
   score             Float
   achievedDomains   String[]
@@ -1369,10 +1652,10 @@ model DataCompletenessSnapshot {
   elapsedDays       Int
   configVersion     String
   validationStatus  String
-  calculatedAt      DateTime                  @default(now()) @db.Timestamptz(3)
-  createdAt         DateTime                  @default(now()) @db.Timestamptz(3)
-  updatedAt         DateTime                  @updatedAt @db.Timestamptz(3)
-  baselineSession   BaselineSession           @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  calculatedAt      DateTime                @default(now()) @db.Timestamptz(3)
+  createdAt         DateTime                @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime                @updatedAt @db.Timestamptz(3)
+  baselineSession   BaselineSession         @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
 
   @@unique([baselineSessionId, scopeKey])
   @@index([baselineSessionId, scope, calculatedAt])
@@ -1406,8 +1689,8 @@ model Day7Feedback {
 }
 
 model BaselineReadinessResult {
-  id                String                      @id @default(uuid()) @db.Uuid
-  baselineSessionId String                      @unique @db.Uuid
+  id                String                  @id @default(uuid()) @db.Uuid
+  baselineSessionId String                  @unique @db.Uuid
   status            BaselineReadinessStatus
   domainCoverage    Json
   missingDomains    String[]
@@ -1417,8 +1700,8 @@ model BaselineReadinessResult {
   reasonCodes       String[]
   recommendation    String
   configVersion     String
-  evaluatedAt       DateTime                    @default(now()) @db.Timestamptz(3)
-  createdAt         DateTime                    @default(now()) @db.Timestamptz(3)
-  updatedAt         DateTime                    @updatedAt @db.Timestamptz(3)
-  baselineSession   BaselineSession             @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  evaluatedAt       DateTime                @default(now()) @db.Timestamptz(3)
+  createdAt         DateTime                @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime                @updatedAt @db.Timestamptz(3)
+  baselineSession   BaselineSession         @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
 }
