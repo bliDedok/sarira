@@ -320,7 +320,7 @@ async function main() {
   await seedTaskDefinitions();
   await seedPhase5Nutrition();
   await seedPhase6MealPlanning();
-  await seedPhase4Profiles();
+  if (process.env.SEED_REFERENCE_DATA_ONLY !== 'true') await seedPhase4Profiles();
 }
 
 main().finally(() => prisma.$disconnect());

@@ -51,7 +51,9 @@ jobs:
         run: pnpm db:migrate:deploy
       - name: Verify migration status before tests
         run: pnpm db:migrate:status
-      - name: Bootstrap deterministic reference data
+      - name: Bootstrap deterministic integration reference data
+        env:
+          SEED_REFERENCE_DATA_ONLY: "true"
         run: pnpm db:seed
       - name: Run lint
         run: pnpm lint
