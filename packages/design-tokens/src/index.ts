@@ -47,10 +47,10 @@ export const radius = {
 } as const;
 
 export const typography = {
-  display: 40,
-  h1: 32,
-  h2: 26,
-  h3: 21,
+  display: 34,
+  h1: 30,
+  h2: 24,
+  h3: 20,
   bodyLarge: 18,
   body: 16,
   caption: 13,
@@ -60,6 +60,23 @@ export const typography = {
     body: 1.45,
     relaxed: 1.6,
   },
+} as const;
+
+export const layout = {
+  mobilePagePadding: 16,
+  tabletPagePadding: 24,
+  desktopPagePadding: 32,
+  contentMaxWidth: 1120,
+  formMaxWidth: 820,
+  mobileNavigationHeight: 72,
+  stickyActionMinHeight: 76,
+} as const;
+
+export const controlSizes = {
+  inputMinHeight: 52,
+  buttonMinHeight: 52,
+  selectionMinHeight: 84,
+  stepperButton: 52,
 } as const;
 
 export const breakpoints = {

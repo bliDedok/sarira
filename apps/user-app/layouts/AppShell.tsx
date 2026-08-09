@@ -6,15 +6,12 @@ import {
   Activity,
   Bell,
   ChartNoAxesCombined,
-  Compass,
   Home,
-  PanelsTopLeft,
-  SwatchBook,
   UserRound,
   Utensils,
 } from 'lucide-react-native';
-import { colors, radius, spacing } from '@sarira/design-tokens';
-import { AppText, Chip, IconButton } from '@sarira/ui';
+import { colors, layout, radius, spacing } from '@sarira/design-tokens';
+import { AppText, IconButton } from '@sarira/ui';
 import { BrandMark } from '@/components/ScreenLayout';
 import { usePrototype } from '@/features/prototype/PrototypeContext';
 import { useResponsiveLayout } from '@/hooks/useResponsiveLayout';
@@ -28,12 +25,6 @@ const primaryNav = [
   { label: 'Aktivitas', path: '/activity', icon: Activity },
   { label: 'Progres', path: '/progress', icon: ChartNoAxesCombined },
   { label: 'Profil', path: '/profile', icon: UserRound },
-];
-
-const prototypeNav = [
-  { label: 'Semua layar', path: '/screens', icon: PanelsTopLeft },
-  { label: 'User flow', path: '/flows', icon: Compass },
-  { label: 'Design system', path: '/design-system', icon: SwatchBook },
 ];
 
 const foodPaths = ['/food', '/guided-meal', '/recipe-detail', '/cooking', '/flex-kitchen'];
@@ -127,7 +118,7 @@ export function AppShell({
   const initials = email.slice(0, 2).toUpperCase();
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
       <View style={styles.shell}>
         {!isMobile ? (
           <View style={[styles.sidebar, isTablet && styles.sidebarCompact]}>
@@ -137,18 +128,6 @@ export function AppShell({
             <View style={styles.sidebarSection}>
               {primaryNav.map((item) => <NavItem key={item.path} {...item} compact={isTablet} />)}
             </View>
-            <View style={styles.sidebarDivider} />
-            <View style={styles.sidebarSection}>
-              {!isTablet ? <AppText variant="eyebrow" style={{ color: '#91A498', paddingHorizontal: spacing.sm }}>PROTOTYPE</AppText> : null}
-              {prototypeNav.map((item) => <NavItem key={item.path} {...item} compact={isTablet} />)}
-            </View>
-            {!isTablet ? (
-              <View style={styles.sidebarDemoCard}>
-                <Chip label="PHASE 7" tone="lime" />
-                <AppText variant="label" style={{ color: colors.white }}>Pattern Map nyata</AppText>
-                <AppText variant="caption" style={{ color: '#BDD0C4' }}>Feature Engine, expert rules, dan Weekly Action deterministik aktif. AI, kamera, dan wearable tetap di luar fase ini.</AppText>
-              </View>
-            ) : null}
           </View>
         ) : null}
 
@@ -157,9 +136,9 @@ export function AppShell({
             <View style={styles.headerTitle}>
               {isMobile ? <BrandMark compact /> : null}
               {title ? (
-                <View style={{ gap: 1 }}>
-                  <AppText variant="h3">{title}</AppText>
-                  {subtitle ? <AppText variant="caption">{subtitle}</AppText> : null}
+                <View style={styles.headerCopy}>
+                  <AppText variant="h3" numberOfLines={2}>{title}</AppText>
+                  {subtitle ? <AppText variant="caption" numberOfLines={2}>{subtitle}</AppText> : null}
                 </View>
               ) : null}
             </View>
@@ -191,6 +170,9 @@ export function AppShell({
               elderMode && { gap: spacing.xl },
             ]}
             keyboardShouldPersistTaps="handled"
+            keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
+            automaticallyAdjustKeyboardInsets={Platform.OS === 'ios'}
+            contentInsetAdjustmentBehavior="automatic"
           >
             {children}
           </ScrollView>
@@ -208,23 +190,22 @@ const styles = StyleSheet.create({
   sidebarCompact: { width: 82, paddingHorizontal: spacing.sm, alignItems: 'center' },
   sidebarBrand: { minHeight: 56, justifyContent: 'center', paddingHorizontal: spacing.xs },
   sidebarSection: { gap: spacing.xs, width: '100%' },
-  sidebarDivider: { height: 1, backgroundColor: '#294535', marginVertical: spacing.xs },
   navItem: { minHeight: 48, borderRadius: radius.input, paddingHorizontal: spacing.sm, flexDirection: 'row', alignItems: 'center', gap: spacing.sm, borderWidth: 2, borderColor: 'transparent' },
   navItemCompact: { width: 52, justifyContent: 'center', paddingHorizontal: 0 },
   navItemSelected: { backgroundColor: colors.lime },
   navItemFocused: { borderColor: colors.white },
-  sidebarDemoCard: { marginTop: 'auto', borderWidth: 1, borderColor: '#365643', borderRadius: radius.card, padding: spacing.md, gap: spacing.sm, backgroundColor: '#153624' },
   main: { flex: 1, minWidth: 0, backgroundColor: colors.surfaceSoft },
   header: { minHeight: 76, paddingHorizontal: spacing.xl, paddingVertical: spacing.sm, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: colors.white, borderBottomWidth: 1, borderBottomColor: colors.border, gap: spacing.md },
-  headerTitle: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm, flexShrink: 1 },
-  headerActions: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  headerTitle: { flex: 1, minWidth: 0, flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  headerCopy: { flex: 1, minWidth: 0, gap: 1 },
+  headerActions: { flexShrink: 0, flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
   profileSwitcher: { minHeight: 48, borderRadius: radius.pill, padding: 5, paddingRight: spacing.sm, backgroundColor: colors.surfaceSoft, flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
   avatar: { width: 38, height: 38, borderRadius: 19, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' },
   scroll: { flex: 1 },
   content: { width: '100%', alignSelf: 'center', padding: spacing.xl, paddingBottom: spacing.huge, gap: spacing.lg },
-  contentMobile: { padding: spacing.md, paddingBottom: 118 },
-  mobileNavWrap: { position: 'absolute', left: spacing.md, right: spacing.md, bottom: spacing.sm, alignItems: 'center' },
-  mobileNav: { width: '100%', maxWidth: 520, minHeight: 72, borderRadius: radius.floating, backgroundColor: colors.primaryDark, padding: 7, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', ...(Platform.OS === 'web' ? ({ boxShadow: '0 16px 40px rgba(14,42,27,0.24)' } as const) : { shadowColor: colors.primaryDark, shadowOpacity: 0.22, shadowRadius: 18, shadowOffset: { width: 0, height: 10 } }) },
+  contentMobile: { padding: layout.mobilePagePadding, paddingBottom: spacing.lg },
+  mobileNavWrap: { flexShrink: 0, paddingHorizontal: spacing.md, paddingTop: spacing.xs, paddingBottom: spacing.sm, alignItems: 'center', backgroundColor: colors.white, borderTopWidth: 1, borderTopColor: colors.border },
+  mobileNav: { width: '100%', maxWidth: 520, minHeight: layout.mobileNavigationHeight, borderRadius: radius.floating, backgroundColor: colors.primaryDark, padding: 7, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', ...(Platform.OS === 'web' ? ({ boxShadow: '0 10px 28px rgba(14,42,27,0.18)' } as const) : { shadowColor: colors.primaryDark, shadowOpacity: 0.18, shadowRadius: 12, shadowOffset: { width: 0, height: 6 } }) },
   mobileTab: { flex: 1, minWidth: 44, minHeight: 57, borderRadius: radius.pill, alignItems: 'center', justifyContent: 'center', gap: 3 },
   mobileTabSelected: { backgroundColor: colors.lime },
 });
