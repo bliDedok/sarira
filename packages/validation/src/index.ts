@@ -274,6 +274,12 @@ export const flexKitchenPreviewSchema = z.object({
   ingredients: z.array(flexIngredientSchema).min(1).max(50),
 });
 
+export const flexKitchenConsumeSchema = flexKitchenPreviewSchema.extend({
+  recipeName: z.string().trim().min(2).max(160),
+  mealType: z.enum(['BREAKFAST', 'LUNCH', 'DINNER', 'SNACK']),
+  fraction: z.union([z.literal(1), z.literal(0.75), z.literal(0.5), z.literal(0.25)]),
+});
+
 export const substitutionSchema = z.object({
   localDate: localDateSchema,
   ingredient: flexIngredientSchema,

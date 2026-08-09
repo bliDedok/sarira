@@ -2,6 +2,7 @@ import type { FastifyPluginAsync, FastifyRequest } from 'fastify';
 import type { Clock } from '@sarira/baseline';
 import { localDateAt } from '@sarira/baseline';
 import {
+  flexKitchenConsumeSchema,
   flexKitchenPreviewSchema,
   mealConsumptionSchema,
   mealPlanGenerateSchema,
@@ -18,6 +19,7 @@ import { success } from '../response';
 import { getProfileOrThrow } from '../domains/onboarding/service';
 import {
   archivePersonalRecipe,
+  consumeFlexKitchen,
   consumeMealPlanItem,
   currentMealPlan,
   duplicatePersonalRecipe,
@@ -55,6 +57,7 @@ export const createMealPlanningRoutes = (repositories: DataRepositories, clock: 
   app.post('/meal-plans/:id/items/:itemId/consume', authenticated, async (request) => { const params = itemParams.parse(request.params); const input = mealConsumptionSchema.parse(request.body); const value = await consumeMealPlanItem(repositories, clock, request.authUser!.id, params.id, params.itemId, input.fraction); await audit(request, 'MEAL_PLAN_ITEM_CONSUMED', 'DailyMealPlanItem', params.itemId, { fraction: input.fraction, alreadyConsumed: value.alreadyConsumed }); return success(value); });
 
   app.post('/flex-kitchen/preview', authenticated, async (request) => success(await previewFlexKitchen(repositories, clock, request.authUser!.id, flexKitchenPreviewSchema.parse(request.body))));
+  app.post('/flex-kitchen/consume', authenticated, async (request) => { const input = flexKitchenConsumeSchema.parse(request.body); const value = await consumeFlexKitchen(repositories, clock, request.authUser!.id, input); await audit(request, 'MEAL_LOG_CREATED', 'MealLog', value.mealLogId, { source: 'FLEX_KITCHEN', fraction: input.fraction }); return success(value); });
   app.post('/flex-kitchen/substitutions', authenticated, async (request) => success(await substitutions(repositories, clock, request.authUser!.id, substitutionSchema.parse(request.body))));
   app.post('/flex-kitchen/save', authenticated, async (request, reply) => { const input = personalRecipeSchema.parse(request.body); const value = await savePersonalRecipe(repositories, clock, request.authUser!.id, input); await audit(request, 'PERSONAL_RECIPE_CREATED', 'Recipe', value.id); return reply.code(201).send(success(value)); });
 
