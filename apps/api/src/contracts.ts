@@ -47,7 +47,15 @@ import type {
   NutrientAmountMap,
   RecipeRecord,
   RecipeStepRecord,
+  DecisionRecordRecord,
+  FeatureSnapshotRecord,
+  PatternMapFeedbackValue,
+  PatternMapRecord,
+  Phase7AnalysisResult,
+  WeeklyActionAssignmentRecord,
 } from '@sarira/shared-types';
+import type { FeatureEngineInput, FeatureEngineOutput } from '@sarira/feature-engine';
+import type { Phase7EvaluationOutput } from '@sarira/expert-system';
 import type {
   ActivityLogInput,
   DailyCheckInInput,
@@ -147,10 +155,30 @@ export interface DataRepositories {
   baseline: BaselineRepository;
   nutrition: NutritionRepository;
   mealPlanning: MealPlanningRepository;
+  analysis: AnalysisRepository;
   admin: { configurationVersions(): Promise<AdminConfigurationVersions> };
   audit: {
     record(input: { actorUserId?: string; event: string; entityType: string; entityId?: string; requestId?: string; metadata?: Record<string, string | boolean | number> }): Promise<void>;
   };
+}
+
+export interface AnalysisRepository {
+  loadFeatureInput(profileId: string, baselineId: string): Promise<FeatureEngineInput>;
+  findFeatureSnapshot(profileId: string, baselineId: string, featureEngineVersion: string, inputSignature: string): Promise<FeatureSnapshotRecord | null>;
+  saveFeatureSnapshot(input: { profileId: string; baselineId: string; generatedAt: string; inputSignature: string; output: FeatureEngineOutput; periodStart: string; periodEnd: string }): Promise<FeatureSnapshotRecord>;
+  getLatestFeatureSnapshot(profileId: string): Promise<FeatureSnapshotRecord | null>;
+  persistAnalysis(input: { profileId: string; baselineId: string; snapshot: FeatureSnapshotRecord; evaluation: Phase7EvaluationOutput; inputSignature: string; generatedAt: string; weekStart: string }): Promise<Phase7AnalysisResult>;
+  getCurrentPatternMap(profileId: string): Promise<PatternMapRecord | null>;
+  getPatternMap(profileId: string, id: string): Promise<PatternMapRecord | null>;
+  getDecision(profileId: string, id: string): Promise<DecisionRecordRecord | null>;
+  savePatternFeedback(profileId: string, patternMapId: string, value: PatternMapFeedbackValue, notes?: string): Promise<PatternMapRecord>;
+  getCurrentWeeklyAction(profileId: string): Promise<WeeklyActionAssignmentRecord | null>;
+  getWeeklyAction(profileId: string, assignmentId: string): Promise<WeeklyActionAssignmentRecord | null>;
+  listWeeklyActions(profileId: string): Promise<WeeklyActionAssignmentRecord[]>;
+  addWeeklyActionCheckIn(profileId: string, assignmentId: string, localDate: string, source: 'AUTO_VERIFIED' | 'USER_CONFIRMED', evidenceRef?: string): Promise<WeeklyActionAssignmentRecord>;
+  removeWeeklyActionCheckIn(profileId: string, assignmentId: string, localDate: string): Promise<WeeklyActionAssignmentRecord>;
+  previousActionCodes(profileId: string): Promise<string[]>;
+  configurationVersions(): Promise<{ scoringPolicies: Array<{ code: string; version: string; requiresExpertValidation: boolean }>; rules: Array<{ ruleId: string; version: string; domain: string; requiresExpertValidation: boolean }>; actions: Array<{ code: string; version: string; domain: string; requiresExpertValidation: boolean }> }>;
 }
 
 export interface MealPlanningPolicyRecord {
@@ -235,6 +263,7 @@ export interface NutritionRepository {
 
 export interface BaselineRepository {
   getCurrent(profileId: string): Promise<BaselineSessionRecord | null>;
+  getLatestForAnalysis(profileId: string): Promise<BaselineSessionRecord | null>;
   getById(profileId: string, baselineId: string): Promise<BaselineSessionRecord | null>;
   getOwnerProfileId(baselineId: string): Promise<string | null>;
   create(profileId: string, input: { startedAt: string; startLocalDate: string; timezone: string; targetDays: number; extensionAllowed: boolean; extensionDays: number; configVersion: string }): Promise<BaselineSessionRecord>;

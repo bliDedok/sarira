@@ -20,6 +20,7 @@ import { ConflictError, NotFoundError } from '../errors';
 import { createMemoryBaselineRepository } from './phase4-memory';
 import { createMemoryNutritionRepository } from './nutrition-memory';
 import { createMemoryMealPlanningRepository } from './meal-planning-memory';
+import { createMemoryAnalysisRepository } from './analysis-memory';
 
 const now = () => new Date().toISOString();
 
@@ -99,6 +100,7 @@ export function createMemoryRepositories(): DataRepositories {
     return typeof value === 'string' ? value : '';
   });
   const mealPlanning = createMemoryMealPlanningRepository(nutrition, baseline);
+  const analysis = createMemoryAnalysisRepository(baseline, nutrition, mealPlanning);
 
   const getProfile = (userId: string) => {
     const profile = profiles.get(userId);
@@ -332,6 +334,7 @@ export function createMemoryRepositories(): DataRepositories {
     baseline,
     nutrition,
     mealPlanning,
+    analysis,
     admin: {
       async configurationVersions() {
         return {

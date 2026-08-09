@@ -95,6 +95,7 @@ export function createMemoryBaselineRepository(): BaselineRepository {
     async getCurrent(profileId) {
       return sessions.find((item) => item.profileId === profileId && ['ACTIVE', 'DAY_7_REVIEW_AVAILABLE', 'DAY_14_REVIEW_AVAILABLE', 'DATA_INSUFFICIENT', 'PAUSED'].includes(item.status)) ?? null;
     },
+    async getLatestForAnalysis(profileId) { return sessions.filter((item) => item.profileId === profileId).sort((left, right) => right.startedAt.localeCompare(left.startedAt))[0] ?? null; },
     async getById(profileId, baselineId) { return sessions.find((item) => item.profileId === profileId && item.id === baselineId) ?? null; },
     async getOwnerProfileId(baselineId) { return sessions.find((item) => item.id === baselineId)?.profileId ?? null; },
     async create(profileId, input) {

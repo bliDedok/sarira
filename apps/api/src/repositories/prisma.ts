@@ -20,6 +20,7 @@ import { ConflictError, NotFoundError } from '../errors';
 import { createPrismaBaselineRepository } from './phase4-prisma';
 import { createPrismaNutritionRepository } from './nutrition-prisma';
 import { createPrismaMealPlanningRepository } from './meal-planning-prisma';
+import { createPrismaAnalysisRepository } from './analysis-prisma';
 import type { DataRepositories, ProfileRecord } from '../contracts';
 import type { SariraPrismaClient } from '../database';
 import {
@@ -479,6 +480,7 @@ export function createPrismaRepositories(prisma: SariraPrismaClient): DataReposi
     baseline: createPrismaBaselineRepository(prisma),
     nutrition: createPrismaNutritionRepository(prisma),
     mealPlanning: createPrismaMealPlanningRepository(prisma),
+    analysis: createPrismaAnalysisRepository(prisma),
     admin: {
       async configurationVersions() {
         const [consents, questionnaires, safety, rules, goals] = await Promise.all([
