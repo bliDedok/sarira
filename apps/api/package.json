@@ -21,6 +21,7 @@
     "@sarira/baseline": "workspace:*",
     "@sarira/config": "workspace:*",
     "@sarira/expert-system": "workspace:*",
+    "@sarira/feature-engine": "workspace:*",
     "@sarira/logger": "workspace:*",
     "@sarira/nutrition-engine": "workspace:*",
     "@sarira/shared-types": "workspace:*",

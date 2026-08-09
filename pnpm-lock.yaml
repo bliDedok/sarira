@@ -97,6 +97,9 @@ importers:
       '@sarira/expert-system':
         specifier: workspace:*
         version: link:../../packages/expert-system
+      '@sarira/feature-engine':
+        specifier: workspace:*
+        version: link:../../packages/feature-engine
       '@sarira/logger':
         specifier: workspace:*
         version: link:../../packages/logger
@@ -292,6 +295,12 @@ importers:
   packages/design-tokens: {}
 
   packages/expert-system:
+    dependencies:
+      '@sarira/shared-types':
+        specifier: workspace:*
+        version: link:../shared-types
+
+  packages/feature-engine:
     dependencies:
       '@sarira/shared-types':
         specifier: workspace:*
