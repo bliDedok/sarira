@@ -96,6 +96,10 @@ describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–6 integration', 
     const consumption = await app.inject({ method: 'POST', url: `/api/v1/meal-plans/${plan.id}/items/${lunch.id}/consume`, headers, payload: { fraction: 0.25 } }); expect(consumption.statusCode, consumption.body).toBe(200); expect(consumption.json().data.alreadyConsumed).toBe(false);
     const repeatedConsumption = await app.inject({ method: 'POST', url: `/api/v1/meal-plans/${plan.id}/items/${lunch.id}/consume`, headers, payload: { fraction: 0.25 } }); expect(repeatedConsumption.json().data.alreadyConsumed).toBe(true);
 
+    const personalResponse = await app.inject({ method: 'POST', url: '/api/v1/profiles/me/recipes', headers, payload: { name: 'Nasi pribadi integration', description: 'Recipe private', servings: 2, cookingMethod: 'OTHER', mealTypes: ['LUNCH'], ingredients: [{ foodItemId: foods[0]!.id, servingId: foods[0]!.servings[0]!.id, quantity: 2 }], steps: [{ instruction: 'Siapkan dan sajikan.' }] } });
+    expect(personalResponse.statusCode, personalResponse.body).toBe(201); const personal = personalResponse.json().data as { id: string; currentVersion: { version: number } }; expect(personal.currentVersion.version).toBe(1);
+    const personalUpdate = await app.inject({ method: 'PATCH', url: `/api/v1/profiles/me/recipes/${personal.id}`, headers, payload: { name: 'Nasi pribadi integration revisi' } }); expect(personalUpdate.statusCode, personalUpdate.body).toBe(200); expect(personalUpdate.json().data.currentVersion.version).toBe(2);
+
     expect(await prisma!.profile.count({ where: { id: profileId, onboardingStatus: 'COMPLETED' } })).toBe(1);
     expect(await prisma!.auditLog.count({ where: { actorUserId: userId } })).toBeGreaterThanOrEqual(10);
     expect(await prisma!.questionnaireAnswer.count({ where: { sessionId: questionnaireSessionId } })).toBe(answers.length);
@@ -108,6 +112,8 @@ describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–6 integration', 
     expect(await prisma!.dailyMealPlan.count({ where: { id: plan.id, profileId, policyVersion: 'meal-planning-dev-v1' } })).toBe(1);
     expect(await prisma!.mealPlanItemSnapshot.count({ where: { mealPlanItem: { mealPlanId: plan.id } } })).toBe(3);
     expect(await prisma!.mealPlanConsumption.count({ where: { mealPlanItemId: lunch.id } })).toBe(1);
+    expect(await prisma!.recipeVersion.count({ where: { recipeId: personal.id } })).toBe(2);
+    expect(await prisma!.recipeVersion.count({ where: { recipeId: personal.id, status: 'RETIRED' } })).toBe(1);
     const extension = await prisma!.$queryRaw<Array<{ extname: string }>>`select extname from pg_extension where extname = 'vector'`;
     expect(extension[0]?.extname).toBe('vector');
   });
