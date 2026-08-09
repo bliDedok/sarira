@@ -245,4 +245,23 @@ export function validateOnboardingCompletion(state: CompletionState): string[] {
   return issues;
 }
 
-export * from './phase7';
+export {
+  PHASE_7_EXPERT_SYSTEM_VERSION,
+  PHASE_7_SCORING_POLICY_VERSION,
+  PHASE_7_WEEKLY_ACTION_POLICY_VERSION,
+  PHASE_7_RULE_VERSION,
+  PHASE_7_VALIDATION_LABEL,
+  ageRulePackVersions,
+  phase7RuleDefinitions,
+  phase7ScoringPolicy,
+  phase7WeeklyActions,
+  evaluatePhase7,
+} from './phase7';
+
+export type {
+  SafeOperator,
+  Phase7RuleDefinition,
+  Phase7ScoringPolicyEntry,
+  Phase7EvaluationInput,
+  Phase7EvaluationOutput,
+} from './phase7';
