@@ -1,81 +1,100 @@
-import React from 'react';
-import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { router } from 'expo-router';
-import { Camera, ChefHat, ChevronRight, Clock3, Coins, Search, Sparkles, Utensils } from 'lucide-react-native';
-import { breakpoints, colors, radius, spacing } from '@sarira/design-tokens';
-import { AppText, Button, Card, Chip, ProgressBar, ProgressRing, SectionHeader } from '@sarira/ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
+import { AlertTriangle, Calculator, Check, Pencil, Plus, Search, Trash2, Utensils } from 'lucide-react-native';
+import type { DailyNutritionSummaryRecord, FoodItemRecord, FoodServingRecord, MealLogRecord, MealType, NutritionSnapshotRecord } from '@sarira/shared-types';
+import { colors, radius, spacing } from '@sarira/design-tokens';
+import { AppText, Button, Card, Chip, ErrorState, Field, InlineNotice, Loading, ProgressBar } from '@sarira/ui';
 import { AppShell } from '@/layouts/AppShell';
-import { meals, nutritionSummary } from '@/mocks/data';
-import { screenHref } from '@/utils/routes';
+import { api } from '@/services/api';
+import { messageFor, useBaseline } from '@/features/baseline/useBaseline';
 
-export default function FoodScreen() {
-  const { width } = useWindowDimensions();
-  const desktop = width >= breakpoints.desktop;
-  const protein = nutritionSummary.find((metric) => metric.id === 'protein')!;
-  return (
-    <AppShell title="Makanan" subtitle="Rencana dan catatan konsumsi">
-      <View style={styles.titleRow}>
-        <View style={{ flex: 1, gap: 4 }}><AppText variant="eyebrow">PILIHAN YANG FLEKSIBEL</AppText><AppText variant={desktop ? 'h1' : 'h2'}>Makan terarah, tetap terasa nyata.</AppText><AppText variant="body">Menu dan angka di prototype ini adalah simulasi, bukan rencana diet personal.</AppText></View>
-        <Button label="Scan makanan" icon={Camera} variant="secondary" onPress={() => router.push(screenHref('food-scan') as never)} />
-      </View>
+const mealTypes: { value: MealType; label: string }[] = [{ value: 'BREAKFAST', label: 'Sarapan' }, { value: 'LUNCH', label: 'Makan siang' }, { value: 'DINNER', label: 'Makan malam' }, { value: 'SNACK', label: 'Camilan' }, { value: 'OTHER', label: 'Lainnya' }];
+const nutrientLabels = { ENERGY_KCAL: 'Energi', PROTEIN_G: 'Protein', CARBOHYDRATE_G: 'Karbohidrat', FAT_G: 'Lemak', SATURATED_FAT_G: 'Lemak jenuh', FIBER_G: 'Serat', SUGAR_G: 'Gula', SODIUM_MG: 'Natrium' } as const;
 
-      <View style={styles.topGrid}>
-        <Card tone="dark" style={styles.nutritionHero}>
-          <View style={styles.rowBetween}>
-            <View style={{ gap: 5 }}><AppText variant="eyebrow" style={{ color: colors.lime }}>RINGKASAN NUTRISI</AppText><AppText variant="h2" style={{ color: colors.white }}>Energi hari ini</AppText><AppText variant="body" style={{ color: '#C9D7CD' }}>1.420 dari rentang demo 1.800–2.000 kkal</AppText></View>
-            <ProgressRing value={74} size={86} label="Energi 74 persen dari target demo" />
-          </View>
-          <View style={{ gap: spacing.xs }}><View style={styles.rowBetween}><AppText variant="label" style={{ color: colors.white }}>Protein · minimum</AppText><AppText variant="caption" style={{ color: '#C9D7CD' }}>{protein.value} / {protein.target} g</AppText></View><ProgressBar value={protein.value} max={protein.target} tone="lime" label="Protein minimum" /></View>
-          <Button label="Lihat 10 indikator" variant="lime" onPress={() => router.push(screenHref('nutrition-indicator') as never)} />
-        </Card>
-        <View style={styles.modeColumn}>
-          <Pressable onPress={() => router.push(screenHref('guided-meal') as never)} style={({ pressed }) => [styles.modePress, pressed && { opacity: 0.76 }]}><Card tone="lime" style={styles.modeCard}><View style={styles.modeIcon}><Utensils size={24} color={colors.primaryDark} /></View><View style={{ flex: 1 }}><AppText variant="h3">Guided Meal</AppText><AppText variant="caption">Menu demo terarah untuk hari ini.</AppText></View><ChevronRight size={20} color={colors.primaryDark} /></Card></Pressable>
-          <Pressable onPress={() => router.push(screenHref('flex-kitchen') as never)} style={({ pressed }) => [styles.modePress, pressed && { opacity: 0.76 }]}><Card tone="mint" style={styles.modeCard}><View style={styles.modeIcon}><ChefHat size={24} color={colors.primary} /></View><View style={{ flex: 1 }}><AppText variant="h3">Flex Kitchen</AppText><AppText variant="caption">Susun resep dari bahan yang tersedia.</AppText></View><ChevronRight size={20} color={colors.primary} /></Card></Pressable>
-        </View>
-      </View>
-
-      <SectionHeader title="Rencana hari ini" action="Food log" onAction={() => router.push(screenHref('food-log') as never)} />
-      <View style={styles.mealGrid}>
-        {meals.map((meal, index) => (
-          <Pressable key={meal.id} accessibilityRole="button" accessibilityLabel={`Buka resep ${meal.name}`} onPress={() => router.push(screenHref('recipe-detail') as never)} style={({ pressed }) => [styles.mealPress, pressed && { opacity: 0.76 }]}>
-            <Card tone={meal.tone} style={styles.mealCard}>
-              <View style={[styles.foodVisual, { backgroundColor: index === 0 ? '#F5D48B' : index === 1 ? '#CEE3B7' : '#E8D7B9' }]} accessible={false} importantForAccessibility="no-hide-descendants">
-                <View style={styles.plate}><View style={[styles.foodShape, { backgroundColor: index === 0 ? '#F7F0DE' : index === 1 ? '#73964E' : '#D2A659' }]} /><View style={[styles.foodDot, { backgroundColor: index === 0 ? '#F5C33B' : index === 1 ? '#E2A44D' : '#87AA67' }]} /></View>
-              </View>
-              <View style={styles.rowBetween}><Chip label={meal.time.toUpperCase()} tone="neutral" />{meal.consumed ? <Chip label="SUDAH DICATAT" tone="mint" /> : null}</View>
-              <AppText variant="h3">{meal.name}</AppText>
-              <View style={styles.metaRow}><Clock3 size={15} color={colors.textMuted} /><AppText variant="caption">{meal.duration}</AppText><Coins size={15} color={colors.textMuted} /><AppText variant="caption">{meal.price}</AppText></View>
-              <View style={styles.metaRow}><AppText variant="caption">{meal.energy}</AppText><AppText variant="caption">•</AppText><AppText variant="caption">{meal.protein}</AppText></View>
-            </Card>
-          </Pressable>
-        ))}
-      </View>
-
-      <Card tone="peach" style={styles.suggestionCard}>
-        <View style={[styles.modeIcon, { backgroundColor: colors.white }]}><Sparkles size={24} color={colors.warning} /></View>
-        <View style={{ flex: 1, gap: 3 }}><AppText variant="h3">Punya bahan sendiri?</AppText><AppText variant="body">Cari bahan dan lihat bagaimana perubahan berat atau porsi memengaruhi kalkulasi demo.</AppText></View>
-        <Button label="Buka Recipe Builder" icon={Search} variant="secondary" onPress={() => router.push(screenHref('recipe-builder') as never)} />
-      </Card>
-    </AppShell>
-  );
+function NutrientPreview({ snapshot }: { snapshot: NutritionSnapshotRecord }) {
+  return <View style={styles.previewGrid}>{Object.entries(snapshot.nutrients).map(([code, amount]) => <View key={code} style={styles.previewMetric}><AppText variant="caption">{nutrientLabels[code as keyof typeof nutrientLabels]}</AppText><AppText variant="label">{amount === null ? 'Data belum tersedia' : `${Math.round(amount * 10) / 10} ${code === 'ENERGY_KCAL' ? 'kcal' : code.endsWith('_MG') ? 'mg' : 'g'}`}</AppText></View>)}</View>;
 }
 
-const styles = StyleSheet.create({
-  titleRow: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: spacing.md },
-  topGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
-  nutritionHero: { flex: 1.2, minWidth: 310, minHeight: 280, borderColor: colors.primaryDark, justifyContent: 'space-between', gap: spacing.lg, padding: spacing.xl },
-  rowBetween: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm },
-  modeColumn: { flex: 0.8, minWidth: 300, gap: spacing.md },
-  modePress: { flex: 1, borderRadius: radius.card },
-  modeCard: { minHeight: 132, flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  modeIcon: { width: 50, height: 50, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.68)', alignItems: 'center', justifyContent: 'center' },
-  mealGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
-  mealPress: { flex: 1, minWidth: 250, borderRadius: radius.card },
-  mealCard: { minHeight: 350, gap: spacing.sm },
-  foodVisual: { height: 130, borderRadius: radius.input, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
-  plate: { width: 112, height: 112, borderRadius: 56, backgroundColor: colors.white, borderWidth: 8, borderColor: 'rgba(255,255,255,0.55)', alignItems: 'center', justifyContent: 'center' },
-  foodShape: { width: 72, height: 58, borderRadius: 28, transform: [{ rotate: '-8deg' }] },
-  foodDot: { position: 'absolute', width: 34, height: 34, borderRadius: 17, right: 13, bottom: 12 },
-  metaRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: spacing.xs },
-  suggestionCard: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: spacing.md },
-});
+export default function FoodScreen() {
+  const { date } = useLocalSearchParams<{ date?: string }>();
+  const { current, loading: baselineLoading, error: baselineError, reload: reloadBaseline } = useBaseline();
+  const trackingDate = date ?? current?.localDate;
+  const [logs, setLogs] = useState<MealLogRecord[]>([]); const [summary, setSummary] = useState<DailyNutritionSummaryRecord>();
+  const [selectedMealId, setSelectedMealId] = useState<string>(); const [editingMealId, setEditingMealId] = useState<string>();
+  const [mealType, setMealType] = useState<MealType>('BREAKFAST'); const [description, setDescription] = useState(''); const [skipped, setSkipped] = useState(false);
+  const [query, setQuery] = useState(''); const [foods, setFoods] = useState<FoodItemRecord[]>([]); const [searching, setSearching] = useState(false);
+  const [selectedFood, setSelectedFood] = useState<FoodItemRecord>(); const [selectedServing, setSelectedServing] = useState<FoodServingRecord>(); const [quantity, setQuantity] = useState('1');
+  const [preview, setPreview] = useState<Awaited<ReturnType<typeof api.previewNutrition>>>(); const [customName, setCustomName] = useState(''); const [customServing, setCustomServing] = useState('1 porsi');
+  const [loading, setLoading] = useState(true); const [saving, setSaving] = useState(false); const [error, setError] = useState<string>();
+
+  const selectedMeal = logs.find((meal) => meal.id === selectedMealId);
+  const selectedMealItems = useMemo(() => summary?.items.filter((item) => item.mealLogId === selectedMealId) ?? [], [selectedMealId, summary]);
+  const load = useCallback(async () => {
+    if (!trackingDate) return; setLoading(true); setError(undefined);
+    try { const [mealValues, nutrition] = await Promise.all([api.getMealLogs(trackingDate), api.getDailyNutrition(trackingDate)]); setLogs(mealValues); setSummary(nutrition); setSelectedMealId((value) => value && mealValues.some((meal) => meal.id === value) ? value : mealValues.find((meal) => !meal.skipped)?.id); }
+    catch (cause) { setError(messageFor(cause)); } finally { setLoading(false); }
+  }, [trackingDate]);
+
+  useEffect(() => { if (!trackingDate) return; const timer = setTimeout(() => void load(), 0); return () => clearTimeout(timer); }, [load, trackingDate]);
+  useEffect(() => {
+    const timer = setTimeout(async () => { setSearching(true); try { setFoods((await api.searchFoods({ q: query || undefined, pageSize: 12 })).items); } catch (cause) { setError(messageFor(cause)); } finally { setSearching(false); } }, 300);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  const resetMeal = () => { setEditingMealId(undefined); setMealType('BREAKFAST'); setDescription(''); setSkipped(false); };
+  const saveMeal = async () => {
+    if (!trackingDate) return; setSaving(true); setError(undefined);
+    try {
+      const payload = { localDate: trackingDate, mealType, description, skipped };
+      const value = editingMealId ? await api.updateMealLog(editingMealId, payload) : await api.createMealLog(payload);
+      resetMeal(); await Promise.all([load(), reloadBaseline()]); setSelectedMealId(value.id);
+    } catch (cause) { setError(messageFor(cause)); } finally { setSaving(false); }
+  };
+  const editMeal = (meal: MealLogRecord) => { setEditingMealId(meal.id); setMealType(meal.mealType); setDescription(meal.description ?? ''); setSkipped(meal.skipped); };
+  const removeMeal = async (id: string) => { try { await api.deleteMealLog(id); await Promise.all([load(), reloadBaseline()]); } catch (cause) { setError(messageFor(cause)); } };
+  const chooseFood = (food: FoodItemRecord) => { setSelectedFood(food); setSelectedServing(food.servings.find((serving) => serving.defaultServing) ?? food.servings[0]); setQuantity('1'); setPreview(undefined); };
+  const calculatePreview = async () => { if (!selectedFood || !selectedServing) return; setSaving(true); try { setPreview(await api.previewNutrition({ foodItemId: selectedFood.id, servingId: selectedServing.id, quantity: Number(quantity) })); } catch (cause) { setError(messageFor(cause)); } finally { setSaving(false); } };
+  const addFood = async () => { if (!selectedMealId || !selectedFood || !selectedServing) return; setSaving(true); try { await api.addMealLogItem(selectedMealId, { foodItemId: selectedFood.id, servingId: selectedServing.id, quantity: Number(quantity) }); setPreview(undefined); setSelectedFood(undefined); await load(); } catch (cause) { setError(messageFor(cause)); } finally { setSaving(false); } };
+  const updateQuantity = async (id: string, value: number) => { setSaving(true); try { await api.updateMealLogItem(id, { quantity: Math.max(0.25, value) }); await load(); } catch (cause) { setError(messageFor(cause)); } finally { setSaving(false); } };
+  const removeItem = async (id: string) => { try { await api.deleteMealLogItem(id); await load(); } catch (cause) { setError(messageFor(cause)); } };
+  const addCustom = async () => { if (!selectedMealId) return; setSaving(true); try { await api.addCustomMealLogItem(selectedMealId, { customName, servingDescription: customServing, quantity: 1 }); setCustomName(''); await load(); } catch (cause) { setError(messageFor(cause)); } finally { setSaving(false); } };
+
+  return <AppShell title="Makanan & Nutrisi" subtitle="Database, porsi, dan kalkulasi deterministic">
+    {baselineLoading ? <Loading label="Memuat baseline…" /> : baselineError ? <ErrorState description={baselineError} onRetry={() => void reloadBaseline()} /> : !current ? <ErrorState title="Baseline belum dimulai" description="Mulai dari Starter Journey sebelum mencatat makanan." /> : <>
+      <Card tone="lime" style={styles.hero}><View style={styles.row}><Utensils size={30} color={colors.primaryDark} /><View style={styles.flex}><AppText variant="eyebrow">NUTRITION ENGINE · REAL</AppText><AppText variant="h2">Makanan · {trackingDate}</AppText><AppText variant="body">Nilai dihitung dari snapshot item dan porsi. Dataset development tetap diberi provenance dan tidak dianggap database nasional lengkap.</AppText></View><Button label="Lihat indikator" icon={Calculator} variant="secondary" onPress={() => router.push('/nutrition' as never)} /></View></Card>
+      {error ? <View accessibilityLiveRegion="assertive"><InlineNotice title="Belum berhasil" text={error} tone="danger" /></View> : null}
+      <View style={styles.grid}>
+        <Card style={styles.column}><View style={styles.row}><AppText variant="h2">{editingMealId ? 'Edit waktu makan' : 'Buat waktu makan'}</AppText>{editingMealId ? <Button label="Batal" variant="ghost" onPress={resetMeal} /> : null}</View><View style={styles.chips}>{mealTypes.map((item) => <Chip key={item.value} label={item.label} selected={mealType === item.value} onPress={() => setMealType(item.value)} />)}</View><Field label="Nama atau deskripsi" value={description} onChangeText={setDescription} maxLength={200} placeholder="Contoh: sarapan di rumah" /><Chip label="Waktu makan dilewati" selected={skipped} onPress={() => setSkipped((value) => !value)} /><Button label={editingMealId ? 'Simpan perubahan' : 'Buat catatan makan'} icon={editingMealId ? Pencil : Plus} loading={saving} variant="lime" disabled={!skipped && description.trim().length === 0} onPress={() => void saveMeal()} /></Card>
+        <Card tone="mint" style={styles.column}>
+          <AppText variant="h2">Waktu makan hari ini</AppText>
+          {loading ? <Loading label="Memuat…" /> : logs.length === 0 ? <AppText variant="body">Belum ada waktu makan.</AppText> : logs.map((meal) => (
+            <View key={meal.id} style={[styles.meal, selectedMealId === meal.id && styles.selectedMeal]}>
+              <Pressable accessibilityRole="radio" accessibilityState={{ checked: selectedMealId === meal.id, disabled: meal.skipped }} accessibilityLabel={`Pilih ${mealTypes.find((item) => item.value === meal.mealType)?.label}`} disabled={meal.skipped} onPress={() => setSelectedMealId(meal.id)} style={({ pressed }) => [styles.mealSummary, pressed && styles.pressed]}>
+                <View style={styles.chips}><Chip label={mealTypes.find((item) => item.value === meal.mealType)?.label ?? meal.mealType} tone="neutral" />{meal.skipped ? <Chip label="DILEWATI" tone="warning" /> : null}</View>
+                <AppText variant="label">{meal.description || 'Tanpa deskripsi'}</AppText>
+                <AppText variant="caption">{summary?.items.filter((item) => item.mealLogId === meal.id).length ?? 0} item nutrisi</AppText>
+              </Pressable>
+              <Button label="Edit" variant="ghost" onPress={() => editMeal(meal)} />
+              <Button label="Hapus" icon={Trash2} variant="danger" onPress={() => void removeMeal(meal.id)} />
+            </View>
+          ))}
+        </Card>
+      </View>
+
+      <View style={styles.grid}>
+        <Card style={styles.searchColumn}><View style={styles.rowStart}><Search size={24} color={colors.primary} /><View style={styles.flex}><AppText variant="h2">Cari database pangan</AppText><AppText variant="caption">Server search · halaman terbatas · nama dan nama alternatif</AppText></View></View><Field label="Cari makanan" value={query} onChangeText={setQuery} placeholder="Contoh: nasi, telur, tempe" />{searching ? <Loading label="Mencari…" /> : <View style={styles.foodList}>{foods.map((food) => <Pressable key={food.id} accessibilityRole="button" accessibilityLabel={`Pilih ${food.name}`} onPress={() => chooseFood(food)} style={({ pressed }) => [styles.foodResult, selectedFood?.id === food.id && styles.foodSelected, pressed && styles.pressed]}><View style={styles.flex}><AppText variant="label">{food.name}</AppText><AppText variant="caption">{food.category} · {food.servings[0]?.label ?? 'Porsi belum tersedia'}</AppText><AppText variant="caption">Sumber: {food.source.name} · {food.verified ? 'Terverifikasi' : 'Development sample'}</AppText></View>{selectedFood?.id === food.id ? <Check size={20} color={colors.primary} /> : null}</Pressable>)}</View>}</Card>
+        <Card tone="cream" style={styles.column}><AppText variant="h2">Porsi & preview</AppText>{!selectedFood ? <AppText variant="body">Pilih makanan dari hasil pencarian.</AppText> : <><AppText variant="h3">{selectedFood.name}</AppText><View style={styles.chips}>{selectedFood.servings.map((serving) => <Chip key={serving.id} label={`${serving.label}${serving.gramEquivalent ? ` · ${serving.gramEquivalent} g` : ''}`} selected={selectedServing?.id === serving.id} onPress={() => { setSelectedServing(serving); setPreview(undefined); }} />)}</View><Field label="Jumlah porsi" value={quantity} onChangeText={setQuantity} keyboardType="decimal-pad" /><Button label="Hitung preview" icon={Calculator} variant="secondary" loading={saving} disabled={!selectedServing || Number(quantity) <= 0} onPress={() => void calculatePreview()} />{preview ? <><NutrientPreview snapshot={preview.nutrition} />{preview.allergenWarnings.map((warning) => <InlineNotice key={warning.code} title={warning.matchedProfile ? `Peringatan alergen: ${warning.label}` : warning.label} text={warning.matchedProfile ? 'Item cocok dengan informasi alergi pada profil. Periksa sebelum menyimpan.' : warning.verified ? 'Metadata alergen tersedia dari sumber.' : 'Informasi ini belum diverifikasi penuh.'} tone={warning.matchedProfile ? 'danger' : 'warning'} />)}<Button label="Tambahkan ke waktu makan" icon={Plus} variant="lime" disabled={!selectedMealId} onPress={() => void addFood()} /></> : null}</>}</Card>
+      </View>
+
+      <View style={styles.grid}>
+        <Card tone="blue" style={styles.column}><AppText variant="h2">Item · {selectedMeal ? mealTypes.find((item) => item.value === selectedMeal.mealType)?.label : 'pilih waktu makan'}</AppText>{selectedMealItems.length === 0 ? <AppText variant="body">Belum ada item database pada waktu makan ini.</AppText> : selectedMealItems.map((item) => <View key={item.id} style={styles.item}><View style={styles.flex}><AppText variant="label">{item.snapshot.foodName}</AppText><AppText variant="caption">{item.quantity} × porsi · {item.gramAmount ? `${item.gramAmount} g` : 'gram tidak tersedia'} · snapshot {item.sourceVersion}</AppText><AppText variant="caption">{item.snapshot.complete ? '8 nutrien tersedia' : `${item.snapshot.missingNutrients.length} nutrien belum tersedia`}</AppText></View><Button label="−" variant="secondary" onPress={() => void updateQuantity(item.id, item.quantity - 0.25)} /><Button label="+" variant="secondary" onPress={() => void updateQuantity(item.id, item.quantity + 0.25)} /><Button label="Hapus" icon={Trash2} variant="danger" onPress={() => void removeItem(item.id)} /></View>)}</Card>
+        <Card tone="soft" style={styles.column}><View style={styles.rowStart}><AlertTriangle size={24} color={colors.warning} /><View style={styles.flex}><AppText variant="h2">Makanan custom</AppText><AppText variant="caption">Tidak ada nilai nutrisi yang dikarang.</AppText></View></View><Field label="Nama makanan" value={customName} onChangeText={setCustomName} placeholder="Makanan belum ada di database" /><Field label="Deskripsi porsi" value={customServing} onChangeText={setCustomServing} /><Button label="Simpan tanpa angka nutrisi" variant="secondary" disabled={!selectedMealId || customName.trim().length < 2} onPress={() => void addCustom()} /><AppText variant="caption">Daily summary akan menampilkan “Data belum tersedia”, bukan 0.</AppText></Card>
+      </View>
+
+      <Card tone="mint" style={styles.column} accessibilityLabel={`Ringkasan nutrisi ${summary?.itemCount ?? 0} item`}><View style={styles.row}><View><AppText variant="eyebrow">NUTRITION INDICATOR · REAL</AppText><AppText variant="h2">Ringkasan hari ini</AppText></View><Chip label={`${summary?.itemCount ?? 0} ITEM`} tone="mint" /></View>{summary?.indicators.slice(0, 4).map((indicator) => <View key={indicator.nutrientCode} style={styles.indicator}><View style={styles.row}><AppText variant="label">{indicator.displayName}</AppText><AppText variant="label">{indicator.amount === null ? 'Data belum tersedia' : `${indicator.amount} ${indicator.unit}`}</AppText></View><ProgressBar value={indicator.amount ?? 0} max={indicator.target?.maximum ?? indicator.target?.minimum ?? Math.max(indicator.amount ?? 1, 1)} label={`${indicator.displayName}: ${indicator.statusLabel}`} /><AppText variant="caption">{indicator.statusLabel}</AppText></View>)}<Button label="Buka delapan indikator & riwayat" variant="secondary" onPress={() => router.push('/nutrition' as never)} /></Card>
+    </>}
+  </AppShell>;
+}
+
+const styles = StyleSheet.create({ hero: { gap: spacing.md }, grid: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', gap: spacing.md }, column: { flex: 1, minWidth: 300, gap: spacing.md }, searchColumn: { flex: 1.25, minWidth: 320, gap: spacing.md }, flex: { flex: 1, minWidth: 0, gap: 4 }, row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: spacing.sm }, rowStart: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm }, chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs }, meal: { minHeight: 88, padding: spacing.sm, borderWidth: 2, borderColor: colors.border, borderRadius: radius.input, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: spacing.xs, backgroundColor: colors.white }, mealSummary: { width: '100%', minHeight: 44, gap: 4 }, selectedMeal: { borderColor: colors.primary, backgroundColor: colors.softLime }, foodList: { gap: spacing.xs }, foodResult: { minHeight: 72, padding: spacing.sm, borderRadius: radius.input, borderWidth: 2, borderColor: colors.border, backgroundColor: colors.white, flexDirection: 'row', alignItems: 'center', gap: spacing.sm }, foodSelected: { borderColor: colors.primary, backgroundColor: colors.softLime }, pressed: { opacity: 0.72 }, previewGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs }, previewMetric: { width: '48%', minWidth: 120, padding: spacing.sm, backgroundColor: colors.white, borderRadius: radius.input, borderWidth: 1, borderColor: colors.border }, item: { minHeight: 78, flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: spacing.xs, borderBottomWidth: 1, borderBottomColor: colors.border, paddingVertical: spacing.xs }, indicator: { gap: spacing.xs } });

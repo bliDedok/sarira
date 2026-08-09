@@ -1,75 +1,48 @@
-import React from 'react';
-import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { router } from 'expo-router';
-import { Activity as ActivityIcon, Camera, ChevronRight, Clock3, Database, Dumbbell, Footprints, HeartPulse, PersonStanding } from 'lucide-react-native';
-import { breakpoints, colors, radius, spacing } from '@sarira/design-tokens';
-import { AppText, Button, Card, Chip, ProgressBar, ProgressRing, SectionHeader } from '@sarira/ui';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { Activity, Footprints, Pencil, Plus, Trash2 } from 'lucide-react-native';
+import type { ActivityLogRecord, ActivityType, PerceivedIntensity, StepRecordValue } from '@sarira/shared-types';
+import { colors, radius, spacing } from '@sarira/design-tokens';
+import { AppText, Button, Card, Chip, ErrorState, Field, InlineNotice, Loading, SimulatedBadge } from '@sarira/ui';
 import { AppShell } from '@/layouts/AppShell';
-import { activitySummary } from '@/mocks/data';
-import { screenHref } from '@/utils/routes';
+import { api } from '@/services/api';
+import { messageFor, useBaseline } from '@/features/baseline/useBaseline';
 
-const workoutCards = [
-  { title: 'Mobilitas pagi', meta: '12 menit · ringan', tone: 'mint' as const, icon: PersonStanding },
-  { title: 'Kekuatan dasar', meta: '18 menit · tanpa alat', tone: 'lime' as const, icon: Dumbbell },
-  { title: 'Pemulihan ringan', meta: '10 menit · peregangan', tone: 'blue' as const, icon: HeartPulse },
-];
+const activities: { value: ActivityType; label: string }[] = [{ value: 'WALKING', label: 'Jalan kaki' }, { value: 'RUNNING', label: 'Lari' }, { value: 'CYCLING', label: 'Bersepeda' }, { value: 'STRENGTH', label: 'Kekuatan' }, { value: 'STRETCHING', label: 'Peregangan' }, { value: 'SPORT', label: 'Olahraga' }, { value: 'OTHER', label: 'Lainnya' }];
+const intensities: { value: PerceivedIntensity; label: string }[] = [{ value: 'LIGHT', label: 'Ringan' }, { value: 'MODERATE', label: 'Sedang' }, { value: 'VIGOROUS', label: 'Tinggi' }];
 
 export default function ActivityScreen() {
-  const { width } = useWindowDimensions();
-  const desktop = width >= breakpoints.desktop;
-  return (
-    <AppShell title="Aktivitas" subtitle="Gerak, latihan, dan sumber data">
-      <View style={styles.titleRow}><View style={{ flex: 1, gap: 4 }}><AppText variant="eyebrow">AKTIF TANPA AGRESIF</AppText><AppText variant={desktop ? 'h1' : 'h2'}>Bergerak sesuai kondisi tubuhmu.</AppText><AppText variant="body">Tidak ada target yang mengalahkan safety atau membuat input manual terasa lebih rendah.</AppText></View><Button label="Catat aktivitas" variant="lime" onPress={() => router.push(screenHref('daily-check-in') as never)} /></View>
+  const { date } = useLocalSearchParams<{ date?: string }>();
+  const { current, loading: baselineLoading, error: baselineError, reload: reloadBaseline } = useBaseline();
+  const [logs, setLogs] = useState<ActivityLogRecord[]>([]); const [stepRecord, setStepRecord] = useState<StepRecordValue>(); const [steps, setSteps] = useState('');
+  const [editingId, setEditingId] = useState<string>(); const [activityType, setActivityType] = useState<ActivityType>('WALKING'); const [duration, setDuration] = useState('20'); const [intensity, setIntensity] = useState<PerceivedIntensity>('LIGHT'); const [description, setDescription] = useState(''); const [notes, setNotes] = useState('');
+  const [loading, setLoading] = useState(true); const [saving, setSaving] = useState(false); const [error, setError] = useState<string>();
+  const trackingDate = date ?? current?.localDate;
+  const load = useCallback(async () => { if (!trackingDate) return; setLoading(true); setError(undefined); try { const [activityValues, stepValues] = await Promise.all([api.getActivityLogs(trackingDate), api.getStepRecords()]); setLogs(activityValues); const today = stepValues.find((item) => item.localDate === trackingDate); setStepRecord(today); setSteps(today ? String(today.steps) : ''); } catch (cause) { setError(messageFor(cause)); } finally { setLoading(false); } }, [trackingDate]);
+  useEffect(() => {
+    if (!trackingDate) return;
+    const timer = setTimeout(() => void load(), 0);
+    return () => clearTimeout(timer);
+  }, [load, trackingDate]);
+  const reset = () => { setEditingId(undefined); setActivityType('WALKING'); setDuration('20'); setIntensity('LIGHT'); setDescription(''); setNotes(''); };
+  const edit = (log: ActivityLogRecord) => { setEditingId(log.id); setActivityType(log.activityType); setDuration(String(log.durationMinutes)); setIntensity(log.perceivedIntensity); setDescription(log.description ?? ''); setNotes(log.notes ?? ''); };
+  const save = async () => { if (!trackingDate) return; setSaving(true); setError(undefined); try { const payload = { localDate: trackingDate, activityType, durationMinutes: Number(duration), perceivedIntensity: intensity, description, notes }; if (editingId) await api.updateActivityLog(editingId, payload); else await api.createActivityLog(payload); reset(); await Promise.all([load(), reloadBaseline()]); } catch (cause) { setError(messageFor(cause)); } finally { setSaving(false); } };
+  const saveSteps = async () => { if (!trackingDate) return; setError(undefined); try { const value = await api.saveSteps(trackingDate, { steps: Number(steps), sourceDevice: 'Input pengguna' }); setStepRecord(value); } catch (cause) { setError(messageFor(cause)); } };
+  const remove = async (id: string) => { try { await api.deleteActivityLog(id); await Promise.all([load(), reloadBaseline()]); } catch (cause) { setError(messageFor(cause)); } };
 
-      <View style={styles.summaryGrid}>
-        <Card tone="dark" style={styles.stepsCard}>
-          <View style={styles.rowBetween}><View style={styles.iconDark}><Footprints size={24} color={colors.primaryDark} /></View><ProgressRing value={(activitySummary.steps / activitySummary.stepGoal) * 100} size={80} /></View>
-          <View><AppText variant="display" style={{ color: colors.white }}>{activitySummary.steps.toLocaleString('id-ID')}</AppText><AppText variant="body" style={{ color: '#C9D7CD' }}>dari target demo {activitySummary.stepGoal.toLocaleString('id-ID')} langkah</AppText></View>
-          <View style={styles.source}><Database size={16} color={colors.lime} /><AppText variant="caption" style={{ color: '#C9D7CD' }}>Input manual · sumber terlihat</AppText></View>
-        </Card>
-        <View style={styles.smallStatColumn}>
-          <Card tone="lime" style={styles.smallStat}><ActivityIcon size={24} color={colors.primary} /><View><AppText variant="h2">{activitySummary.activeMinutes} menit</AppText><AppText variant="caption">aktif hari ini</AppText></View><ProgressBar value={38} max={45} tone="primary" label="38 dari target demo 45 menit" /></Card>
-          <Card tone="cream" style={styles.smallStat}><Clock3 size={24} color={colors.information} /><View><AppText variant="h2">2 sesi</AppText><AppText variant="caption">gerak ringan tercatat</AppText></View></Card>
-        </View>
+  return <AppShell title="Aktivitas" subtitle="Pencatatan manual dasar">
+    {baselineLoading ? <Loading label="Memuat baseline…" /> : baselineError ? <ErrorState description={baselineError} onRetry={() => void reloadBaseline()} /> : !current ? <ErrorState title="Baseline belum dimulai" description="Mulai dari Starter Journey terlebih dahulu." /> : <>
+      <Card tone="lime" style={styles.intro}><View style={styles.row}><Activity size={30} color={colors.primaryDark} /><View style={styles.flex}><AppText variant="h2">Aktivitas · {trackingDate}</AppText><AppText variant="body">Durasi dan intensitas adalah catatan pengguna, bukan data wearable terverifikasi.</AppText></View><Chip label="SUMBER · MANUAL" tone="neutral" /></View></Card>
+      {error ? <View accessibilityLiveRegion="assertive"><InlineNotice title="Belum tersimpan" text={error} tone="danger" /></View> : null}
+      <View style={styles.grid}>
+        <Card style={styles.column}><View style={styles.row}><AppText variant="h2">{editingId ? 'Edit aktivitas' : 'Tambah aktivitas'}</AppText>{editingId ? <Button label="Batal edit" variant="ghost" onPress={reset} /> : null}</View><View style={styles.chips}>{activities.map((item) => <Chip key={item.value} label={item.label} selected={activityType === item.value} onPress={() => setActivityType(item.value)} />)}</View><Field label="Durasi (menit)" value={duration} onChangeText={setDuration} keyboardType="number-pad" /><AppText variant="label">Intensitas yang dirasakan</AppText><View style={styles.chips}>{intensities.map((item) => <Chip key={item.value} label={item.label} selected={intensity === item.value} onPress={() => setIntensity(item.value)} />)}</View><Field label="Deskripsi (opsional)" value={description} onChangeText={setDescription} maxLength={200} /><Field label="Catatan (opsional)" value={notes} onChangeText={setNotes} maxLength={500} multiline /><Button label={editingId ? 'Simpan perubahan' : 'Tambah aktivitas'} icon={editingId ? Pencil : Plus} loading={saving} variant="lime" disabled={!Number.isFinite(Number(duration)) || Number(duration) < 1} onPress={() => void save()} /></Card>
+        <Card tone="mint" style={styles.column}><AppText variant="h2">Langkah manual</AppText><View style={styles.rowStart}><View style={styles.icon}><Footprints size={24} color={colors.primary} /></View><View style={styles.flex}><AppText variant="h2">{stepRecord?.steps.toLocaleString('id-ID') ?? 'Belum dicatat'}</AppText><AppText variant="caption">Manual · tidak terverifikasi wearable</AppText></View></View><Field label="Jumlah langkah" value={steps} onChangeText={setSteps} keyboardType="number-pad" placeholder="Contoh: 6200" /><Button label="Simpan langkah" variant="secondary" onPress={() => void saveSteps()} /></Card>
       </View>
-
-      <SectionHeader title="Pilihan gerak hari ini" action="Semua latihan" onAction={() => router.push(screenHref('workout-list') as never)} />
-      <View style={styles.workoutGrid}>
-        {workoutCards.map(({ title, meta, tone, icon: Icon }) => (
-          <Pressable key={title} accessibilityRole="button" accessibilityLabel={`Buka ${title}`} onPress={() => router.push(screenHref('workout-detail') as never)} style={({ pressed }) => [styles.workoutPress, pressed && { opacity: 0.74 }]}>
-            <Card tone={tone} style={styles.workoutCard}><View style={styles.workoutVisual}><View style={styles.motionHead} /><View style={styles.motionBody} /><View style={styles.motionArm} /><View style={styles.motionLeg} /></View><View style={styles.rowBetween}><View style={styles.workoutIcon}><Icon size={21} color={colors.primary} /></View><ChevronRight size={20} color={colors.textMuted} /></View><AppText variant="h3">{title}</AppText><AppText variant="caption">{meta}</AppText></Card>
-          </Pressable>
-        ))}
-      </View>
-
-      <Card tone="blue" style={styles.coachCard}>
-        <View style={styles.coachVisual}><View style={styles.cameraFrame}><PersonStanding size={56} color={colors.information} strokeWidth={1.4} /></View></View>
-        <View style={{ flex: 1, minWidth: 220, gap: spacing.xs }}><View style={styles.tagRow}><Chip label="MOTION COACH" tone="neutral" /><Chip label="SIMULASI" tone="lime" /></View><AppText variant="h2">Umpan balik gerakan yang netral.</AppText><AppText variant="body">Kamera dan analisis pose belum terintegrasi. Prototype menunjukkan bahasa, privasi, dan alur feedback tanpa menilai bentuk tubuh.</AppText><Button label="Coba Motion Coach" icon={Camera} variant="secondary" onPress={() => router.push(screenHref('motion-coach') as never)} /></View>
-      </Card>
-    </AppShell>
-  );
+      <Card style={styles.column}><AppText variant="h2">Riwayat hari ini</AppText>{loading ? <Loading label="Memuat aktivitas…" /> : logs.length === 0 ? <AppText variant="body">Belum ada aktivitas yang tercatat.</AppText> : logs.map((log) => <View key={log.id} style={styles.log}><View style={styles.flex}><AppText variant="h3">{activities.find((item) => item.value === log.activityType)?.label}</AppText><AppText variant="body">{log.durationMinutes} menit · {intensities.find((item) => item.value === log.perceivedIntensity)?.label}</AppText><AppText variant="caption">Sumber manual</AppText></View><View style={styles.actions}><Button label="Edit" icon={Pencil} variant="secondary" onPress={() => edit(log)} /><Button label="Hapus" icon={Trash2} variant="danger" onPress={() => void remove(log.id)} /></View></View>)}</Card>
+      <Card tone="blue" style={styles.demo}><View style={styles.flex}><View style={styles.chips}><AppText variant="eyebrow">MOTION COACH & WEARABLE SYNC</AppText><SimulatedBadge label="DEMO" /></View><AppText variant="h3">Integrasi perangkat dan analisis pose belum aktif</AppText><AppText variant="body">Apple Health, Health Connect, smartwatch, serta pose estimation tetap berada di luar Phase 4.</AppText></View></Card>
+    </>}
+  </AppShell>;
 }
 
-const styles = StyleSheet.create({
-  titleRow: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: spacing.md },
-  summaryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
-  stepsCard: { flex: 1.3, minWidth: 310, minHeight: 300, justifyContent: 'space-between', borderColor: colors.primaryDark, padding: spacing.xl },
-  rowBetween: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm },
-  iconDark: { width: 52, height: 52, borderRadius: 18, backgroundColor: colors.lime, alignItems: 'center', justifyContent: 'center' },
-  source: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
-  smallStatColumn: { flex: 0.8, minWidth: 280, gap: spacing.md },
-  smallStat: { flex: 1, minHeight: 142, justifyContent: 'space-between', gap: spacing.sm },
-  workoutGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
-  workoutPress: { flex: 1, minWidth: 230, borderRadius: radius.card },
-  workoutCard: { minHeight: 300, justifyContent: 'space-between', gap: spacing.sm },
-  workoutVisual: { height: 112, borderRadius: radius.input, backgroundColor: 'rgba(255,255,255,0.62)', overflow: 'hidden', alignItems: 'center', justifyContent: 'center' },
-  motionHead: { width: 24, height: 24, borderRadius: 12, backgroundColor: colors.primaryDark, top: 4 },
-  motionBody: { width: 18, height: 54, borderRadius: 10, backgroundColor: colors.primary, top: 6 },
-  motionArm: { position: 'absolute', width: 82, height: 14, borderRadius: 8, backgroundColor: colors.primary, top: 54, transform: [{ rotate: '-18deg' }] },
-  motionLeg: { position: 'absolute', width: 84, height: 15, borderRadius: 8, backgroundColor: colors.primaryDark, bottom: 13, transform: [{ rotate: '15deg' }] },
-  workoutIcon: { width: 40, height: 40, borderRadius: 14, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center' },
-  coachCard: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: spacing.xl, padding: spacing.xl },
-  coachVisual: { width: 190, height: 190, borderRadius: radius.cardLarge, backgroundColor: '#D7E9F6', alignItems: 'center', justifyContent: 'center' },
-  cameraFrame: { width: 120, height: 140, borderRadius: radius.input, borderWidth: 2, borderColor: colors.information, borderStyle: 'dashed', alignItems: 'center', justifyContent: 'center' },
-  tagRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
-});
+const styles = StyleSheet.create({ intro: { gap: spacing.sm }, grid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md }, column: { flex: 1, minWidth: 300, gap: spacing.md }, flex: { flex: 1, gap: 4 }, row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm, flexWrap: 'wrap' }, rowStart: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm }, chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs }, icon: { width: 52, height: 52, borderRadius: 18, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center' }, log: { minHeight: 100, borderRadius: radius.input, borderWidth: 1, borderColor: colors.border, padding: spacing.sm, flexDirection: 'row', alignItems: 'center', gap: spacing.sm }, actions: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs }, demo: { flexDirection: 'row', gap: spacing.md } });

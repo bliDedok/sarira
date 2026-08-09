@@ -5,7 +5,7 @@ export function resolveAuthRedirect(input: { group: RouteGroup; authenticated: b
   const completedOnlyGroup = ['(app)', '(family)', '(settings)'].includes(input.group ?? '');
   if (!input.authenticated && privateGroup) return '/login';
   if (input.authenticated && !input.onboardingCompleted && completedOnlyGroup) return `/setup/${input.currentStep ?? 'role-selection'}`;
-  if (input.authenticated && input.onboardingCompleted && input.group === '(onboarding)') return '/home';
+  if (input.authenticated && input.onboardingCompleted && input.group === '(onboarding)') return '/starter-journey';
   if (input.authenticated && input.onboardingCompleted && input.group === '(auth)') return '/home';
   return null;
 }

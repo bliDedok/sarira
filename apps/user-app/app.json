@@ -2,7 +2,7 @@
   "expo": {
     "name": "SARIRA",
     "slug": "sarira-user-app",
-    "version": "0.3.0",
+    "version": "0.5.0",
     "orientation": "default",
     "scheme": "sarira",
     "userInterfaceStyle": "automatic",

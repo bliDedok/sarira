@@ -28,7 +28,7 @@ export default function ProfileScreen() {
       <View style={styles.profileGrid}>
         <Card tone="dark" style={styles.identityCard}>
           <View style={styles.avatarLarge}><AppText variant="h1" style={{ color: colors.primaryDark }}>{activeProfile.initials}</AppText></View>
-          <View style={{ gap: 4 }}><Chip label={activeProfile.segment.toUpperCase()} tone="lime" /><AppText variant="h2" style={{ color: colors.white }}>{activeProfile.name}</AppText><AppText variant="body" style={{ color: '#CAD8CE' }}>Program demo · Adult Balance</AppText></View>
+          <View style={{ gap: 4 }}><Chip label={activeProfile.segment.toUpperCase()} tone="lime" /><AppText variant="h2" style={{ color: colors.white }}>{activeProfile.name}</AppText><AppText variant="body" style={{ color: '#CAD8CE' }}>Program demo · bukan hasil baseline</AppText></View>
           <InlineNotice title="Status safety demo · hijau" text="Artinya terbatas pada jawaban yang tersedia dan dapat dievaluasi ulang." tone="success" />
         </Card>
         <Card style={styles.familyCard}>

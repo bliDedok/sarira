@@ -1,201 +1,106 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
-import {
-  Activity,
-  Check,
-  ChevronRight,
-  Clock3,
-  Database,
-  Footprints,
-  Lightbulb,
-  MoonStar,
-  Plus,
-  Utensils,
-} from 'lucide-react-native';
+import { router } from 'expo-router';
+import { Activity, CalendarDays, Check, ChevronRight, Clock3, Lightbulb, MoonStar, RefreshCw, Utensils } from 'lucide-react-native';
 import { breakpoints, colors, radius, spacing } from '@sarira/design-tokens';
-import { AppText, Button, Card, Chip, ProgressBar, ProgressRing, SectionHeader, SimulatedBadge } from '@sarira/ui';
+import { AppText, Button, Card, Chip, ErrorState, Loading, ProgressBar, ProgressRing, SectionHeader, SimulatedBadge } from '@sarira/ui';
 import { AppShell } from '@/layouts/AppShell';
-import { activitySummary, nutritionSummary, todayTasks, weeklyAction } from '@/mocks/data';
-import { usePrototype } from '@/features/prototype/PrototypeContext';
-import { screenHref } from '@/utils/routes';
+import { useBaseline } from '@/features/baseline/useBaseline';
+import type { DailyNutritionSummaryRecord } from '@sarira/shared-types';
+import { api } from '@/services/api';
 
-function WeeklyActionCard({ dayOne }: { dayOne: boolean }) {
-  const { weeklyProgress, completeWeeklyAction } = usePrototype();
-  if (dayOne) {
-    return (
-      <Card tone="dark" style={styles.weeklyCard} accessibilityLabel="Weekly Action belum aktif">
-        <View style={styles.cardTopRow}>
-          <AppText variant="eyebrow" style={{ color: colors.lime }}>WEEKLY ACTION</AppText>
-          <SimulatedBadge label="AKTIF HARI 14" />
-        </View>
-        <AppText variant="h2" style={{ color: colors.white }}>Kenali pola dulu, action menyusul.</AppText>
-        <AppText variant="body" style={{ color: '#C8D6CC' }}>Selama baseline, cukup catat kondisi sebenarnya. SARIRA belum membuat kesimpulan pada Hari 1.</AppText>
-        <Button label="Mulai check-in Hari 1" icon={ChevronRight} variant="lime" onPress={() => router.push(screenHref('daily-check-in') as never)} />
-      </Card>
-    );
-  }
-  return (
-    <Card tone="dark" style={styles.weeklyCard} accessibilityLabel={`Weekly Action, progres ${weeklyProgress} dari ${weeklyAction.target} hari`}>
-      <View style={styles.cardTopRow}>
-        <View style={{ gap: 4 }}>
-          <AppText variant="eyebrow" style={{ color: colors.lime }}>WEEKLY ACTION</AppText>
-          <Chip label={`Data confidence · ${weeklyAction.confidence}`} tone="mint" />
-        </View>
-        <ProgressRing value={(weeklyProgress / weeklyAction.target) * 100} label={`${weeklyProgress} dari ${weeklyAction.target} hari`} />
-      </View>
-      <View style={{ gap: spacing.xs }}>
-        <AppText variant="h2" style={{ color: colors.white }}>{weeklyAction.title}</AppText>
-        <AppText variant="bodyLarge" style={{ color: '#D5E1D9' }}>{weeklyAction.description}</AppText>
-      </View>
-      <View style={styles.actionRow}>
-        <Button label={weeklyProgress >= weeklyAction.target ? 'Target tercatat' : 'Catat hari ini'} icon={weeklyProgress >= weeklyAction.target ? Check : Plus} variant="lime" onPress={completeWeeklyAction} disabled={weeklyProgress >= weeklyAction.target} />
-        <Button label="Mengapa dipilih" variant="inverse" onPress={() => router.push(screenHref('weekly-action-reason') as never)} />
-      </View>
-    </Card>
-  );
-}
-
-function BaselineCard({ dayOne }: { dayOne: boolean }) {
-  const day = dayOne ? 1 : 10;
-  return (
-    <Card tone="lime" style={styles.baselineCard} accessibilityLabel={`Baseline hari ${day} dari 14`}>
-      <View style={styles.cardTopRow}>
-        <View style={styles.roundIcon}><Clock3 size={21} color={colors.primaryDark} /></View>
-        <Chip label={dayOne ? 'BARU DIMULAI' : '4 HARI LAGI'} tone="neutral" />
-      </View>
-      <View style={{ gap: 3 }}>
-        <AppText variant="h3">Baseline · Hari {day}</AppText>
-        <AppText variant="body">{dayOne ? 'Belajar mencatat sesuai kondisi sebenarnya.' : 'Cakupan data 8 dari 10 kategori.'}</AppText>
-      </View>
-      <ProgressBar value={day} max={14} tone="primary" label={`Hari ${day} dari 14`} />
-      <Button label="Lihat perjalanan" variant="secondary" onPress={() => router.push(screenHref('starter-journey') as never)} />
-    </Card>
-  );
-}
-
-function TaskList() {
-  const { completedTasks, toggleTask } = usePrototype();
-  return (
-    <Card style={{ gap: spacing.sm }}>
-      <SectionHeader title="Tugas hari ini" action="Lihat semua" onAction={() => router.push(screenHref('daily-check-in') as never)} />
-      {todayTasks.map((task) => {
-        const done = completedTasks.includes(task.id);
-        const Icon = task.icon === 'food' ? Utensils : task.icon === 'sleep' ? MoonStar : Activity;
-        return (
-          <Pressable
-            key={task.id}
-            accessibilityRole="checkbox"
-            accessibilityLabel={task.title}
-            accessibilityState={{ checked: done }}
-            onPress={() => toggleTask(task.id)}
-            style={({ pressed }) => [styles.taskRow, pressed && { opacity: 0.72 }]}
-          >
-            <View style={[styles.taskIcon, done && { backgroundColor: colors.softLime }]}>{done ? <Check size={19} color={colors.primaryDark} /> : <Icon size={19} color={colors.primary} />}</View>
-            <View style={{ flex: 1, gap: 2 }}>
-              <AppText variant="label" style={done ? styles.doneText : undefined}>{task.title}</AppText>
-              <AppText variant="caption">{task.meta}</AppText>
-            </View>
-            <ChevronRight size={18} color={colors.textMuted} />
-          </Pressable>
-        );
-      })}
-    </Card>
-  );
-}
-
-function NutritionCard() {
-  const protein = nutritionSummary.find((metric) => metric.id === 'protein')!;
-  const sodium = nutritionSummary.find((metric) => metric.id === 'sodium')!;
-  return (
-    <Card tone="mint" style={{ gap: spacing.md }}>
-      <View style={styles.cardTopRow}>
-        <View>
-          <AppText variant="eyebrow">NUTRISI HARI INI</AppText>
-          <AppText variant="h3">Masih perlu dilengkapi</AppText>
-        </View>
-        <View style={[styles.roundIcon, { backgroundColor: colors.white }]}><Utensils size={21} color={colors.primary} /></View>
-      </View>
-      <View style={{ gap: spacing.xs }}>
-        <View style={styles.cardTopRow}><AppText variant="label">Protein</AppText><AppText variant="caption">{protein.value} dari {protein.target} {protein.unit}</AppText></View>
-        <ProgressBar value={protein.value} max={protein.target} tone="primary" label="Protein minimum" />
-        <AppText variant="caption">{protein.status}.</AppText>
-      </View>
-      <View style={{ gap: spacing.xs }}>
-        <View style={styles.cardTopRow}><AppText variant="label">Natrium</AppText><AppText variant="caption">{sodium.value.toLocaleString('id-ID')} / {sodium.target.toLocaleString('id-ID')} {sodium.unit}</AppText></View>
-        <ProgressBar value={sodium.value} max={sodium.target} tone="warning" label="Natrium mendekati batas" />
-        <AppText variant="caption">{sodium.status}.</AppText>
-      </View>
-      <Button label="Buka indikator lengkap" variant="secondary" onPress={() => router.push(screenHref('nutrition-indicator') as never)} />
-    </Card>
-  );
-}
-
-function WellnessSummary() {
-  return (
-    <Card tone="cream" style={{ gap: spacing.md }}>
-      <SectionHeader title="Aktivitas & tidur" />
-      <View style={styles.summaryStats}>
-        <View style={styles.summaryStat}><View style={styles.statIcon}><Footprints size={21} color={colors.primary} /></View><AppText variant="h3">{activitySummary.steps.toLocaleString('id-ID')}</AppText><AppText variant="caption">dari {activitySummary.stepGoal.toLocaleString('id-ID')} langkah</AppText></View>
-        <View style={styles.summaryStat}><View style={styles.statIcon}><MoonStar size={21} color={colors.information} /></View><AppText variant="h3">{activitySummary.sleepHours} jam</AppText><AppText variant="caption">tidur semalam</AppText></View>
-      </View>
-      <View style={styles.sourceRow}><Database size={16} color={colors.textMuted} /><AppText variant="caption">{activitySummary.source}</AppText></View>
-    </Card>
-  );
-}
+const taskRoutes = { checkIn: '/daily-check-in', food: '/food', sleep: '/sleep', activity: '/activity' } as const;
+const labels = { checkIn: 'Check-in', food: 'Makanan', sleep: 'Tidur', activity: 'Aktivitas' } as const;
 
 export default function HomeScreen() {
   const { width } = useWindowDimensions();
-  const { day } = useLocalSearchParams<{ day?: string }>();
-  const dayOne = day === '1';
   const desktop = width >= breakpoints.desktop;
-  const { activeProfile } = usePrototype();
+  const { profile, current, loading, error, reload } = useBaseline();
+  const [nutrition, setNutrition] = useState<DailyNutritionSummaryRecord>();
+  useEffect(() => { if (!current) return; const timer = setTimeout(() => void api.getDailyNutrition(current.localDate).then(setNutrition).catch(() => setNutrition(undefined)), 0); return () => clearTimeout(timer); }, [current]);
+
   return (
     <AppShell title="Beranda" subtitle="Ringkasan prioritas hari ini">
       <View style={styles.greeting}>
-        <View style={{ flex: 1, gap: 4 }}>
-          <AppText variant="eyebrow">SELAMAT PAGI, {activeProfile.name.split(' ')[0]?.toUpperCase()}</AppText>
-          <AppText variant={desktop ? 'h1' : 'h2'}>Satu langkah yang terasa mungkin.</AppText>
+        <View style={styles.flex}>
+          <AppText variant="eyebrow">SELAMAT DATANG, {profile?.fullName.split(' ')[0]?.toUpperCase() ?? 'KAMU'}</AppText>
+          <AppText variant={desktop ? 'h1' : 'h2'}>Satu catatan yang terasa mungkin.</AppText>
           <AppText variant="body">Tidak perlu sempurna, cukup catat sesuai kondisi sebenarnya.</AppText>
         </View>
-        <Chip label="Semua fitur · demo" tone="lime" />
+        <Button label="Muat ulang" icon={RefreshCw} variant="secondary" onPress={() => void reload()} />
       </View>
 
-      <View style={styles.heroGrid}>
-        <View style={{ flex: desktop ? 1.65 : 1, minWidth: desktop ? 500 : '100%' }}><WeeklyActionCard dayOne={dayOne} /></View>
-        <View style={{ flex: 0.85, minWidth: desktop ? 280 : '100%' }}><BaselineCard dayOne={dayOne} /></View>
-      </View>
+      {loading ? <Loading label="Memuat baseline nyata…" /> : error ? <ErrorState description={error} onRetry={() => void reload()} /> : !current ? (
+        <Card tone="lime" style={styles.startCard}>
+          <CalendarDays size={38} color={colors.primaryDark} />
+          <View style={styles.flex}><AppText variant="h2">Starter Journey siap dimulai</AppText><AppText variant="body">Kenali baseline 14 hari dan pilih izin pencatatan yang sesuai sebelum membuat sesi.</AppText></View>
+          <Button label="Buka Starter Journey" variant="primary" icon={ChevronRight} onPress={() => router.push('/starter-journey' as never)} />
+        </Card>
+      ) : <>
+        <View style={styles.heroGrid}>
+          <Card tone="dark" style={styles.weeklyCard} accessibilityLabel="Weekly Action masih Demo">
+            <View style={styles.rowBetween}><View style={styles.flex}><AppText variant="eyebrow" style={styles.limeText}>WEEKLY ACTION</AppText><AppText variant="caption" style={styles.muted}>Aktif setelah analisis pola pada fase berikutnya</AppText></View><SimulatedBadge label="DEMO" /></View>
+            <AppText variant="h2" style={styles.white}>Kenali pola dulu, action menyusul.</AppText>
+            <AppText variant="body" style={styles.muted}>Selama baseline, cukup catat kondisi sebenarnya. SARIRA belum membuat kesimpulan sebab-akibat.</AppText>
+            <Button label="Isi check-in hari ini" icon={ChevronRight} variant="lime" onPress={() => router.push('/daily-check-in' as never)} />
+          </Card>
 
-      <View style={styles.mainGrid}>
-        <View style={styles.mainColumn}><TaskList /><WellnessSummary /></View>
-        <View style={styles.mainColumn}><NutritionCard />
-          <Card tone="blue" style={{ gap: spacing.sm }}>
-            <View style={styles.cardTopRow}><View style={styles.roundIcon}><Lightbulb size={21} color={colors.information} /></View><Chip label="INSIGHT SINGKAT" tone="neutral" /></View>
-            <AppText variant="h3">Catatan tidur mulai lebih konsisten.</AppText>
-            <AppText variant="body">6 dari 8 catatan terakhir berada pada rentang waktu tidur yang serupa. Ini pola awal, bukan diagnosis.</AppText>
-            <Button label="Lihat Pattern Map" variant="ghost" onPress={() => router.push(screenHref('pattern-map') as never)} />
+          <Card tone="lime" style={styles.baselineCard} accessibilityLabel={`Baseline hari ${current.baseline.currentDay} dari ${current.baseline.targetDays}`}>
+            <View style={styles.rowBetween}><View style={styles.roundIcon}><Clock3 size={22} color={colors.primaryDark} /></View><Chip label={current.day14Available ? 'PERIODE TERCAPAI' : current.day7Available ? 'CHECKPOINT TERSEDIA' : 'AKTIF'} tone="neutral" /></View>
+            <View><AppText variant="h2">Baseline · Hari {Math.min(current.baseline.currentDay, current.baseline.targetDays)}</AppText><AppText variant="body">{current.completeness.completedDays} hari lengkap · {current.completeness.score}% data baseline tersedia</AppText></View>
+            <ProgressBar value={Math.min(current.baseline.currentDay, current.baseline.targetDays)} max={current.baseline.targetDays} tone="primary" label={`Hari ${Math.min(current.baseline.currentDay, current.baseline.targetDays)} dari ${current.baseline.targetDays}`} />
+            <Button label="Lihat perjalanan" variant="secondary" onPress={() => router.push('/baseline-journey' as never)} />
           </Card>
         </View>
-      </View>
+
+        {current.day14Available ? <Card tone={current.baseline.readinessStatus === 'READY' ? 'mint' : 'cream'} style={styles.readiness}>
+          <View style={styles.flex}><AppText variant="eyebrow">DAY-14 READINESS</AppText><AppText variant="h2">{current.baseline.readinessStatus === 'READY' ? 'Data baseline siap dianalisis.' : 'Periode selesai, beberapa data masih perlu dilengkapi.'}</AppText><AppText variant="body">Pattern Map final belum dibuat pada Phase 4.</AppText></View>
+          <Button label="Lihat readiness" variant="secondary" onPress={() => router.push('/baseline-journey' as never)} />
+        </Card> : current.day7Available ? <Card tone="blue" style={styles.readiness}><View style={styles.flex}><AppText variant="eyebrow">CHECKPOINT HARI 7</AppText><AppText variant="h3">Ringkasan deskriptif minggu pertama tersedia.</AppText><AppText variant="body">Tidak berisi diagnosis atau kesimpulan sebab-akibat.</AppText></View><Button label="Buka checkpoint" variant="secondary" onPress={() => router.push('/day-7-checkpoint' as never)} /></Card> : null}
+
+        <View style={styles.mainGrid}>
+          <Card style={styles.column}>
+            <SectionHeader title="Tugas hari ini" action="Perjalanan" onAction={() => router.push('/baseline-journey' as never)} />
+            {current.tasks.map((task) => {
+              const Icon = task.definitionCode === 'food' ? Utensils : task.definitionCode === 'sleep' ? MoonStar : task.definitionCode === 'activity' ? Activity : Lightbulb;
+              return <Pressable key={task.id} accessibilityRole="link" accessibilityLabel={`${task.title}, ${task.status}`} onPress={() => router.push(taskRoutes[task.definitionCode] as never)} style={({ pressed }) => [styles.task, pressed && styles.pressed]}><View style={[styles.taskIcon, task.status === 'COMPLETED' && styles.doneIcon]}>{task.status === 'COMPLETED' ? <Check size={20} color={colors.primaryDark} /> : <Icon size={20} color={colors.primary} />}</View><View style={styles.flex}><AppText variant="label">{task.title}</AppText><AppText variant="caption">{task.status === 'COMPLETED' ? 'Tercatat' : task.status === 'SKIPPED' ? 'Dilewati' : 'Belum tercatat'} · {task.progress} dari {task.target}</AppText></View><ChevronRight size={18} color={colors.textMuted} /></Pressable>;
+            })}
+          </Card>
+
+          <Card tone="mint" style={styles.column} accessibilityLabel={`Kelengkapan data ${current.completeness.score} persen`}>
+            <View style={styles.rowBetween}><View><AppText variant="eyebrow">KELENGKAPAN DATA</AppText><AppText variant="h2">{current.completeness.score}% tersedia</AppText></View><ProgressRing value={current.completeness.score} trackColor="#CFE9D8" color={colors.primary} label={`Kelengkapan data ${current.completeness.score} persen`} /></View>
+            <AppText variant="body">Ini mengukur ketersediaan catatan baseline, bukan skor kesehatan atau diagnosis.</AppText>
+            <View style={styles.chips}>{(['checkIn', 'food', 'sleep', 'activity'] as const).map((domain) => <Chip key={domain} label={`${labels[domain]} · ${Math.round(current.completeness.domainCoverage[domain] * 100)}%`} tone={current.completeness.missingDomains.includes(domain) ? 'warning' : 'mint'} />)}</View>
+          </Card>
+        </View>
+
+        <Card tone="cream" style={styles.demoCard} accessibilityLabel={`Ringkasan nutrisi nyata, ${nutrition?.itemCount ?? 0} item`}>
+          <View style={styles.rowBetween}><View style={styles.flex}><AppText variant="eyebrow">NUTRITION INDICATOR · REAL</AppText><AppText variant="h3">Ringkasan nutrisi hari ini</AppText></View><Chip label={`${nutrition?.itemCount ?? 0} ITEM`} tone="mint" /></View>
+          <View style={styles.chips}>{(['ENERGY_KCAL', 'PROTEIN_G', 'FIBER_G', 'SODIUM_MG'] as const).map((code) => { const indicator = nutrition?.indicators.find((item) => item.nutrientCode === code); return <Chip key={code} label={`${indicator?.displayName ?? code} · ${indicator?.amount === null || indicator?.amount === undefined ? 'belum tersedia' : `${indicator.amount} ${indicator.unit}`}`} tone={indicator?.amount === null || indicator?.amount === undefined ? 'warning' : 'neutral'} />; })}</View>
+          <AppText variant="body">Angka berasal dari item database dan snapshot porsi. Guided Meal, Flex Kitchen, serta saran AI tetap Demo.</AppText>
+          <Button label="Buka indikator nutrisi" variant="secondary" onPress={() => router.push('/nutrition' as never)} />
+        </Card>
+      </>}
     </AppShell>
   );
 }
 
 const styles = StyleSheet.create({
   greeting: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: spacing.md },
-  heroGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md, alignItems: 'stretch' },
-  weeklyCard: { minHeight: 330, borderColor: colors.primaryDark, justifyContent: 'space-between', gap: spacing.lg, padding: spacing.xl },
-  baselineCard: { minHeight: 330, justifyContent: 'space-between', gap: spacing.md, borderColor: '#D6E99A' },
-  cardTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm },
-  actionRow: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: spacing.xs },
-  roundIcon: { width: 44, height: 44, borderRadius: 16, backgroundColor: 'rgba(255,255,255,0.64)', alignItems: 'center', justifyContent: 'center' },
+  flex: { flex: 1, gap: 4 },
+  heroGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.md },
+  weeklyCard: { flex: 1.5, minWidth: 300, minHeight: 300, justifyContent: 'space-between', gap: spacing.lg, padding: spacing.xl, borderColor: colors.primaryDark },
+  baselineCard: { flex: 0.9, minWidth: 280, minHeight: 300, justifyContent: 'space-between', gap: spacing.md },
+  rowBetween: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing.sm, flexWrap: 'wrap' },
+  white: { color: colors.white }, limeText: { color: colors.lime }, muted: { color: '#C8D6CC' },
+  roundIcon: { width: 46, height: 46, borderRadius: 16, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center' },
+  startCard: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: spacing.md, minHeight: 160 },
+  readiness: { flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: spacing.md },
   mainGrid: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', gap: spacing.md },
-  mainColumn: { flex: 1, minWidth: 300, gap: spacing.md },
-  taskRow: { minHeight: 64, borderRadius: radius.input, padding: spacing.xs, flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  column: { flex: 1, minWidth: 300, gap: spacing.md },
+  task: { minHeight: 64, borderRadius: radius.input, padding: spacing.xs, flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   taskIcon: { width: 44, height: 44, borderRadius: 15, backgroundColor: colors.surfaceSoft, alignItems: 'center', justifyContent: 'center' },
-  doneText: { textDecorationLine: 'line-through', color: colors.textMuted },
-  summaryStats: { flexDirection: 'row', gap: spacing.sm },
-  summaryStat: { flex: 1, minHeight: 132, backgroundColor: colors.white, borderRadius: radius.input, padding: spacing.md, gap: 4 },
-  statIcon: { width: 36, height: 36, borderRadius: 13, backgroundColor: colors.softMint, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.xs },
-  sourceRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
+  doneIcon: { backgroundColor: colors.softLime }, pressed: { opacity: 0.72 },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
+  demoCard: { gap: spacing.md },
 });

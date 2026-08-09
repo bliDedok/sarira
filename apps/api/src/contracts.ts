@@ -21,7 +21,34 @@ import type {
   UserGoalRecord,
   UserProfile,
   UserRole,
+  ActivityLogRecord,
+  BaselineDayRecord,
+  BaselineReadinessRecord,
+  BaselineSessionRecord,
+  BodyMeasurementRecord,
+  CompletenessRecord,
+  DailyCheckInRecord,
+  DailyTaskRecord,
+  Day7CheckpointRecord,
+  Day7FeedbackRecord,
+  DigestiveLogRecord,
+  MealLogRecord,
+  SleepLogRecord,
+  StepRecordValue,
+  FoodItemRecord,
+  FoodServingRecord,
+  MealLogItemRecord,
+  NutrientCode,
+  NutritionSnapshotRecord,
+  NutritionTargetProfileRecord,
 } from '@sarira/shared-types';
+import type {
+  ActivityLogInput,
+  DailyCheckInInput,
+  DigestiveLogInput,
+  MealLogInput,
+  SleepLogInput,
+} from '@sarira/validation';
 
 export interface AuthIdentity {
   externalAuthId: string;
@@ -111,8 +138,83 @@ export interface DataRepositories {
     get(profileId: string): Promise<ProgramPreferenceRecord | null>;
     set(profileId: string, program: ProgramPreferenceRecord['program']): Promise<ProgramPreferenceRecord>;
   };
+  baseline: BaselineRepository;
+  nutrition: NutritionRepository;
   admin: { configurationVersions(): Promise<AdminConfigurationVersions> };
   audit: {
     record(input: { actorUserId?: string; event: string; entityType: string; entityId?: string; requestId?: string; metadata?: Record<string, string | boolean | number> }): Promise<void>;
   };
+}
+
+export interface NutritionPolicyRecord {
+  id: string;
+  code: string;
+  version: string;
+  ageMin: number;
+  ageMax: number;
+  applicableSex?: ProfileRecord['gender'];
+  applicableGoals: string[];
+  applicableSafetyStatuses: string[];
+  targetConfiguration: Record<string, unknown>;
+  requiresExpertValidation: boolean;
+}
+
+export interface NutritionFoodDetail extends FoodItemRecord {
+  nutrients: Array<{ nutrientCode: NutrientCode; amount: number; unit: string; basisAmount: number; basisUnit: 'G'; sourceVersion: string }>;
+}
+
+export interface NutritionRepository {
+  listNutrients(): Promise<Array<{ code: NutrientCode; displayName: string; unit: string; category: string; decimalPrecision: number }>>;
+  searchFoods(input: { query?: string; category?: string; verified?: boolean; page: number; pageSize: number }): Promise<{ items: FoodItemRecord[]; total: number; page: number; pageSize: number }>;
+  getFood(id: string): Promise<NutritionFoodDetail | null>;
+  getServings(foodItemId: string): Promise<FoodServingRecord[]>;
+  getItem(id: string): Promise<MealLogItemRecord | null>;
+  createItem(input: { mealLogId: string; profileId: string; localDate: string; foodItemId?: string; servingId?: string; itemSource: 'DATABASE_FOOD' | 'CUSTOM_FOOD' | 'USER_ENTERED'; customName?: string; quantity: number; gramAmount?: number; sourceVersion: string; snapshot: Omit<NutritionSnapshotRecord, 'id'>; allergenWarnings: MealLogItemRecord['allergenWarnings'] }): Promise<MealLogItemRecord>;
+  updateItem(id: string, input: { servingId?: string; quantity: number; gramAmount?: number; sourceVersion: string; snapshot: Omit<NutritionSnapshotRecord, 'id'>; allergenWarnings: MealLogItemRecord['allergenWarnings'] }): Promise<MealLogItemRecord>;
+  deleteItem(id: string): Promise<void>;
+  listItemsForDate(profileId: string, localDate: string): Promise<MealLogItemRecord[]>;
+  getProfileAllergenText(profileId: string): Promise<string>;
+  getActivePolicies(): Promise<NutritionPolicyRecord[]>;
+  getCurrentTarget(profileId: string, localDate: string): Promise<NutritionTargetProfileRecord | null>;
+  saveTarget(input: { profileId: string; policy: NutritionPolicyRecord; target: Omit<NutritionTargetProfileRecord, 'id'> }): Promise<NutritionTargetProfileRecord>;
+}
+
+export interface BaselineRepository {
+  getCurrent(profileId: string): Promise<BaselineSessionRecord | null>;
+  getById(profileId: string, baselineId: string): Promise<BaselineSessionRecord | null>;
+  getOwnerProfileId(baselineId: string): Promise<string | null>;
+  create(profileId: string, input: { startedAt: string; startLocalDate: string; timezone: string; targetDays: number; extensionAllowed: boolean; extensionDays: number; configVersion: string }): Promise<BaselineSessionRecord>;
+  refresh(baselineId: string, input: { currentDay: number; status: BaselineSessionRecord['status']; calendarCompletedAt?: string; readinessStatus?: BaselineSessionRecord['readinessStatus']; completenessScore?: number }): Promise<BaselineSessionRecord>;
+  complete(profileId: string, baselineId: string, completedAt: string): Promise<BaselineSessionRecord>;
+  listDays(profileId: string, baselineId: string, throughDay: number, calculatedAt: string): Promise<BaselineDayRecord[]>;
+  getDay(profileId: string, baselineId: string, localDate: string, dayIndex: number, calculatedAt: string): Promise<BaselineDayRecord>;
+  getCheckIn(profileId: string, baselineId: string, localDate: string, dayIndex: number, calculatedAt: string): Promise<DailyCheckInRecord | null>;
+  putCheckIn(profileId: string, baselineId: string, localDate: string, dayIndex: number, input: DailyCheckInInput, calculatedAt: string): Promise<DailyCheckInRecord>;
+  listMeals(profileId: string, baselineId: string, localDate?: string): Promise<MealLogRecord[]>;
+  getMealById(profileId: string, baselineId: string, id: string): Promise<MealLogRecord | null>;
+  createMeal(profileId: string, baselineId: string, dayIndex: number, input: MealLogInput, calculatedAt: string): Promise<MealLogRecord>;
+  updateMeal(profileId: string, baselineId: string, id: string, input: Partial<MealLogInput>, calculatedAt: string): Promise<MealLogRecord>;
+  deleteMeal(profileId: string, baselineId: string, id: string, calculatedAt: string): Promise<void>;
+  listSleep(profileId: string, baselineId: string, localDate?: string): Promise<SleepLogRecord[]>;
+  createSleep(profileId: string, baselineId: string, dayIndex: number, input: SleepLogInput & { durationMinutes: number }, calculatedAt: string): Promise<SleepLogRecord>;
+  updateSleep(profileId: string, baselineId: string, id: string, input: Partial<SleepLogInput> & { durationMinutes?: number }, calculatedAt: string): Promise<SleepLogRecord>;
+  deleteSleep(profileId: string, baselineId: string, id: string, calculatedAt: string): Promise<void>;
+  listActivity(profileId: string, baselineId: string, localDate?: string): Promise<ActivityLogRecord[]>;
+  createActivity(profileId: string, baselineId: string, dayIndex: number, input: ActivityLogInput, calculatedAt: string): Promise<ActivityLogRecord>;
+  updateActivity(profileId: string, baselineId: string, id: string, input: Partial<ActivityLogInput>, calculatedAt: string): Promise<ActivityLogRecord>;
+  deleteActivity(profileId: string, baselineId: string, id: string, calculatedAt: string): Promise<void>;
+  listSteps(profileId: string, baselineId: string): Promise<StepRecordValue[]>;
+  putSteps(profileId: string, baselineId: string, localDate: string, dayIndex: number, input: { steps: number; sourceDevice?: string }, calculatedAt: string): Promise<StepRecordValue>;
+  listBody(profileId: string, baselineId: string): Promise<BodyMeasurementRecord[]>;
+  createBody(profileId: string, baselineId: string, dayIndex: number, input: { localDate: string; measuredAt: string; weightKg: number; waistCm?: number; notes?: string }, calculatedAt: string): Promise<BodyMeasurementRecord>;
+  listDigestive(profileId: string, baselineId: string, localDate?: string): Promise<DigestiveLogRecord[]>;
+  createDigestive(profileId: string, baselineId: string, dayIndex: number, input: DigestiveLogInput, calculatedAt: string): Promise<DigestiveLogRecord>;
+  updateDigestive(profileId: string, baselineId: string, id: string, input: Partial<DigestiveLogInput>, calculatedAt: string): Promise<DigestiveLogRecord>;
+  deleteDigestive(profileId: string, baselineId: string, id: string, calculatedAt: string): Promise<void>;
+  getTasks(profileId: string, baselineId: string, localDate: string, dayIndex: number, calculatedAt: string): Promise<DailyTaskRecord[]>;
+  updateTask(profileId: string, baselineId: string, id: string, status: DailyTaskRecord['status'], calculatedAt: string): Promise<DailyTaskRecord>;
+  getCompleteness(profileId: string, baselineId: string, throughDay: number, localDate: string | undefined, calculatedAt: string): Promise<CompletenessRecord>;
+  getDay7Checkpoint(profileId: string, baselineId: string, calculatedAt: string): Promise<Day7CheckpointRecord>;
+  saveDay7Feedback(profileId: string, baselineId: string, input: { easeRating: number; hardestDomains: Array<'checkIn' | 'food' | 'sleep' | 'activity'>; wantsToContinue: boolean; notes?: string }, calculatedAt: string): Promise<Day7FeedbackRecord>;
+  getReadiness(profileId: string, baselineId: string, throughDay: number, calculatedAt: string): Promise<BaselineReadinessRecord>;
 }

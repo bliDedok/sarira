@@ -1,6 +1,6 @@
 {
   "name": "@sarira/api",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -18,9 +18,11 @@
     "@fastify/rate-limit": "11.2.0",
     "@prisma/adapter-pg": "7.9.1",
     "@prisma/client": "7.9.1",
+    "@sarira/baseline": "workspace:*",
     "@sarira/config": "workspace:*",
     "@sarira/expert-system": "workspace:*",
     "@sarira/logger": "workspace:*",
+    "@sarira/nutrition-engine": "workspace:*",
     "@sarira/shared-types": "workspace:*",
     "@sarira/validation": "workspace:*",
     "@supabase/supabase-js": "2.112.2",

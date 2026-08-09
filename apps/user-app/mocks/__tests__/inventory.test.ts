@@ -19,10 +19,13 @@ describe('inventaris Phase 1', () => {
     }
   });
 
-  it('menandai semua capability yang bergantung integrasi sebagai simulasi', () => {
-    const simulated = ['login', 'registration', 'food-scan', 'motion-coach', 'wearable-connection'];
+  it('menandai capability yang bergantung integrasi sebagai simulasi tanpa melabeli fitur real', () => {
+    const simulated = ['food-scan', 'motion-coach', 'wearable-connection'];
     for (const slug of simulated) {
       expect(prototypeScreenMap.get(slug)?.simulation).toBe(true);
+    }
+    for (const slug of ['login', 'registration', 'daily-check-in', 'digestive-support']) {
+      expect(prototypeScreenMap.get(slug)?.simulation).not.toBe(true);
     }
   });
 });

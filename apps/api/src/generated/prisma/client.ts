@@ -166,3 +166,133 @@ export type DeviceSession = Prisma.DeviceSessionModel
  * 
  */
 export type AuditLog = Prisma.AuditLogModel
+/**
+ * Model BaselineSession
+ * 
+ */
+export type BaselineSession = Prisma.BaselineSessionModel
+/**
+ * Model DailyRecord
+ * 
+ */
+export type DailyRecord = Prisma.DailyRecordModel
+/**
+ * Model DailyCheckIn
+ * 
+ */
+export type DailyCheckIn = Prisma.DailyCheckInModel
+/**
+ * Model MealLog
+ * 
+ */
+export type MealLog = Prisma.MealLogModel
+/**
+ * Model FoodDataSource
+ * 
+ */
+export type FoodDataSource = Prisma.FoodDataSourceModel
+/**
+ * Model FoodItem
+ * 
+ */
+export type FoodItem = Prisma.FoodItemModel
+/**
+ * Model FoodServing
+ * 
+ */
+export type FoodServing = Prisma.FoodServingModel
+/**
+ * Model NutrientDefinition
+ * 
+ */
+export type NutrientDefinition = Prisma.NutrientDefinitionModel
+/**
+ * Model FoodNutrient
+ * 
+ */
+export type FoodNutrient = Prisma.FoodNutrientModel
+/**
+ * Model FoodAllergen
+ * 
+ */
+export type FoodAllergen = Prisma.FoodAllergenModel
+/**
+ * Model FoodDietaryTag
+ * 
+ */
+export type FoodDietaryTag = Prisma.FoodDietaryTagModel
+/**
+ * Model MealLogItem
+ * 
+ */
+export type MealLogItem = Prisma.MealLogItemModel
+/**
+ * Model NutritionSnapshot
+ * 
+ */
+export type NutritionSnapshot = Prisma.NutritionSnapshotModel
+/**
+ * Model NutritionPolicy
+ * 
+ */
+export type NutritionPolicy = Prisma.NutritionPolicyModel
+/**
+ * Model NutritionTargetProfile
+ * 
+ */
+export type NutritionTargetProfile = Prisma.NutritionTargetProfileModel
+/**
+ * Model SleepLog
+ * 
+ */
+export type SleepLog = Prisma.SleepLogModel
+/**
+ * Model ActivityLog
+ * 
+ */
+export type ActivityLog = Prisma.ActivityLogModel
+/**
+ * Model StepRecord
+ * 
+ */
+export type StepRecord = Prisma.StepRecordModel
+/**
+ * Model BodyMeasurement
+ * 
+ */
+export type BodyMeasurement = Prisma.BodyMeasurementModel
+/**
+ * Model DigestiveLog
+ * 
+ */
+export type DigestiveLog = Prisma.DigestiveLogModel
+/**
+ * Model DailyTaskDefinition
+ * 
+ */
+export type DailyTaskDefinition = Prisma.DailyTaskDefinitionModel
+/**
+ * Model DailyTaskInstance
+ * 
+ */
+export type DailyTaskInstance = Prisma.DailyTaskInstanceModel
+/**
+ * Model DataCompletenessSnapshot
+ * 
+ */
+export type DataCompletenessSnapshot = Prisma.DataCompletenessSnapshotModel
+/**
+ * Model Day7Checkpoint
+ * 
+ */
+export type Day7Checkpoint = Prisma.Day7CheckpointModel
+/**
+ * Model Day7Feedback
+ * 
+ */
+export type Day7Feedback = Prisma.Day7FeedbackModel
+/**
+ * Model BaselineReadinessResult
+ * 
+ */
+export type BaselineReadinessResult = Prisma.BaselineReadinessResultModel

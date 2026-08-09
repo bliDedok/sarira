@@ -9,7 +9,7 @@ const connectionString = process.env.DATABASE_URL;
 const prisma = connectionString ? createPrismaClient(connectionString) : null;
 const repositories = prisma ? createPrismaRepositories(prisma) : null;
 
-describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3 integration', () => {
+describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–5 integration', () => {
   let app: FastifyInstance;
   let userId: string | undefined;
   const email = `phase3-integration-${crypto.randomUUID()}@example.test`;
@@ -30,9 +30,9 @@ describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3 integration', () =
     await prisma?.$disconnect();
   });
 
-  it('menjalankan registration → profile → consent → safety → questionnaire → completion pada database nyata', async () => {
+  it('menjalankan onboarding → baseline → daily tracking → completeness pada database nyata', async () => {
     const registration = await app.inject({ method: 'POST', url: '/api/v1/auth/register', payload: { name: 'Integration Phase 3', email, password: 'StrongPassword1' } });
-    expect(registration.statusCode).toBe(201);
+    expect(registration.statusCode, registration.body).toBe(201);
     userId = registration.json().data.user.id as string;
     const headers = { authorization: `Bearer ${registration.json().data.accessToken as string}` };
 
@@ -65,10 +65,37 @@ describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3 integration', () =
     expect((await app.inject({ method: 'PUT', url: '/api/v1/profiles/me/program-preference', headers, payload: { program: 'GUIDED_MEAL' } })).statusCode).toBe(200);
     expect((await app.inject({ method: 'POST', url: '/api/v1/onboarding/complete', headers })).statusCode).toBe(200);
 
+    const available = (await app.inject({ method: 'GET', url: '/api/v1/consents/available', headers })).json().data as Array<{ type: string; version: string }>;
+    for (const item of available.filter((consent) => ['NUTRITION_DATA', 'SLEEP_DATA', 'ACTIVITY_DATA'].includes(consent.type))) {
+      expect((await app.inject({ method: 'PUT', url: `/api/v1/consents/${item.type}`, headers, payload: { granted: true, version: item.version, source: 'FEATURE_PROMPT' } })).statusCode).toBe(200);
+    }
+    const baselineResponse = await app.inject({ method: 'POST', url: '/api/v1/baseline', headers });
+    expect(baselineResponse.statusCode).toBe(201);
+    const baseline = baselineResponse.json().data as { id: string; startLocalDate: string };
+    expect((await app.inject({ method: 'PUT', url: `/api/v1/daily-checkins/${baseline.startLocalDate}`, headers, payload: { mood: 'GOOD', hunger: 3, fullness: 4, barriers: [] } })).statusCode).toBe(200);
+    const mealLogResponse = await app.inject({ method: 'POST', url: '/api/v1/meal-logs', headers, payload: { localDate: baseline.startLocalDate, mealType: 'BREAKFAST', description: 'Sarapan integration', skipped: false } });
+    expect(mealLogResponse.statusCode).toBe(201);
+    expect((await app.inject({ method: 'POST', url: '/api/v1/sleep-logs', headers, payload: { localDate: baseline.startLocalDate, sleepStartedAt: `${baseline.startLocalDate}T00:00:00+08:00`, wokeUpAt: `${baseline.startLocalDate}T07:00:00+08:00`, perceivedQuality: 'GOOD' } })).statusCode).toBe(201);
+    expect((await app.inject({ method: 'POST', url: '/api/v1/activity-logs', headers, payload: { localDate: baseline.startLocalDate, activityType: 'WALKING', durationMinutes: 20, perceivedIntensity: 'LIGHT' } })).statusCode).toBe(201);
+    expect((await app.inject({ method: 'GET', url: `/api/v1/baseline/${baseline.id}/completeness`, headers })).json().data).toMatchObject({ score: 100, completedDays: 1 });
+
+    const foods = (await app.inject({ method: 'GET', url: '/api/v1/foods?q=nasi%20putih', headers })).json().data.items as Array<{ id: string; servings: Array<{ id: string }> }>;
+    expect(foods).toHaveLength(1);
+    const nutritionItem = await app.inject({ method: 'POST', url: `/api/v1/meal-logs/${mealLogResponse.json().data.id as string}/items`, headers, payload: { foodItemId: foods[0]!.id, servingId: foods[0]!.servings[0]!.id, quantity: 1 } });
+    expect(nutritionItem.statusCode, nutritionItem.body).toBe(201);
+    const dailyNutrition = (await app.inject({ method: 'GET', url: `/api/v1/nutrition/daily/${baseline.startLocalDate}`, headers })).json().data;
+    expect(dailyNutrition).toMatchObject({ itemCount: 1, mealCount: 1, totals: { ENERGY_KCAL: 195 } });
+    expect(dailyNutrition.target).toMatchObject({ policyCode: 'ADULT_GENERAL', safetyStatus: 'GREEN' });
+
     expect(await prisma!.profile.count({ where: { id: profileId, onboardingStatus: 'COMPLETED' } })).toBe(1);
     expect(await prisma!.auditLog.count({ where: { actorUserId: userId } })).toBeGreaterThanOrEqual(10);
     expect(await prisma!.questionnaireAnswer.count({ where: { sessionId: questionnaireSessionId } })).toBe(answers.length);
     expect(await prisma!.safetyResult.count({ where: { sessionId: safetySessionId, ruleVersion: 'phase3-dev-v1' } })).toBe(1);
+    expect(await prisma!.baselineSession.count({ where: { id: baseline.id, profileId } })).toBe(1);
+    expect(await prisma!.dailyRecord.count({ where: { baselineSessionId: baseline.id, completenessStatus: 'COMPLETE' } })).toBe(1);
+    expect(await prisma!.dataCompletenessSnapshot.count({ where: { baselineSessionId: baseline.id } })).toBeGreaterThanOrEqual(2);
+    expect(await prisma!.mealLogItem.count({ where: { profileId, snapshot: { is: { sourceVersion: 'phase5-synthetic-v1' } } } })).toBe(1);
+    expect(await prisma!.nutritionTargetProfile.count({ where: { profileId, policyVersion: 'phase5-dev-v1' } })).toBe(1);
     const extension = await prisma!.$queryRaw<Array<{ extname: string }>>`select extname from pg_extension where extname = 'vector'`;
     expect(extension[0]?.extname).toBe('vector');
   });

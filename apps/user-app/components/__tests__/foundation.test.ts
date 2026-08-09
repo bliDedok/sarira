@@ -22,6 +22,7 @@ describe('production foundation user app', () => {
     expect(resolveAuthRedirect({ group: '(app)', authenticated: false, onboardingCompleted: false })).toBe('/login');
     expect(resolveAuthRedirect({ group: '(app)', authenticated: true, onboardingCompleted: false })).toBe('/setup/role-selection');
     expect(resolveAuthRedirect({ group: '(app)', authenticated: true, onboardingCompleted: false, currentStep: 'questionnaire' })).toBe('/setup/questionnaire');
+    expect(resolveAuthRedirect({ group: '(onboarding)', authenticated: true, onboardingCompleted: true })).toBe('/starter-journey');
     expect(resolveAuthRedirect({ group: '(auth)', authenticated: true, onboardingCompleted: true })).toBe('/home');
   });
 });

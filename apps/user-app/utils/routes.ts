@@ -18,11 +18,15 @@ const explicitRoutes: Record<string, string> = {
   allergies: '/setup/allergies',
   'food-mode': '/setup/food-mode',
   'profile-summary': '/setup/profile-summary',
-  'starter-journey': '/setup/starter-journey',
+  'starter-journey': '/starter-journey',
+  'daily-check-in': '/daily-check-in',
+  'baseline-journey': '/baseline-journey',
+  'day-7-checkpoint': '/day-7-checkpoint',
   'home-day-1': '/home?day=1',
   'food-dashboard': '/food',
   'activity-dashboard': '/activity',
   'progress-dashboard': '/progress',
+  'digestive-support': '/digestive',
   profile: '/profile',
 };
 
