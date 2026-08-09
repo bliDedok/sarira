@@ -30,7 +30,7 @@ export default function SplashPage() {
   const desktop = width >= breakpoints.tablet;
   return (
     <PublicScreen scroll>
-      <View style={styles.header}><BrandMark /><Chip label="PHASE 5 · NUTRISI NYATA" tone="lime" /></View>
+      <View style={styles.header}><BrandMark /><Chip label="PHASE 6 · MEAL PLANNING" tone="lime" /></View>
       <View style={[styles.content, desktop && styles.contentDesktop]}>
         <View style={styles.copy}>
           <AppText variant="eyebrow">SARIRA ACTIVE BALANCE</AppText>

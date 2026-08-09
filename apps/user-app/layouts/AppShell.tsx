@@ -37,6 +37,13 @@ const prototypeNav = [
   { label: 'Design system', path: '/design-system', icon: SwatchBook },
 ];
 
+const foodPaths = ['/food', '/guided-meal', '/recipe-detail', '/cooking', '/flex-kitchen'];
+const isNavSelected = (pathname: string, path: string) => path === '/home'
+  ? pathname === '/home'
+  : path === '/food'
+    ? foodPaths.some((candidate) => pathname.startsWith(candidate))
+    : pathname.startsWith(path);
+
 function NavItem({
   label,
   path,
@@ -49,7 +56,7 @@ function NavItem({
   compact?: boolean;
 }) {
   const pathname = usePathname();
-  const selected = path === '/home' ? pathname === '/home' : pathname.startsWith(path);
+  const selected = isNavSelected(pathname, path);
   const [focused, setFocused] = useState(false);
   return (
     <Pressable
@@ -83,7 +90,7 @@ function MobileNavigation() {
     <View style={styles.mobileNavWrap}>
       <View style={styles.mobileNav}>
         {primaryNav.map(({ label, path, icon: Icon }) => {
-          const selected = pathname === path;
+          const selected = isNavSelected(pathname, path);
           return (
             <Pressable
               key={path}
@@ -138,9 +145,9 @@ export function AppShell({
             </View>
             {!isTablet ? (
               <View style={styles.sidebarDemoCard}>
-                <Chip label="PHASE 5" tone="lime" />
-                <AppText variant="label" style={{ color: colors.white }}>Baseline & nutrisi nyata</AppText>
-                <AppText variant="caption" style={{ color: '#BDD0C4' }}>Food database, porsi, target, dan indikator aktif. AI, Pattern Map, Guided Meal, kamera, dan wearable tetap Demo.</AppText>
+                <Chip label="PHASE 6" tone="lime" />
+                <AppText variant="label" style={{ color: colors.white }}>Meal planning nyata</AppText>
+                <AppText variant="caption" style={{ color: '#BDD0C4' }}>Guided Meal, Flex Kitchen, recipe versioning, dan konsumsi aktif. AI, kamera, dan wearable tetap di luar fase ini.</AppText>
               </View>
             ) : null}
           </View>
