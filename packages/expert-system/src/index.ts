@@ -244,3 +244,5 @@ export function validateOnboardingCompletion(state: CompletionState): string[] {
   if (!state.programPreferenceCompleted) issues.push('PROGRAM_PREFERENCE_MISSING');
   return issues;
 }
+
+export * from './phase7';
