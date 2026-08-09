@@ -9,7 +9,7 @@ const connectionString = process.env.DATABASE_URL;
 const prisma = connectionString ? createPrismaClient(connectionString) : null;
 const repositories = prisma ? createPrismaRepositories(prisma) : null;
 
-describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–5 integration', () => {
+describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–6 integration', () => {
   let app: FastifyInstance;
   let userId: string | undefined;
   const email = `phase3-integration-${crypto.randomUUID()}@example.test`;
@@ -87,6 +87,15 @@ describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–5 integration', 
     expect(dailyNutrition).toMatchObject({ itemCount: 1, mealCount: 1, totals: { ENERGY_KCAL: 195 } });
     expect(dailyNutrition.target).toMatchObject({ policyCode: 'ADULT_GENERAL', safetyStatus: 'GREEN' });
 
+    const generatedPlan = await app.inject({ method: 'POST', url: '/api/v1/meal-plans/generate', headers, payload: { localDate: baseline.startLocalDate } });
+    expect(generatedPlan.statusCode, generatedPlan.body).toBe(201);
+    const plan = generatedPlan.json().data as { id: string; policyVersion: string; items: Array<{ id: string; mealType: string; recipeVersionId: string }> };
+    expect(plan.policyVersion).toBe('meal-planning-dev-v1'); expect(plan.items).toHaveLength(3);
+    const lunch = plan.items.find((item) => item.mealType === 'LUNCH')!;
+    const alternatives = await app.inject({ method: 'GET', url: `/api/v1/meal-plans/${plan.id}/items/${lunch.id}/alternatives`, headers }); expect(alternatives.statusCode, alternatives.body).toBe(200); expect(alternatives.json().data.length).toBeGreaterThan(0);
+    const consumption = await app.inject({ method: 'POST', url: `/api/v1/meal-plans/${plan.id}/items/${lunch.id}/consume`, headers, payload: { fraction: 0.25 } }); expect(consumption.statusCode, consumption.body).toBe(200); expect(consumption.json().data.alreadyConsumed).toBe(false);
+    const repeatedConsumption = await app.inject({ method: 'POST', url: `/api/v1/meal-plans/${plan.id}/items/${lunch.id}/consume`, headers, payload: { fraction: 0.25 } }); expect(repeatedConsumption.json().data.alreadyConsumed).toBe(true);
+
     expect(await prisma!.profile.count({ where: { id: profileId, onboardingStatus: 'COMPLETED' } })).toBe(1);
     expect(await prisma!.auditLog.count({ where: { actorUserId: userId } })).toBeGreaterThanOrEqual(10);
     expect(await prisma!.questionnaireAnswer.count({ where: { sessionId: questionnaireSessionId } })).toBe(answers.length);
@@ -94,8 +103,11 @@ describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–5 integration', 
     expect(await prisma!.baselineSession.count({ where: { id: baseline.id, profileId } })).toBe(1);
     expect(await prisma!.dailyRecord.count({ where: { baselineSessionId: baseline.id, completenessStatus: 'COMPLETE' } })).toBe(1);
     expect(await prisma!.dataCompletenessSnapshot.count({ where: { baselineSessionId: baseline.id } })).toBeGreaterThanOrEqual(2);
-    expect(await prisma!.mealLogItem.count({ where: { profileId, snapshot: { is: { sourceVersion: 'phase5-synthetic-v1' } } } })).toBe(1);
+    expect(await prisma!.mealLogItem.count({ where: { profileId, snapshot: { is: { sourceVersion: 'phase5-synthetic-v1' } } } })).toBeGreaterThanOrEqual(4);
     expect(await prisma!.nutritionTargetProfile.count({ where: { profileId, policyVersion: 'phase5-dev-v1' } })).toBe(1);
+    expect(await prisma!.dailyMealPlan.count({ where: { id: plan.id, profileId, policyVersion: 'meal-planning-dev-v1' } })).toBe(1);
+    expect(await prisma!.mealPlanItemSnapshot.count({ where: { mealPlanItem: { mealPlanId: plan.id } } })).toBe(3);
+    expect(await prisma!.mealPlanConsumption.count({ where: { mealPlanItemId: lunch.id } })).toBe(1);
     const extension = await prisma!.$queryRaw<Array<{ extname: string }>>`select extname from pg_extension where extname = 'vector'`;
     expect(extension[0]?.extname).toBe('vector');
   });
