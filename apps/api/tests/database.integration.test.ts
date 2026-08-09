@@ -77,7 +77,26 @@ describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–6 integration', 
     expect(mealLogResponse.statusCode).toBe(201);
     expect((await app.inject({ method: 'POST', url: '/api/v1/sleep-logs', headers, payload: { localDate: baseline.startLocalDate, sleepStartedAt: `${baseline.startLocalDate}T00:00:00+08:00`, wokeUpAt: `${baseline.startLocalDate}T07:00:00+08:00`, perceivedQuality: 'GOOD' } })).statusCode).toBe(201);
     expect((await app.inject({ method: 'POST', url: '/api/v1/activity-logs', headers, payload: { localDate: baseline.startLocalDate, activityType: 'WALKING', durationMinutes: 20, perceivedIntensity: 'LIGHT' } })).statusCode).toBe(201);
-    expect((await app.inject({ method: 'GET', url: `/api/v1/baseline/${baseline.id}/completeness`, headers })).json().data).toMatchObject({ score: 100, completedDays: 1 });
+    const completenessResponse = await app.inject({ method: 'GET', url: `/api/v1/baseline/${baseline.id}/completeness`, headers });
+    expect(completenessResponse.statusCode, completenessResponse.body).toBe(200);
+    expect(completenessResponse.json().data).toMatchObject({ score: 100, completedDays: 1 });
+
+    const [dailyCheckIns, mealLogs, sleepLogs, activityLogs, completeDailyRecords, completenessSnapshots] = await Promise.all([
+      prisma!.dailyCheckIn.count({ where: { baselineSessionId: baseline.id, profileId } }),
+      prisma!.mealLog.count({ where: { baselineSessionId: baseline.id, profileId } }),
+      prisma!.sleepLog.count({ where: { baselineSessionId: baseline.id, profileId } }),
+      prisma!.activityLog.count({ where: { baselineSessionId: baseline.id, profileId } }),
+      prisma!.dailyRecord.count({ where: { baselineSessionId: baseline.id, profileId, completenessStatus: 'COMPLETE' } }),
+      prisma!.dataCompletenessSnapshot.count({ where: { baselineSessionId: baseline.id } }),
+    ]);
+    expect({ dailyCheckIns, mealLogs, sleepLogs, activityLogs, completeDailyRecords, completenessSnapshots }).toEqual({
+      dailyCheckIns: 1,
+      mealLogs: 1,
+      sleepLogs: 1,
+      activityLogs: 1,
+      completeDailyRecords: 1,
+      completenessSnapshots: 2,
+    });
 
     const foods = (await app.inject({ method: 'GET', url: '/api/v1/foods?q=nasi%20putih', headers })).json().data.items as Array<{ id: string; servings: Array<{ id: string }> }>;
     expect(foods).toHaveLength(1);
