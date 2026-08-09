@@ -17,7 +17,6 @@ import { colors, radius, spacing } from '@sarira/design-tokens';
 import { AppText, Chip, IconButton } from '@sarira/ui';
 import { BrandMark } from '@/components/ScreenLayout';
 import { usePrototype } from '@/features/prototype/PrototypeContext';
-import { screenHref } from '@/utils/routes';
 import { useResponsiveLayout } from '@/hooks/useResponsiveLayout';
 import { useAuth } from '@/providers/AuthProvider';
 
@@ -145,9 +144,9 @@ export function AppShell({
             </View>
             {!isTablet ? (
               <View style={styles.sidebarDemoCard}>
-                <Chip label="PHASE 6" tone="lime" />
-                <AppText variant="label" style={{ color: colors.white }}>Meal planning nyata</AppText>
-                <AppText variant="caption" style={{ color: '#BDD0C4' }}>Guided Meal, Flex Kitchen, recipe versioning, dan konsumsi aktif. AI, kamera, dan wearable tetap di luar fase ini.</AppText>
+                <Chip label="PHASE 7" tone="lime" />
+                <AppText variant="label" style={{ color: colors.white }}>Pattern Map nyata</AppText>
+                <AppText variant="caption" style={{ color: '#BDD0C4' }}>Feature Engine, expert rules, dan Weekly Action deterministik aktif. AI, kamera, dan wearable tetap di luar fase ini.</AppText>
               </View>
             ) : null}
           </View>
@@ -165,7 +164,7 @@ export function AppShell({
               ) : null}
             </View>
             <View style={styles.headerActions}>
-              <IconButton icon={Bell} label="Notifikasi, 2 belum dibaca" onPress={() => router.push(screenHref('weekly-action') as never)} />
+              <IconButton icon={Bell} label="Buka Weekly Action" onPress={() => router.push('/weekly-action' as never)} />
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel={`Profil aktif ${email}. Buka profil.`}

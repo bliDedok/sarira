@@ -3,10 +3,10 @@ import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { router } from 'expo-router';
 import { Activity, CalendarDays, Check, ChevronRight, Clock3, Lightbulb, MoonStar, RefreshCw, Utensils } from 'lucide-react-native';
 import { breakpoints, colors, radius, spacing } from '@sarira/design-tokens';
-import { AppText, Button, Card, Chip, ErrorState, Loading, ProgressBar, ProgressRing, SectionHeader, SimulatedBadge } from '@sarira/ui';
+import { AppText, Button, Card, Chip, ErrorState, Loading, ProgressBar, ProgressRing, SectionHeader } from '@sarira/ui';
 import { AppShell } from '@/layouts/AppShell';
 import { useBaseline } from '@/features/baseline/useBaseline';
-import type { DailyNutritionSummaryRecord } from '@sarira/shared-types';
+import type { DailyNutritionSummaryRecord, PatternMapRecord, WeeklyActionAssignmentRecord } from '@sarira/shared-types';
 import { api } from '@/services/api';
 
 const taskRoutes = { checkIn: '/daily-check-in', food: '/food', sleep: '/sleep', activity: '/activity' } as const;
@@ -17,7 +17,10 @@ export default function HomeScreen() {
   const desktop = width >= breakpoints.desktop;
   const { profile, current, loading, error, reload } = useBaseline();
   const [nutrition, setNutrition] = useState<DailyNutritionSummaryRecord>();
+  const [pattern, setPattern] = useState<PatternMapRecord>();
+  const [weeklyAction, setWeeklyAction] = useState<WeeklyActionAssignmentRecord>();
   useEffect(() => { if (!current) return; const timer = setTimeout(() => void api.getDailyNutrition(current.localDate).then(setNutrition).catch(() => setNutrition(undefined)), 0); return () => clearTimeout(timer); }, [current]);
+  useEffect(() => { const timer = setTimeout(() => void Promise.all([api.getCurrentPatternMap().then(setPattern).catch(() => setPattern(undefined)), api.getCurrentWeeklyAction().then(setWeeklyAction).catch(() => setWeeklyAction(undefined))]), 0); return () => clearTimeout(timer); }, []);
 
   return (
     <AppShell title="Beranda" subtitle="Ringkasan prioritas hari ini">
@@ -38,11 +41,12 @@ export default function HomeScreen() {
         </Card>
       ) : <>
         <View style={styles.heroGrid}>
-          <Card tone="dark" style={styles.weeklyCard} accessibilityLabel="Weekly Action masih Demo">
-            <View style={styles.rowBetween}><View style={styles.flex}><AppText variant="eyebrow" style={styles.limeText}>WEEKLY ACTION</AppText><AppText variant="caption" style={styles.muted}>Aktif setelah analisis pola pada fase berikutnya</AppText></View><SimulatedBadge label="DEMO" /></View>
-            <AppText variant="h2" style={styles.white}>Kenali pola dulu, action menyusul.</AppText>
-            <AppText variant="body" style={styles.muted}>Selama baseline, cukup catat kondisi sebenarnya. SARIRA belum membuat kesimpulan sebab-akibat.</AppText>
-            <Button label="Isi check-in hari ini" icon={ChevronRight} variant="lime" onPress={() => router.push('/daily-check-in' as never)} />
+          <Card tone="dark" style={styles.weeklyCard} accessibilityLabel={weeklyAction ? `Weekly Action ${weeklyAction.definition.title}, progres ${weeklyAction.progress} dari ${weeklyAction.targetCount}` : 'Weekly Action belum tersedia'}>
+            <View style={styles.rowBetween}><View style={styles.flex}><AppText variant="eyebrow" style={styles.limeText}>WEEKLY ACTION · REAL</AppText><AppText variant="caption" style={styles.muted}>{weeklyAction ? `${weeklyAction.progress} dari ${weeklyAction.targetCount} selesai` : current.day14Available ? 'Siap dibuat dari Pattern Map' : 'Tersedia setelah readiness hari ke-14'}</AppText></View><Chip label={weeklyAction ? weeklyAction.status : 'MENUNGGU'} tone={weeklyAction ? 'lime' : 'neutral'} /></View>
+            <AppText variant="h2" style={styles.white}>{weeklyAction?.definition.title ?? pattern?.primaryPattern?.label ?? 'Kenali pola dulu, satu action menyusul.'}</AppText>
+            <AppText variant="body" style={styles.muted}>{weeklyAction?.definition.description ?? 'SARIRA akan memilih tepat satu langkah kecil yang eligible, dengan safety dan kualitas data tetap menjadi batas.'}</AppText>
+            {weeklyAction ? <ProgressBar value={weeklyAction.progress} max={weeklyAction.targetCount} tone="lime" label={`Progres ${weeklyAction.progress} dari ${weeklyAction.targetCount}`} /> : null}
+            <Button label={weeklyAction ? 'Buka Weekly Action' : current.day14Available ? 'Buat Pattern Map' : 'Isi check-in hari ini'} icon={ChevronRight} variant="lime" onPress={() => router.push((weeklyAction ? '/weekly-action' : current.day14Available ? '/pattern-map' : '/daily-check-in') as never)} />
           </Card>
 
           <Card tone="lime" style={styles.baselineCard} accessibilityLabel={`Baseline hari ${current.baseline.currentDay} dari ${current.baseline.targetDays}`}>
@@ -54,8 +58,8 @@ export default function HomeScreen() {
         </View>
 
         {current.day14Available ? <Card tone={current.baseline.readinessStatus === 'READY' ? 'mint' : 'cream'} style={styles.readiness}>
-          <View style={styles.flex}><AppText variant="eyebrow">DAY-14 READINESS</AppText><AppText variant="h2">{current.baseline.readinessStatus === 'READY' ? 'Data baseline siap dianalisis.' : 'Periode selesai, beberapa data masih perlu dilengkapi.'}</AppText><AppText variant="body">Pattern Map final belum dibuat pada Phase 4.</AppText></View>
-          <Button label="Lihat readiness" variant="secondary" onPress={() => router.push('/baseline-journey' as never)} />
+          <View style={styles.flex}><AppText variant="eyebrow">DAY-14 READINESS</AppText><AppText variant="h2">{current.baseline.readinessStatus === 'READY' ? 'Data baseline siap dianalisis.' : 'Periode selesai, beberapa data masih perlu dilengkapi.'}</AppText><AppText variant="body">{pattern ? `Pattern Map versi ${pattern.version} tersedia.` : 'Pattern Map akan abstain bila bukti per-domain belum cukup.'}</AppText></View>
+          <Button label={pattern ? 'Buka Pattern Map' : 'Analisis Pattern Map'} variant="secondary" onPress={() => router.push('/pattern-map' as never)} />
         </Card> : current.day7Available ? <Card tone="blue" style={styles.readiness}><View style={styles.flex}><AppText variant="eyebrow">CHECKPOINT HARI 7</AppText><AppText variant="h3">Ringkasan deskriptif minggu pertama tersedia.</AppText><AppText variant="body">Tidak berisi diagnosis atau kesimpulan sebab-akibat.</AppText></View><Button label="Buka checkpoint" variant="secondary" onPress={() => router.push('/day-7-checkpoint' as never)} /></Card> : null}
 
         <View style={styles.mainGrid}>
