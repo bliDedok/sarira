@@ -71,14 +71,14 @@ describe('Phase 3 domain rules', () => {
   });
 });
 
-describe('SARIRA API v1 Phase 5', () => {
+describe('SARIRA API v1 Phase 6', () => {
   let app: FastifyInstance;
   beforeAll(async () => { app = await buildApp({ env: { APP_ENV: 'test', NODE_ENV: 'test', USE_MOCK_DATA: 'true', LOG_LEVEL: 'silent' }, logger: false }); await app.ready(); });
   afterAll(async () => app.close());
 
-  it('menyediakan health/version Phase 5 dan melindungi route private', async () => {
+  it('menyediakan health/version Phase 6 dan melindungi route private', async () => {
     expect((await app.inject({ method: 'GET', url: '/api/v1/health' })).statusCode).toBe(200);
-    expect((await app.inject({ method: 'GET', url: '/api/v1/version' })).json().data).toMatchObject({ apiVersion: 'v1', phase: 5, status: 'nutrition-engine-real' });
+    expect((await app.inject({ method: 'GET', url: '/api/v1/version' })).json().data).toMatchObject({ apiVersion: 'v1', phase: 6, status: 'meal-planning-real' });
     const denied = await app.inject({ method: 'GET', url: '/api/v1/me' });
     expect(denied.statusCode).toBe(401);
     expect((await app.inject({ method: 'GET', url: '/api/v1/foods' })).statusCode).toBe(401);

@@ -242,6 +242,66 @@ export const nutritionHistoryQuerySchema = z.object({
   to: localDateSchema,
 }).refine((value) => value.from <= value.to, { message: 'Rentang tanggal tidak valid.', path: ['to'] });
 
+export const recipeSearchQuerySchema = z.object({
+  q: z.string().trim().max(100).optional(),
+  mealType: z.enum(['BREAKFAST', 'LUNCH', 'DINNER', 'SNACK']).optional(),
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(1).max(50).default(20),
+});
+
+export const mealPlanGenerateSchema = z.object({ localDate: localDateSchema });
+export const mealReplacementSchema = z.object({
+  recipeId: z.string().uuid(),
+  reason: z.enum(['DISLIKED', 'UNAVAILABLE', 'TOO_LONG', 'TOO_EXPENSIVE', 'VARIETY', 'OTHER']).optional(),
+});
+export const mealConsumptionSchema = z.object({ fraction: z.union([z.literal(1), z.literal(0.75), z.literal(0.5), z.literal(0.25)]) });
+
+const nutrientValueSchema = z.number().nonnegative().finite().nullable();
+export const flexIngredientSchema = z.object({
+  foodItemId: z.string().uuid().optional(),
+  servingId: z.string().uuid().optional(),
+  customName: z.string().trim().min(2).max(160).optional(),
+  quantity: z.number().positive().max(100),
+  userNutrition: z.object({
+    ENERGY_KCAL: nutrientValueSchema.optional(), PROTEIN_G: nutrientValueSchema.optional(), CARBOHYDRATE_G: nutrientValueSchema.optional(), FAT_G: nutrientValueSchema.optional(),
+    SATURATED_FAT_G: nutrientValueSchema.optional(), FIBER_G: nutrientValueSchema.optional(), SUGAR_G: nutrientValueSchema.optional(), SODIUM_MG: nutrientValueSchema.optional(),
+  }).optional(),
+}).refine((value) => Boolean(value.foodItemId && value.servingId) || Boolean(value.customName), 'Pilih item database atau isi nama bahan custom.');
+
+export const flexKitchenPreviewSchema = z.object({
+  localDate: localDateSchema,
+  servings: z.number().positive().max(100),
+  ingredients: z.array(flexIngredientSchema).min(1).max(50),
+});
+
+export const flexKitchenConsumeSchema = flexKitchenPreviewSchema.extend({
+  recipeName: z.string().trim().min(2).max(160),
+  mealType: z.enum(['BREAKFAST', 'LUNCH', 'DINNER', 'SNACK']),
+  fraction: z.union([z.literal(1), z.literal(0.75), z.literal(0.5), z.literal(0.25)]),
+});
+
+export const substitutionSchema = z.object({
+  localDate: localDateSchema,
+  ingredient: flexIngredientSchema,
+  replacementFoodItemId: z.string().uuid().optional(),
+});
+
+export const personalRecipeSchema = z.object({
+  name: z.string().trim().min(2).max(160),
+  description: z.string().trim().max(1000).default('Resep pribadi'),
+  servings: z.number().positive().max(100),
+  prepTimeMinutes: z.number().int().min(0).max(1440).default(0),
+  cookTimeMinutes: z.number().int().min(0).max(1440).default(0),
+  difficulty: z.enum(['EASY', 'MEDIUM', 'HARD']).default('EASY'),
+  estimatedCostCategory: z.enum(['LOW', 'MEDIUM', 'HIGH']).default('MEDIUM'),
+  cookingMethod: z.enum(['RAW', 'BOILED', 'STEAMED', 'GRILLED', 'BAKED', 'FRIED', 'STIR_FRIED', 'OTHER']),
+  mealTypes: z.array(z.enum(['BREAKFAST', 'LUNCH', 'DINNER', 'SNACK'])).min(1).max(4),
+  ingredients: z.array(flexIngredientSchema).min(1).max(50),
+  notes: z.string().trim().max(1000).optional(),
+  steps: z.array(z.object({ instruction: z.string().trim().min(2).max(1000), timerSeconds: z.number().int().min(1).max(86400).optional() })).max(50).default([]),
+});
+export const personalRecipePatchSchema = personalRecipeSchema.partial().refine((value) => Object.keys(value).length > 0, 'Minimal satu field harus diubah.');
+
 export type ProfileInput = z.infer<typeof profileSchema>;
 export type ProfilePatchInput = z.infer<typeof profilePatchSchema>;
 export type ConsentInput = z.infer<typeof consentSchema>;

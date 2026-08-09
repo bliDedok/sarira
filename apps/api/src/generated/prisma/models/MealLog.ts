@@ -283,6 +283,7 @@ export type MealLogWhereInput = {
   dailyRecord?: Prisma.XOR<Prisma.DailyRecordScalarRelationFilter, Prisma.DailyRecordWhereInput>
   digestiveLogs?: Prisma.DigestiveLogListRelationFilter
   items?: Prisma.MealLogItemListRelationFilter
+  mealPlanConsumption?: Prisma.XOR<Prisma.MealPlanConsumptionNullableScalarRelationFilter, Prisma.MealPlanConsumptionWhereInput> | null
 }
 
 export type MealLogOrderByWithRelationInput = {
@@ -308,6 +309,7 @@ export type MealLogOrderByWithRelationInput = {
   dailyRecord?: Prisma.DailyRecordOrderByWithRelationInput
   digestiveLogs?: Prisma.DigestiveLogOrderByRelationAggregateInput
   items?: Prisma.MealLogItemOrderByRelationAggregateInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionOrderByWithRelationInput
 }
 
 export type MealLogWhereUniqueInput = Prisma.AtLeast<{
@@ -336,6 +338,7 @@ export type MealLogWhereUniqueInput = Prisma.AtLeast<{
   dailyRecord?: Prisma.XOR<Prisma.DailyRecordScalarRelationFilter, Prisma.DailyRecordWhereInput>
   digestiveLogs?: Prisma.DigestiveLogListRelationFilter
   items?: Prisma.MealLogItemListRelationFilter
+  mealPlanConsumption?: Prisma.XOR<Prisma.MealPlanConsumptionNullableScalarRelationFilter, Prisma.MealPlanConsumptionWhereInput> | null
 }, "id">
 
 export type MealLogOrderByWithAggregationInput = {
@@ -404,6 +407,7 @@ export type MealLogCreateInput = {
   dailyRecord: Prisma.DailyRecordCreateNestedOneWithoutMealLogsInput
   digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutRelatedMealInput
   items?: Prisma.MealLogItemCreateNestedManyWithoutMealLogInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionCreateNestedOneWithoutMealLogInput
 }
 
 export type MealLogUncheckedCreateInput = {
@@ -426,6 +430,7 @@ export type MealLogUncheckedCreateInput = {
   updatedAt?: Date | string
   digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutRelatedMealInput
   items?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutMealLogInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUncheckedCreateNestedOneWithoutMealLogInput
 }
 
 export type MealLogUpdateInput = {
@@ -448,6 +453,7 @@ export type MealLogUpdateInput = {
   dailyRecord?: Prisma.DailyRecordUpdateOneRequiredWithoutMealLogsNestedInput
   digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutRelatedMealNestedInput
   items?: Prisma.MealLogItemUpdateManyWithoutMealLogNestedInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUpdateOneWithoutMealLogNestedInput
 }
 
 export type MealLogUncheckedUpdateInput = {
@@ -470,6 +476,7 @@ export type MealLogUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutRelatedMealNestedInput
   items?: Prisma.MealLogItemUncheckedUpdateManyWithoutMealLogNestedInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUncheckedUpdateOneWithoutMealLogNestedInput
 }
 
 export type MealLogCreateManyInput = {
@@ -761,6 +768,20 @@ export type MealLogUpdateOneRequiredWithoutItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.MealLogUpdateToOneWithWhereWithoutItemsInput, Prisma.MealLogUpdateWithoutItemsInput>, Prisma.MealLogUncheckedUpdateWithoutItemsInput>
 }
 
+export type MealLogCreateNestedOneWithoutMealPlanConsumptionInput = {
+  create?: Prisma.XOR<Prisma.MealLogCreateWithoutMealPlanConsumptionInput, Prisma.MealLogUncheckedCreateWithoutMealPlanConsumptionInput>
+  connectOrCreate?: Prisma.MealLogCreateOrConnectWithoutMealPlanConsumptionInput
+  connect?: Prisma.MealLogWhereUniqueInput
+}
+
+export type MealLogUpdateOneRequiredWithoutMealPlanConsumptionNestedInput = {
+  create?: Prisma.XOR<Prisma.MealLogCreateWithoutMealPlanConsumptionInput, Prisma.MealLogUncheckedCreateWithoutMealPlanConsumptionInput>
+  connectOrCreate?: Prisma.MealLogCreateOrConnectWithoutMealPlanConsumptionInput
+  upsert?: Prisma.MealLogUpsertWithoutMealPlanConsumptionInput
+  connect?: Prisma.MealLogWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MealLogUpdateToOneWithWhereWithoutMealPlanConsumptionInput, Prisma.MealLogUpdateWithoutMealPlanConsumptionInput>, Prisma.MealLogUncheckedUpdateWithoutMealPlanConsumptionInput>
+}
+
 export type MealLogCreateNestedOneWithoutDigestiveLogsInput = {
   create?: Prisma.XOR<Prisma.MealLogCreateWithoutDigestiveLogsInput, Prisma.MealLogUncheckedCreateWithoutDigestiveLogsInput>
   connectOrCreate?: Prisma.MealLogCreateOrConnectWithoutDigestiveLogsInput
@@ -796,6 +817,7 @@ export type MealLogCreateWithoutProfileInput = {
   dailyRecord: Prisma.DailyRecordCreateNestedOneWithoutMealLogsInput
   digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutRelatedMealInput
   items?: Prisma.MealLogItemCreateNestedManyWithoutMealLogInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionCreateNestedOneWithoutMealLogInput
 }
 
 export type MealLogUncheckedCreateWithoutProfileInput = {
@@ -817,6 +839,7 @@ export type MealLogUncheckedCreateWithoutProfileInput = {
   updatedAt?: Date | string
   digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutRelatedMealInput
   items?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutMealLogInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUncheckedCreateNestedOneWithoutMealLogInput
 }
 
 export type MealLogCreateOrConnectWithoutProfileInput = {
@@ -887,6 +910,7 @@ export type MealLogCreateWithoutBaselineSessionInput = {
   dailyRecord: Prisma.DailyRecordCreateNestedOneWithoutMealLogsInput
   digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutRelatedMealInput
   items?: Prisma.MealLogItemCreateNestedManyWithoutMealLogInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionCreateNestedOneWithoutMealLogInput
 }
 
 export type MealLogUncheckedCreateWithoutBaselineSessionInput = {
@@ -908,6 +932,7 @@ export type MealLogUncheckedCreateWithoutBaselineSessionInput = {
   updatedAt?: Date | string
   digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutRelatedMealInput
   items?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutMealLogInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUncheckedCreateNestedOneWithoutMealLogInput
 }
 
 export type MealLogCreateOrConnectWithoutBaselineSessionInput = {
@@ -955,6 +980,7 @@ export type MealLogCreateWithoutDailyRecordInput = {
   baselineSession: Prisma.BaselineSessionCreateNestedOneWithoutMealLogsInput
   digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutRelatedMealInput
   items?: Prisma.MealLogItemCreateNestedManyWithoutMealLogInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionCreateNestedOneWithoutMealLogInput
 }
 
 export type MealLogUncheckedCreateWithoutDailyRecordInput = {
@@ -976,6 +1002,7 @@ export type MealLogUncheckedCreateWithoutDailyRecordInput = {
   updatedAt?: Date | string
   digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutRelatedMealInput
   items?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutMealLogInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUncheckedCreateNestedOneWithoutMealLogInput
 }
 
 export type MealLogCreateOrConnectWithoutDailyRecordInput = {
@@ -1023,6 +1050,7 @@ export type MealLogCreateWithoutItemsInput = {
   baselineSession: Prisma.BaselineSessionCreateNestedOneWithoutMealLogsInput
   dailyRecord: Prisma.DailyRecordCreateNestedOneWithoutMealLogsInput
   digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutRelatedMealInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionCreateNestedOneWithoutMealLogInput
 }
 
 export type MealLogUncheckedCreateWithoutItemsInput = {
@@ -1044,6 +1072,7 @@ export type MealLogUncheckedCreateWithoutItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutRelatedMealInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUncheckedCreateNestedOneWithoutMealLogInput
 }
 
 export type MealLogCreateOrConnectWithoutItemsInput = {
@@ -1081,6 +1110,7 @@ export type MealLogUpdateWithoutItemsInput = {
   baselineSession?: Prisma.BaselineSessionUpdateOneRequiredWithoutMealLogsNestedInput
   dailyRecord?: Prisma.DailyRecordUpdateOneRequiredWithoutMealLogsNestedInput
   digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutRelatedMealNestedInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUpdateOneWithoutMealLogNestedInput
 }
 
 export type MealLogUncheckedUpdateWithoutItemsInput = {
@@ -1102,6 +1132,111 @@ export type MealLogUncheckedUpdateWithoutItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutRelatedMealNestedInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUncheckedUpdateOneWithoutMealLogNestedInput
+}
+
+export type MealLogCreateWithoutMealPlanConsumptionInput = {
+  id?: string
+  localDate: Date | string
+  mealType: $Enums.MealType
+  eatenAt?: Date | string | null
+  description?: string | null
+  source?: $Enums.TrackingSource
+  skipped?: boolean
+  sugaryDrinkConsumed?: boolean | null
+  lateMeal?: boolean | null
+  homeCooked?: boolean | null
+  eatingContext?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile: Prisma.ProfileCreateNestedOneWithoutMealLogsInput
+  baselineSession: Prisma.BaselineSessionCreateNestedOneWithoutMealLogsInput
+  dailyRecord: Prisma.DailyRecordCreateNestedOneWithoutMealLogsInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutRelatedMealInput
+  items?: Prisma.MealLogItemCreateNestedManyWithoutMealLogInput
+}
+
+export type MealLogUncheckedCreateWithoutMealPlanConsumptionInput = {
+  id?: string
+  profileId: string
+  baselineSessionId: string
+  dailyRecordId: string
+  localDate: Date | string
+  mealType: $Enums.MealType
+  eatenAt?: Date | string | null
+  description?: string | null
+  source?: $Enums.TrackingSource
+  skipped?: boolean
+  sugaryDrinkConsumed?: boolean | null
+  lateMeal?: boolean | null
+  homeCooked?: boolean | null
+  eatingContext?: string | null
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutRelatedMealInput
+  items?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutMealLogInput
+}
+
+export type MealLogCreateOrConnectWithoutMealPlanConsumptionInput = {
+  where: Prisma.MealLogWhereUniqueInput
+  create: Prisma.XOR<Prisma.MealLogCreateWithoutMealPlanConsumptionInput, Prisma.MealLogUncheckedCreateWithoutMealPlanConsumptionInput>
+}
+
+export type MealLogUpsertWithoutMealPlanConsumptionInput = {
+  update: Prisma.XOR<Prisma.MealLogUpdateWithoutMealPlanConsumptionInput, Prisma.MealLogUncheckedUpdateWithoutMealPlanConsumptionInput>
+  create: Prisma.XOR<Prisma.MealLogCreateWithoutMealPlanConsumptionInput, Prisma.MealLogUncheckedCreateWithoutMealPlanConsumptionInput>
+  where?: Prisma.MealLogWhereInput
+}
+
+export type MealLogUpdateToOneWithWhereWithoutMealPlanConsumptionInput = {
+  where?: Prisma.MealLogWhereInput
+  data: Prisma.XOR<Prisma.MealLogUpdateWithoutMealPlanConsumptionInput, Prisma.MealLogUncheckedUpdateWithoutMealPlanConsumptionInput>
+}
+
+export type MealLogUpdateWithoutMealPlanConsumptionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  localDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mealType?: Prisma.EnumMealTypeFieldUpdateOperationsInput | $Enums.MealType
+  eatenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumTrackingSourceFieldUpdateOperationsInput | $Enums.TrackingSource
+  skipped?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sugaryDrinkConsumed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  lateMeal?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  homeCooked?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  eatingContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneRequiredWithoutMealLogsNestedInput
+  baselineSession?: Prisma.BaselineSessionUpdateOneRequiredWithoutMealLogsNestedInput
+  dailyRecord?: Prisma.DailyRecordUpdateOneRequiredWithoutMealLogsNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutRelatedMealNestedInput
+  items?: Prisma.MealLogItemUpdateManyWithoutMealLogNestedInput
+}
+
+export type MealLogUncheckedUpdateWithoutMealPlanConsumptionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  baselineSessionId?: Prisma.StringFieldUpdateOperationsInput | string
+  dailyRecordId?: Prisma.StringFieldUpdateOperationsInput | string
+  localDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mealType?: Prisma.EnumMealTypeFieldUpdateOperationsInput | $Enums.MealType
+  eatenAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.EnumTrackingSourceFieldUpdateOperationsInput | $Enums.TrackingSource
+  skipped?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sugaryDrinkConsumed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  lateMeal?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  homeCooked?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  eatingContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutRelatedMealNestedInput
+  items?: Prisma.MealLogItemUncheckedUpdateManyWithoutMealLogNestedInput
 }
 
 export type MealLogCreateWithoutDigestiveLogsInput = {
@@ -1123,6 +1258,7 @@ export type MealLogCreateWithoutDigestiveLogsInput = {
   baselineSession: Prisma.BaselineSessionCreateNestedOneWithoutMealLogsInput
   dailyRecord: Prisma.DailyRecordCreateNestedOneWithoutMealLogsInput
   items?: Prisma.MealLogItemCreateNestedManyWithoutMealLogInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionCreateNestedOneWithoutMealLogInput
 }
 
 export type MealLogUncheckedCreateWithoutDigestiveLogsInput = {
@@ -1144,6 +1280,7 @@ export type MealLogUncheckedCreateWithoutDigestiveLogsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   items?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutMealLogInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUncheckedCreateNestedOneWithoutMealLogInput
 }
 
 export type MealLogCreateOrConnectWithoutDigestiveLogsInput = {
@@ -1181,6 +1318,7 @@ export type MealLogUpdateWithoutDigestiveLogsInput = {
   baselineSession?: Prisma.BaselineSessionUpdateOneRequiredWithoutMealLogsNestedInput
   dailyRecord?: Prisma.DailyRecordUpdateOneRequiredWithoutMealLogsNestedInput
   items?: Prisma.MealLogItemUpdateManyWithoutMealLogNestedInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUpdateOneWithoutMealLogNestedInput
 }
 
 export type MealLogUncheckedUpdateWithoutDigestiveLogsInput = {
@@ -1202,6 +1340,7 @@ export type MealLogUncheckedUpdateWithoutDigestiveLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   items?: Prisma.MealLogItemUncheckedUpdateManyWithoutMealLogNestedInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUncheckedUpdateOneWithoutMealLogNestedInput
 }
 
 export type MealLogCreateManyProfileInput = {
@@ -1242,6 +1381,7 @@ export type MealLogUpdateWithoutProfileInput = {
   dailyRecord?: Prisma.DailyRecordUpdateOneRequiredWithoutMealLogsNestedInput
   digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutRelatedMealNestedInput
   items?: Prisma.MealLogItemUpdateManyWithoutMealLogNestedInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUpdateOneWithoutMealLogNestedInput
 }
 
 export type MealLogUncheckedUpdateWithoutProfileInput = {
@@ -1263,6 +1403,7 @@ export type MealLogUncheckedUpdateWithoutProfileInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutRelatedMealNestedInput
   items?: Prisma.MealLogItemUncheckedUpdateManyWithoutMealLogNestedInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUncheckedUpdateOneWithoutMealLogNestedInput
 }
 
 export type MealLogUncheckedUpdateManyWithoutProfileInput = {
@@ -1322,6 +1463,7 @@ export type MealLogUpdateWithoutBaselineSessionInput = {
   dailyRecord?: Prisma.DailyRecordUpdateOneRequiredWithoutMealLogsNestedInput
   digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutRelatedMealNestedInput
   items?: Prisma.MealLogItemUpdateManyWithoutMealLogNestedInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUpdateOneWithoutMealLogNestedInput
 }
 
 export type MealLogUncheckedUpdateWithoutBaselineSessionInput = {
@@ -1343,6 +1485,7 @@ export type MealLogUncheckedUpdateWithoutBaselineSessionInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutRelatedMealNestedInput
   items?: Prisma.MealLogItemUncheckedUpdateManyWithoutMealLogNestedInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUncheckedUpdateOneWithoutMealLogNestedInput
 }
 
 export type MealLogUncheckedUpdateManyWithoutBaselineSessionInput = {
@@ -1402,6 +1545,7 @@ export type MealLogUpdateWithoutDailyRecordInput = {
   baselineSession?: Prisma.BaselineSessionUpdateOneRequiredWithoutMealLogsNestedInput
   digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutRelatedMealNestedInput
   items?: Prisma.MealLogItemUpdateManyWithoutMealLogNestedInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUpdateOneWithoutMealLogNestedInput
 }
 
 export type MealLogUncheckedUpdateWithoutDailyRecordInput = {
@@ -1423,6 +1567,7 @@ export type MealLogUncheckedUpdateWithoutDailyRecordInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutRelatedMealNestedInput
   items?: Prisma.MealLogItemUncheckedUpdateManyWithoutMealLogNestedInput
+  mealPlanConsumption?: Prisma.MealPlanConsumptionUncheckedUpdateOneWithoutMealLogNestedInput
 }
 
 export type MealLogUncheckedUpdateManyWithoutDailyRecordInput = {
@@ -1507,6 +1652,7 @@ export type MealLogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   dailyRecord?: boolean | Prisma.DailyRecordDefaultArgs<ExtArgs>
   digestiveLogs?: boolean | Prisma.MealLog$digestiveLogsArgs<ExtArgs>
   items?: boolean | Prisma.MealLog$itemsArgs<ExtArgs>
+  mealPlanConsumption?: boolean | Prisma.MealLog$mealPlanConsumptionArgs<ExtArgs>
   _count?: boolean | Prisma.MealLogCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mealLog"]>
 
@@ -1583,6 +1729,7 @@ export type MealLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   dailyRecord?: boolean | Prisma.DailyRecordDefaultArgs<ExtArgs>
   digestiveLogs?: boolean | Prisma.MealLog$digestiveLogsArgs<ExtArgs>
   items?: boolean | Prisma.MealLog$itemsArgs<ExtArgs>
+  mealPlanConsumption?: boolean | Prisma.MealLog$mealPlanConsumptionArgs<ExtArgs>
   _count?: boolean | Prisma.MealLogCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type MealLogIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1604,6 +1751,7 @@ export type $MealLogPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     dailyRecord: Prisma.$DailyRecordPayload<ExtArgs>
     digestiveLogs: Prisma.$DigestiveLogPayload<ExtArgs>[]
     items: Prisma.$MealLogItemPayload<ExtArgs>[]
+    mealPlanConsumption: Prisma.$MealPlanConsumptionPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2022,6 +2170,7 @@ export interface Prisma__MealLogClient<T, Null = never, ExtArgs extends runtime.
   dailyRecord<T extends Prisma.DailyRecordDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DailyRecordDefaultArgs<ExtArgs>>): Prisma.Prisma__DailyRecordClient<runtime.Types.Result.GetResult<Prisma.$DailyRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   digestiveLogs<T extends Prisma.MealLog$digestiveLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MealLog$digestiveLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DigestiveLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   items<T extends Prisma.MealLog$itemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MealLog$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MealLogItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mealPlanConsumption<T extends Prisma.MealLog$mealPlanConsumptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MealLog$mealPlanConsumptionArgs<ExtArgs>>): Prisma.Prisma__MealPlanConsumptionClient<runtime.Types.Result.GetResult<Prisma.$MealPlanConsumptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2514,6 +2663,25 @@ export type MealLog$itemsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.MealLogItemScalarFieldEnum | Prisma.MealLogItemScalarFieldEnum[]
+}
+
+/**
+ * MealLog.mealPlanConsumption
+ */
+export type MealLog$mealPlanConsumptionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MealPlanConsumption
+   */
+  select?: Prisma.MealPlanConsumptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MealPlanConsumption
+   */
+  omit?: Prisma.MealPlanConsumptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MealPlanConsumptionInclude<ExtArgs> | null
+  where?: Prisma.MealPlanConsumptionWhereInput
 }
 
 /**

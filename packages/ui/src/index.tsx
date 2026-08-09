@@ -94,10 +94,12 @@ export function AppText({
   children,
   variant = 'body',
   style,
+  accessibilityRole,
   ...props
 }: React.ComponentProps<typeof Text> & { variant?: keyof typeof textStyles }) {
+  const semanticRole = accessibilityRole ?? (['display', 'h1', 'h2', 'h3'].includes(variant) ? 'header' : undefined);
   return (
-    <Text style={[textStyles[variant], style]} {...props}>
+    <Text accessibilityRole={semanticRole} style={[textStyles[variant], style]} {...props}>
       {children}
     </Text>
   );

@@ -446,6 +446,89 @@ export const NutritionPolicyStatus = {
 export type NutritionPolicyStatus = (typeof NutritionPolicyStatus)[keyof typeof NutritionPolicyStatus]
 
 
+export const RecipeSourceType = {
+  INTERNAL_CURATED: 'INTERNAL_CURATED',
+  OFFICIAL_GUIDE: 'OFFICIAL_GUIDE',
+  EXPERT_REVIEWED: 'EXPERT_REVIEWED',
+  USER_CREATED: 'USER_CREATED',
+  SYNTHETIC_DEVELOPMENT: 'SYNTHETIC_DEVELOPMENT'
+} as const
+
+export type RecipeSourceType = (typeof RecipeSourceType)[keyof typeof RecipeSourceType]
+
+
+export const RecipeDifficulty = {
+  EASY: 'EASY',
+  MEDIUM: 'MEDIUM',
+  HARD: 'HARD'
+} as const
+
+export type RecipeDifficulty = (typeof RecipeDifficulty)[keyof typeof RecipeDifficulty]
+
+
+export const EstimatedCostCategory = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH'
+} as const
+
+export type EstimatedCostCategory = (typeof EstimatedCostCategory)[keyof typeof EstimatedCostCategory]
+
+
+export const CookingMethod = {
+  RAW: 'RAW',
+  BOILED: 'BOILED',
+  STEAMED: 'STEAMED',
+  GRILLED: 'GRILLED',
+  BAKED: 'BAKED',
+  FRIED: 'FRIED',
+  STIR_FRIED: 'STIR_FRIED',
+  OTHER: 'OTHER'
+} as const
+
+export type CookingMethod = (typeof CookingMethod)[keyof typeof CookingMethod]
+
+
+export const RecipeVersionStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  RETIRED: 'RETIRED'
+} as const
+
+export type RecipeVersionStatus = (typeof RecipeVersionStatus)[keyof typeof RecipeVersionStatus]
+
+
+export const MealPlanningPolicyStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  DEPRECATED: 'DEPRECATED'
+} as const
+
+export type MealPlanningPolicyStatus = (typeof MealPlanningPolicyStatus)[keyof typeof MealPlanningPolicyStatus]
+
+
+export const MealPlanStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  REPLACED: 'REPLACED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type MealPlanStatus = (typeof MealPlanStatus)[keyof typeof MealPlanStatus]
+
+
+export const MealPlanItemStatus = {
+  PLANNED: 'PLANNED',
+  REPLACED: 'REPLACED',
+  COOKING: 'COOKING',
+  CONSUMED: 'CONSUMED',
+  SKIPPED: 'SKIPPED'
+} as const
+
+export type MealPlanItemStatus = (typeof MealPlanItemStatus)[keyof typeof MealPlanItemStatus]
+
+
 export const AuditEvent = {
   USER_REGISTERED: 'USER_REGISTERED',
   USER_LOGGED_IN: 'USER_LOGGED_IN',
@@ -490,7 +573,13 @@ export const AuditEvent = {
   MEAL_LOG_ITEM_UPDATED: 'MEAL_LOG_ITEM_UPDATED',
   MEAL_LOG_ITEM_DELETED: 'MEAL_LOG_ITEM_DELETED',
   NUTRITION_TARGET_CALCULATED: 'NUTRITION_TARGET_CALCULATED',
-  NUTRITION_DAILY_VIEWED: 'NUTRITION_DAILY_VIEWED'
+  NUTRITION_DAILY_VIEWED: 'NUTRITION_DAILY_VIEWED',
+  MEAL_PLAN_GENERATED: 'MEAL_PLAN_GENERATED',
+  MEAL_PLAN_ITEM_REPLACED: 'MEAL_PLAN_ITEM_REPLACED',
+  MEAL_PLAN_ITEM_CONSUMED: 'MEAL_PLAN_ITEM_CONSUMED',
+  PERSONAL_RECIPE_CREATED: 'PERSONAL_RECIPE_CREATED',
+  PERSONAL_RECIPE_UPDATED: 'PERSONAL_RECIPE_UPDATED',
+  PERSONAL_RECIPE_ARCHIVED: 'PERSONAL_RECIPE_ARCHIVED'
 } as const
 
 export type AuditEvent = (typeof AuditEvent)[keyof typeof AuditEvent]

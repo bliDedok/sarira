@@ -77,8 +77,8 @@ export default function HomeScreen() {
         <Card tone="cream" style={styles.demoCard} accessibilityLabel={`Ringkasan nutrisi nyata, ${nutrition?.itemCount ?? 0} item`}>
           <View style={styles.rowBetween}><View style={styles.flex}><AppText variant="eyebrow">NUTRITION INDICATOR · REAL</AppText><AppText variant="h3">Ringkasan nutrisi hari ini</AppText></View><Chip label={`${nutrition?.itemCount ?? 0} ITEM`} tone="mint" /></View>
           <View style={styles.chips}>{(['ENERGY_KCAL', 'PROTEIN_G', 'FIBER_G', 'SODIUM_MG'] as const).map((code) => { const indicator = nutrition?.indicators.find((item) => item.nutrientCode === code); return <Chip key={code} label={`${indicator?.displayName ?? code} · ${indicator?.amount === null || indicator?.amount === undefined ? 'belum tersedia' : `${indicator.amount} ${indicator.unit}`}`} tone={indicator?.amount === null || indicator?.amount === undefined ? 'warning' : 'neutral'} />; })}</View>
-          <AppText variant="body">Angka berasal dari item database dan snapshot porsi. Guided Meal, Flex Kitchen, serta saran AI tetap Demo.</AppText>
-          <Button label="Buka indikator nutrisi" variant="secondary" onPress={() => router.push('/nutrition' as never)} />
+          <AppText variant="body">Angka berasal dari snapshot porsi. Guided Meal dan Flex Kitchen kini memakai mesin nutrisi yang sama; fitur AI tidak digunakan.</AppText>
+          <View style={styles.chips}><Button label="Buka Guided Meal" variant="lime" onPress={() => router.push('/guided-meal' as never)} /><Button label="Buka Flex Kitchen" variant="secondary" onPress={() => router.push('/flex-kitchen' as never)} /><Button label="Indikator nutrisi" variant="ghost" onPress={() => router.push('/nutrition' as never)} /></View>
         </Card>
       </>}
     </AppShell>

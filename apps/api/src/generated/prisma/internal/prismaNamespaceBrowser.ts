@@ -91,6 +91,16 @@ export const ModelName = {
   NutritionSnapshot: 'NutritionSnapshot',
   NutritionPolicy: 'NutritionPolicy',
   NutritionTargetProfile: 'NutritionTargetProfile',
+  Recipe: 'Recipe',
+  RecipeVersion: 'RecipeVersion',
+  RecipeIngredient: 'RecipeIngredient',
+  RecipeStep: 'RecipeStep',
+  RecipeNutritionSnapshot: 'RecipeNutritionSnapshot',
+  MealPlanningPolicy: 'MealPlanningPolicy',
+  DailyMealPlan: 'DailyMealPlan',
+  DailyMealPlanItem: 'DailyMealPlanItem',
+  MealPlanItemSnapshot: 'MealPlanItemSnapshot',
+  MealPlanConsumption: 'MealPlanConsumption',
   SleepLog: 'SleepLog',
   ActivityLog: 'ActivityLog',
   StepRecord: 'StepRecord',
@@ -814,6 +824,196 @@ export const NutritionTargetProfileScalarFieldEnum = {
 } as const
 
 export type NutritionTargetProfileScalarFieldEnum = (typeof NutritionTargetProfileScalarFieldEnum)[keyof typeof NutritionTargetProfileScalarFieldEnum]
+
+
+export const RecipeScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  ownerProfileId: 'ownerProfileId',
+  name: 'name',
+  description: 'description',
+  sourceType: 'sourceType',
+  sourceId: 'sourceId',
+  sourceVersion: 'sourceVersion',
+  verified: 'verified',
+  active: 'active',
+  private: 'private',
+  archivedAt: 'archivedAt',
+  requiresExpertValidation: 'requiresExpertValidation',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RecipeScalarFieldEnum = (typeof RecipeScalarFieldEnum)[keyof typeof RecipeScalarFieldEnum]
+
+
+export const RecipeVersionScalarFieldEnum = {
+  id: 'id',
+  recipeId: 'recipeId',
+  version: 'version',
+  status: 'status',
+  servings: 'servings',
+  prepTimeMinutes: 'prepTimeMinutes',
+  cookTimeMinutes: 'cookTimeMinutes',
+  difficulty: 'difficulty',
+  estimatedCostCategory: 'estimatedCostCategory',
+  cookingMethod: 'cookingMethod',
+  mealTypes: 'mealTypes',
+  dietaryTags: 'dietaryTags',
+  equipment: 'equipment',
+  notes: 'notes',
+  verified: 'verified',
+  requiresExpertValidation: 'requiresExpertValidation',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RecipeVersionScalarFieldEnum = (typeof RecipeVersionScalarFieldEnum)[keyof typeof RecipeVersionScalarFieldEnum]
+
+
+export const RecipeIngredientScalarFieldEnum = {
+  id: 'id',
+  recipeVersionId: 'recipeVersionId',
+  foodItemId: 'foodItemId',
+  servingId: 'servingId',
+  customName: 'customName',
+  quantity: 'quantity',
+  gramAmount: 'gramAmount',
+  preparationNote: 'preparationNote',
+  optional: 'optional',
+  replacementGroup: 'replacementGroup',
+  orderIndex: 'orderIndex',
+  sourceType: 'sourceType',
+  userNutrition: 'userNutrition',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RecipeIngredientScalarFieldEnum = (typeof RecipeIngredientScalarFieldEnum)[keyof typeof RecipeIngredientScalarFieldEnum]
+
+
+export const RecipeStepScalarFieldEnum = {
+  id: 'id',
+  recipeVersionId: 'recipeVersionId',
+  orderIndex: 'orderIndex',
+  instruction: 'instruction',
+  timerSeconds: 'timerSeconds',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RecipeStepScalarFieldEnum = (typeof RecipeStepScalarFieldEnum)[keyof typeof RecipeStepScalarFieldEnum]
+
+
+export const RecipeNutritionSnapshotScalarFieldEnum = {
+  id: 'id',
+  recipeVersionId: 'recipeVersionId',
+  totalEnergyKcal: 'totalEnergyKcal',
+  totalProteinG: 'totalProteinG',
+  totalCarbohydrateG: 'totalCarbohydrateG',
+  totalFatG: 'totalFatG',
+  totalSaturatedFatG: 'totalSaturatedFatG',
+  totalFiberG: 'totalFiberG',
+  totalSugarG: 'totalSugarG',
+  totalSodiumMg: 'totalSodiumMg',
+  perServing: 'perServing',
+  missingNutrients: 'missingNutrients',
+  complete: 'complete',
+  sourceVersions: 'sourceVersions',
+  calculationVersion: 'calculationVersion',
+  calculatedAt: 'calculatedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type RecipeNutritionSnapshotScalarFieldEnum = (typeof RecipeNutritionSnapshotScalarFieldEnum)[keyof typeof RecipeNutritionSnapshotScalarFieldEnum]
+
+
+export const MealPlanningPolicyScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  version: 'version',
+  status: 'status',
+  configuration: 'configuration',
+  effectiveFrom: 'effectiveFrom',
+  effectiveTo: 'effectiveTo',
+  requiresProductValidation: 'requiresProductValidation',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MealPlanningPolicyScalarFieldEnum = (typeof MealPlanningPolicyScalarFieldEnum)[keyof typeof MealPlanningPolicyScalarFieldEnum]
+
+
+export const DailyMealPlanScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  localDate: 'localDate',
+  targetProfileId: 'targetProfileId',
+  mealPlanningPolicyId: 'mealPlanningPolicyId',
+  policyVersion: 'policyVersion',
+  nutritionPolicyVersion: 'nutritionPolicyVersion',
+  generatedByPolicyVersion: 'generatedByPolicyVersion',
+  targetSnapshot: 'targetSnapshot',
+  status: 'status',
+  source: 'source',
+  generatedAt: 'generatedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DailyMealPlanScalarFieldEnum = (typeof DailyMealPlanScalarFieldEnum)[keyof typeof DailyMealPlanScalarFieldEnum]
+
+
+export const DailyMealPlanItemScalarFieldEnum = {
+  id: 'id',
+  mealPlanId: 'mealPlanId',
+  mealType: 'mealType',
+  recipeId: 'recipeId',
+  recipeVersionId: 'recipeVersionId',
+  position: 'position',
+  status: 'status',
+  reasonCodes: 'reasonCodes',
+  recommendationFit: 'recommendationFit',
+  score: 'score',
+  nutritionImpact: 'nutritionImpact',
+  replacedFromItemId: 'replacedFromItemId',
+  replacementReason: 'replacementReason',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DailyMealPlanItemScalarFieldEnum = (typeof DailyMealPlanItemScalarFieldEnum)[keyof typeof DailyMealPlanItemScalarFieldEnum]
+
+
+export const MealPlanItemSnapshotScalarFieldEnum = {
+  id: 'id',
+  mealPlanItemId: 'mealPlanItemId',
+  recipeVersionId: 'recipeVersionId',
+  recipeName: 'recipeName',
+  recipeVersion: 'recipeVersion',
+  servings: 'servings',
+  nutritionPerServing: 'nutritionPerServing',
+  ingredients: 'ingredients',
+  sourceVersion: 'sourceVersion',
+  calculationVersion: 'calculationVersion',
+  createdAt: 'createdAt'
+} as const
+
+export type MealPlanItemSnapshotScalarFieldEnum = (typeof MealPlanItemSnapshotScalarFieldEnum)[keyof typeof MealPlanItemSnapshotScalarFieldEnum]
+
+
+export const MealPlanConsumptionScalarFieldEnum = {
+  id: 'id',
+  mealPlanItemId: 'mealPlanItemId',
+  mealLogId: 'mealLogId',
+  consumedFraction: 'consumedFraction',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type MealPlanConsumptionScalarFieldEnum = (typeof MealPlanConsumptionScalarFieldEnum)[keyof typeof MealPlanConsumptionScalarFieldEnum]
 
 
 export const SleepLogScalarFieldEnum = {

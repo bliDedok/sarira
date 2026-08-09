@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { createHash } from 'node:crypto';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { phase3DevelopmentSafetyRules, phase3GoalConfigurations, PHASE_3_CONTENT_STATUS, PHASE_3_RULE_VERSION } from '../packages/expert-system/src/index';
-import { DEVELOPMENT_FOODS, DEVELOPMENT_POLICIES, DEVELOPMENT_SOURCE, nutrientCodes } from '../packages/nutrition-engine/src/index';
+import { calculateFoodNutrition, calculateRecipeNutrition, DEVELOPMENT_FOODS, DEVELOPMENT_POLICIES, DEVELOPMENT_SOURCE, NUTRITION_ENGINE_VERSION, nutrientCodes } from '../packages/nutrition-engine/src/index';
 import {
   ConsentType,
   ContentStatus,
@@ -18,10 +18,15 @@ import {
   DietaryTagCode,
   DietaryTagStatus,
   NutritionPolicyStatus,
+  RecipeSourceType,
+  RecipeVersionStatus,
+  RecipeDifficulty,
+  EstimatedCostCategory,
+  CookingMethod,
+  MealPlanningPolicyStatus,
 } from '../apps/api/src/generated/prisma/client';
 
-const connectionString = process.env.DIRECT_URL ?? process.env.DATABASE_URL;
-if (!connectionString) throw new Error('DATABASE_URL atau DIRECT_URL diperlukan untuk seed.');
+const connectionString = process.env.DIRECT_URL ?? process.env.DATABASE_URL ?? 'postgresql://sarira:sarira_dev_only@localhost:54322/sarira?schema=public';
 
 const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
 const version = 'phase3-dev-v1';
@@ -206,6 +211,51 @@ async function seedPhase5Nutrition() {
   }
 }
 
+const developmentRecipes = [
+  { code: 'DEV-RECIPE-NASI-TEMPE-BAYAM', name: 'Nasi, Tempe, dan Bayam', description: 'Menu development sederhana dari bahan pada database Phase 5.', mealTypes: ['LUNCH', 'DINNER'] as const, foodCodes: ['DEV-NASI-PUTIH', 'DEV-TEMPE', 'DEV-BAYAM'], method: CookingMethod.STIR_FRIED, minutes: 25, cost: EstimatedCostCategory.LOW },
+  { code: 'DEV-RECIPE-NASI-AYAM-WORTEL', name: 'Nasi Ayam Wortel', description: 'Menu development dengan nasi, ayam, dan wortel.', mealTypes: ['LUNCH', 'DINNER'] as const, foodCodes: ['DEV-NASI-PUTIH', 'DEV-AYAM', 'DEV-WORTEL'], method: CookingMethod.BOILED, minutes: 30, cost: EstimatedCostCategory.MEDIUM },
+  { code: 'DEV-RECIPE-NASI-TAHU-BAYAM', name: 'Nasi Tahu Bayam', description: 'Menu development berbasis tahu dan sayur.', mealTypes: ['LUNCH', 'DINNER'] as const, foodCodes: ['DEV-NASI-PUTIH', 'DEV-TAHU', 'DEV-BAYAM'], method: CookingMethod.STIR_FRIED, minutes: 22, cost: EstimatedCostCategory.LOW },
+  { code: 'DEV-RECIPE-NASI-IKAN-WORTEL', name: 'Nasi Ikan Wortel', description: 'Menu development berbasis ikan dan sayur.', mealTypes: ['LUNCH', 'DINNER'] as const, foodCodes: ['DEV-NASI-MERAH', 'DEV-IKAN', 'DEV-WORTEL'], method: CookingMethod.GRILLED, minutes: 32, cost: EstimatedCostCategory.MEDIUM },
+  { code: 'DEV-RECIPE-OAT-PISANG-SUSU', name: 'Oat Pisang Susu', description: 'Menu sarapan development dengan satu data nutrisi yang sengaja tidak lengkap.', mealTypes: ['BREAKFAST'] as const, foodCodes: ['DEV-OATMEAL', 'DEV-PISANG', 'DEV-SUSU'], method: CookingMethod.BOILED, minutes: 12, cost: EstimatedCostCategory.LOW },
+  { code: 'DEV-RECIPE-TELUR-PISANG-NASI', name: 'Telur, Pisang, dan Nasi', description: 'Menu sarapan development dari fixture synthetic.', mealTypes: ['BREAKFAST'] as const, foodCodes: ['DEV-TELUR-AYAM', 'DEV-PISANG', 'DEV-NASI-PUTIH'], method: CookingMethod.BOILED, minutes: 15, cost: EstimatedCostCategory.LOW },
+  { code: 'DEV-RECIPE-NASI-MERAH-TELUR-PEPAYA', name: 'Nasi Merah, Telur, dan Pepaya', description: 'Menu sarapan development dengan buah.', mealTypes: ['BREAKFAST'] as const, foodCodes: ['DEV-NASI-MERAH', 'DEV-TELUR-AYAM', 'DEV-PEPAYA'], method: CookingMethod.BOILED, minutes: 18, cost: EstimatedCostCategory.LOW },
+  { code: 'DEV-RECIPE-ROTI-TELUR-PISANG', name: 'Roti, Telur, dan Pisang', description: 'Menu sarapan development dengan data alergen synthetic.', mealTypes: ['BREAKFAST'] as const, foodCodes: ['DEV-ROTI', 'DEV-TELUR-AYAM', 'DEV-PISANG'], method: CookingMethod.BOILED, minutes: 10, cost: EstimatedCostCategory.LOW },
+];
+
+async function seedPhase6MealPlanning() {
+  await prisma.mealPlanningPolicy.upsert({
+    where: { code_version: { code: 'DAILY_GUIDED_MEAL', version: 'meal-planning-dev-v1' } },
+    update: { status: MealPlanningPolicyStatus.ACTIVE, requiresProductValidation: true },
+    create: { code: 'DAILY_GUIDED_MEAL', version: 'meal-planning-dev-v1', status: MealPlanningPolicyStatus.ACTIVE, effectiveFrom: activeAt, requiresProductValidation: true, configuration: { weights: { mealType: 20, protein: 18, fiber: 12, upperLimits: 20, time: 8, cost: 5, preference: 7, dataQuality: 10 }, criticalNutrients: ['ENERGY_KCAL', 'PROTEIN_G', 'SODIUM_MG'], snackEnabled: false, alternativesMinimum: 3, alternativesMaximum: 5, validationStatus: 'REQUIRES_PRODUCT_VALIDATION' } },
+  });
+  for (const seed of developmentRecipes) {
+    const recipe = await prisma.recipe.upsert({
+      where: { code: seed.code },
+      update: { name: seed.name, description: seed.description, sourceType: RecipeSourceType.SYNTHETIC_DEVELOPMENT, sourceVersion: 'phase6-dev-v1', verified: false, active: true, private: false, archivedAt: null, requiresExpertValidation: true },
+      create: { code: seed.code, name: seed.name, description: seed.description, sourceType: RecipeSourceType.SYNTHETIC_DEVELOPMENT, sourceId: 'SARIRA-DEVELOPMENT', sourceVersion: 'phase6-dev-v1', verified: false, active: true, private: false, requiresExpertValidation: true },
+    });
+    const version = await prisma.recipeVersion.upsert({
+      where: { recipeId_version: { recipeId: recipe.id, version: 1 } },
+      update: { status: RecipeVersionStatus.ACTIVE, servings: 2, prepTimeMinutes: 8, cookTimeMinutes: seed.minutes, difficulty: seed.minutes <= 15 ? RecipeDifficulty.EASY : RecipeDifficulty.MEDIUM, estimatedCostCategory: seed.cost, cookingMethod: seed.method, mealTypes: [...seed.mealTypes], dietaryTags: [], equipment: ['STOVE'], verified: false, requiresExpertValidation: true, publishedAt: activeAt },
+      create: { recipeId: recipe.id, version: 1, status: RecipeVersionStatus.ACTIVE, servings: 2, prepTimeMinutes: 8, cookTimeMinutes: seed.minutes, difficulty: seed.minutes <= 15 ? RecipeDifficulty.EASY : RecipeDifficulty.MEDIUM, estimatedCostCategory: seed.cost, cookingMethod: seed.method, mealTypes: [...seed.mealTypes], dietaryTags: [], equipment: ['STOVE'], verified: false, requiresExpertValidation: true, publishedAt: activeAt },
+    });
+    const nutritionInputs = [];
+    const sourceVersions: string[] = [];
+    for (const [index, code] of seed.foodCodes.entries()) {
+      const food = await prisma.foodItem.findUniqueOrThrow({ where: { code }, include: { source: true, servings: true, nutrients: { include: { nutrient: true } } } });
+      const serving = food.servings.find((item) => item.defaultServing) ?? food.servings[0]; if (!serving?.gramEquivalent) throw new Error(`Serving gram tidak tersedia untuk ${code}.`);
+      const gramAmount = Number(serving.gramEquivalent);
+      const calculation = calculateFoodNutrition(food.nutrients.map((item) => ({ nutrientCode: item.nutrient.code as (typeof nutrientCodes)[number], amount: Number(item.amount), basisAmount: Number(item.basisAmount), basisUnit: 'G' })), gramAmount);
+      nutritionInputs.push(calculation.nutrients); sourceVersions.push(food.source.version);
+      await prisma.recipeIngredient.upsert({ where: { recipeVersionId_orderIndex: { recipeVersionId: version.id, orderIndex: index + 1 } }, update: { foodItemId: food.id, servingId: serving.id, customName: null, quantity: 1, gramAmount, optional: false, sourceType: FoodSourceType.SYNTHETIC_TEST_DATA }, create: { recipeVersionId: version.id, foodItemId: food.id, servingId: serving.id, quantity: 1, gramAmount, optional: false, orderIndex: index + 1, sourceType: FoodSourceType.SYNTHETIC_TEST_DATA } });
+    }
+    const stepTexts = ['Siapkan seluruh bahan sesuai porsi.', 'Masak bahan hingga matang sesuai metode yang dipilih.', 'Sajikan dan periksa kembali porsi.'];
+    for (const [index, instruction] of stepTexts.entries()) await prisma.recipeStep.upsert({ where: { recipeVersionId_orderIndex: { recipeVersionId: version.id, orderIndex: index + 1 } }, update: { instruction }, create: { recipeVersionId: version.id, orderIndex: index + 1, instruction } });
+    const nutrition = calculateRecipeNutrition(nutritionInputs, 2); const missingNutrients = nutrientCodes.filter((code) => nutrition.total[code] === null); const total = nutrition.total;
+    await prisma.recipeNutritionSnapshot.upsert({ where: { recipeVersionId: version.id }, update: { totalEnergyKcal: total.ENERGY_KCAL, totalProteinG: total.PROTEIN_G, totalCarbohydrateG: total.CARBOHYDRATE_G, totalFatG: total.FAT_G, totalSaturatedFatG: total.SATURATED_FAT_G, totalFiberG: total.FIBER_G, totalSugarG: total.SUGAR_G, totalSodiumMg: total.SODIUM_MG, perServing: nutrition.perServing, missingNutrients, complete: missingNutrients.length === 0, sourceVersions: [...new Set(sourceVersions)], calculationVersion: NUTRITION_ENGINE_VERSION, calculatedAt: activeAt }, create: { recipeVersionId: version.id, totalEnergyKcal: total.ENERGY_KCAL, totalProteinG: total.PROTEIN_G, totalCarbohydrateG: total.CARBOHYDRATE_G, totalFatG: total.FAT_G, totalSaturatedFatG: total.SATURATED_FAT_G, totalFiberG: total.FIBER_G, totalSugarG: total.SUGAR_G, totalSodiumMg: total.SODIUM_MG, perServing: nutrition.perServing, missingNutrients, complete: missingNutrients.length === 0, sourceVersions: [...new Set(sourceVersions)], calculationVersion: NUTRITION_ENGINE_VERSION, calculatedAt: activeAt } });
+  }
+}
+
 const seedProfiles = [
   { key: 'day1', suffix: '01', email: 'phase4-day1@sarira.test', name: 'Dewasa Day 1', birthDate: '1996-01-01', startDate: '2026-08-08', currentDay: 1, status: 'ACTIVE' as const, mode: 'day1' },
   { key: 'day7', suffix: '02', email: 'phase4-day7-teen@sarira.test', name: 'Remaja Day 7', birthDate: '2011-01-01', startDate: '2026-08-02', currentDay: 7, status: 'DAY_7_REVIEW_AVAILABLE' as const, mode: 'missing' },
@@ -269,7 +319,8 @@ async function main() {
   await seedQuestionnaire();
   await seedTaskDefinitions();
   await seedPhase5Nutrition();
-  await seedPhase4Profiles();
+  await seedPhase6MealPlanning();
+  if (process.env.SEED_REFERENCE_DATA_ONLY !== 'true') await seedPhase4Profiles();
 }
 
 main().finally(() => prisma.$disconnect());
