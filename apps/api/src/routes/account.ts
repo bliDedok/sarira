@@ -1,5 +1,4 @@
 import type { FastifyPluginAsync } from 'fastify';
-import { classifyAge } from '@sarira/expert-system';
 import { consentSchema, consentTypeSchema, guardianConsentSchema, onboardingRoleSchema, profilePatchSchema } from '@sarira/validation';
 import type { DataRepositories } from '../contracts';
 import { ConflictError } from '../errors';
@@ -19,13 +18,16 @@ export const createAccountRoutes = (repositories: DataRepositories): FastifyPlug
   app.patch('/profiles/me', { preHandler: app.authenticate }, async (request) => {
     const input = profilePatchSchema.parse(request.body);
     const before = await getProfileOrThrow(repositories, request.authUser!.id);
-    const profile = await repositories.profiles.update(request.authUser!.id, input);
-    if (input.dateOfBirth && input.dateOfBirth !== before.dateOfBirth) {
-      const ageGroup = classifyAge(input.dateOfBirth);
+    const ageRecordedAt = input.declaredAge !== undefined ? new Date().toISOString() : undefined;
+    const profile = await repositories.profiles.update(request.authUser!.id, { ...input, ...(ageRecordedAt ? { ageRecordedAt } : {}) });
+    const ageChanged = input.declaredAge !== undefined
+      || (input.dateOfBirth !== undefined && input.dateOfBirth !== before.dateOfBirth);
+    if (ageChanged && profile.ageGroup) {
+      const ageGroup = profile.ageGroup;
       if (ageGroup === 'TEEN') await repositories.onboarding.advance(request.authUser!.id, profile.id, { status: 'GUARDIAN_CONSENT_PENDING', currentStep: 'guardian-consent', lastCompletedStep: 'birth-date' });
       else if (ageGroup === 'UNDER_12' || ageGroup === 'OVER_75') await repositories.onboarding.advance(request.authUser!.id, profile.id, { status: 'BIRTH_DATE_PENDING', currentStep: 'birth-date' });
       else await repositories.onboarding.advance(request.authUser!.id, profile.id, { status: 'PRIVACY_CONSENT_PENDING', currentStep: 'privacy-consent', lastCompletedStep: 'birth-date' });
-      await repositories.audit.record({ actorUserId: request.authUser!.id, event: 'DATE_OF_BIRTH_UPDATED', entityType: 'Profile', entityId: profile.id, requestId: request.id, metadata: { ageGroup } });
+      await repositories.audit.record({ actorUserId: request.authUser!.id, event: input.declaredAge !== undefined ? 'DECLARED_AGE_UPDATED' : 'DATE_OF_BIRTH_UPDATED', entityType: 'Profile', entityId: profile.id, requestId: request.id, metadata: { ageGroup, ageSource: profile.ageSource ?? 'UNKNOWN' } });
     } else {
       await repositories.audit.record({ actorUserId: request.authUser!.id, event: 'PROFILE_UPDATED', entityType: 'Profile', entityId: profile.id, requestId: request.id, metadata: { changed: true } });
     }

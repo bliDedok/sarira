@@ -668,14 +668,6 @@ export type EnumMoodLevelFieldUpdateOperationsInput = {
   set?: $Enums.MoodLevel
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type DailyCheckInUpdatebarriersInput = {
   set?: $Enums.BarrierCode[]
   push?: $Enums.BarrierCode | $Enums.BarrierCode[]
