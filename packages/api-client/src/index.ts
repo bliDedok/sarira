@@ -51,6 +51,12 @@ import type {
   FoodSubstitutionRecord,
   MealAlternativeRecord,
   RecipeRecord,
+  DecisionRecordRecord,
+  FeatureSnapshotRecord,
+  PatternMapFeedbackValue,
+  PatternMapRecord,
+  Phase7AnalysisResult,
+  WeeklyActionAssignmentRecord,
 } from '@sarira/shared-types';
 import type { ApiResponse } from '@sarira/shared-types';
 
@@ -201,5 +207,16 @@ export function createApiClient({ baseUrl, getAccessToken, fetcher = fetch }: Ap
     updatePersonalRecipe: (id: string, input: Record<string, unknown>) => request<RecipeRecord>(`/profiles/me/recipes/${id}`, { method: 'PATCH', body: JSON.stringify(input) }),
     duplicatePersonalRecipe: (id: string) => request<RecipeRecord>(`/profiles/me/recipes/${id}/duplicate`, { method: 'POST' }),
     archivePersonalRecipe: (id: string) => request<RecipeRecord>(`/profiles/me/recipes/${id}/archive`, { method: 'POST' }),
+    generateFeatureSnapshot: () => request<{ snapshot: FeatureSnapshotRecord; reused: boolean }>('/analysis/features/generate', { method: 'POST' }),
+    getLatestFeatureSnapshot: () => request<FeatureSnapshotRecord>('/analysis/features/latest'),
+    generatePatternMap: () => request<Phase7AnalysisResult>('/pattern-maps/generate', { method: 'POST' }),
+    getCurrentPatternMap: () => request<PatternMapRecord>('/pattern-maps/current'),
+    getPatternMap: (id: string) => request<PatternMapRecord>(`/pattern-maps/${id}`),
+    savePatternMapFeedback: (id: string, value: PatternMapFeedbackValue, notes?: string) => request<PatternMapRecord>(`/pattern-maps/${id}/feedback`, { method: 'POST', body: JSON.stringify({ value, ...(notes ? { notes } : {}) }) }),
+    getDecision: (id: string) => request<DecisionRecordRecord>(`/decisions/${id}`),
+    getCurrentWeeklyAction: () => request<WeeklyActionAssignmentRecord>('/weekly-actions/current'),
+    getWeeklyActionHistory: () => request<WeeklyActionAssignmentRecord[]>('/weekly-actions/history'),
+    checkInWeeklyAction: (id: string, localDate: string) => request<WeeklyActionAssignmentRecord>(`/weekly-actions/${id}/check-ins`, { method: 'POST', body: JSON.stringify({ localDate }) }),
+    undoWeeklyActionCheckIn: (id: string, localDate: string) => request<WeeklyActionAssignmentRecord>(`/weekly-actions/${id}/check-ins/${localDate}`, { method: 'DELETE' }),
   };
 }

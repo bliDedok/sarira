@@ -132,6 +132,7 @@ export function createPrismaBaselineRepository(prisma: SariraPrismaClient): Base
 
   const repository: BaselineRepository = {
     async getCurrent(profileId) { const value = await prisma.baselineSession.findFirst({ where: { profileId, status: { in: [...activeStatuses] } }, orderBy: { startedAt: 'desc' } }); return value ? sessionRecord(value) : null; },
+    async getLatestForAnalysis(profileId) { const value = await prisma.baselineSession.findFirst({ where: { profileId }, orderBy: { startedAt: 'desc' } }); return value ? sessionRecord(value) : null; },
     async getById(profileId, baselineId) { const value = await prisma.baselineSession.findFirst({ where: { id: baselineId, profileId } }); return value ? sessionRecord(value) : null; },
     async getOwnerProfileId(baselineId) { return (await prisma.baselineSession.findUnique({ where: { id: baselineId }, select: { profileId: true } }))?.profileId ?? null; },
     async create(profileId, input) {

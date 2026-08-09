@@ -764,6 +764,184 @@ export interface WeeklyAction {
   ruleId: string;
 }
 
+export const patternDomains = ['PORTION_INTAKE', 'SUGARY_ENERGY_DENSE', 'SLEEP', 'ACTIVITY_SEDENTARY', 'CONTEXTUAL_EATING', 'MEAL_BALANCE_REGULARITY'] as const;
+export type PatternDomain = (typeof patternDomains)[number];
+export type AnalysisDataQuality = 'HIGH' | 'MEDIUM' | 'LOW' | 'INSUFFICIENT';
+export type AnalysisAvailability = 'AVAILABLE' | 'INSUFFICIENT_DATA';
+export type AnalysisStatus = 'READY' | 'PARTIAL' | 'INSUFFICIENT_DATA';
+
+export const analysisFeatureKeys = [
+  'breakfastFrequency', 'mealRegularity', 'averageMealCount', 'sugaryDrinkDays', 'averageSleepDuration',
+  'sleepDurationVariance', 'sleepTimingVariance', 'perceivedSleepQuality', 'activeDays', 'averageActivityMinutes',
+  'averageSteps', 'lowActivityDays', 'hungerAverage', 'fullnessAverage', 'lowMoodMealAssociationDays',
+  'proteinTargetCoverage', 'fiberTargetCoverage', 'sodiumLimitFrequency', 'sugarUpperLimitFrequency',
+  'energyRangeFrequency', 'mealBalanceCoverage', 'skippedMealFrequency', 'mealPlanAdherence',
+  'personalRecipeUsage', 'missingDataRatio',
+] as const;
+export type AnalysisFeatureKey = (typeof analysisFeatureKeys)[number];
+
+export interface AnalysisFeatureValue {
+  value: number | null;
+  availability: AnalysisAvailability;
+  coverage: { availableDays: number; totalDays: number; ratio: number };
+  source: string[];
+  evidenceRefs: string[];
+}
+
+export type AnalysisFeatureSet = Record<AnalysisFeatureKey, AnalysisFeatureValue>;
+
+export interface FeatureSnapshotRecord {
+  id: string;
+  profileId: string;
+  baselineSessionId: string;
+  featureEngineVersion: string;
+  periodStart: string;
+  periodEnd: string;
+  generatedAt: string;
+  inputCompleteness: number;
+  features: AnalysisFeatureSet;
+  missingFeatures: AnalysisFeatureKey[];
+  warnings: string[];
+  inputSignature: string;
+  createdAt: string;
+}
+
+export interface RuleEvaluationRecord {
+  id?: string;
+  ruleId: string;
+  ruleVersion: string;
+  domain: PatternDomain;
+  matched: boolean;
+  contribution: number;
+  observedValues: Record<string, number | null>;
+  reasonCodes: string[];
+  evidenceRefs: string[];
+  limitations: string[];
+}
+
+export interface DomainScoreRecord {
+  domain: PatternDomain;
+  availability: AnalysisAvailability;
+  score: number | null;
+  strength: 'LOW' | 'MODERATE' | 'STRONG' | 'NOT_AVAILABLE';
+  dataQuality: AnalysisDataQuality;
+  actionability: number;
+  matchedRuleIds: string[];
+  evidence: string[];
+  limitations: string[];
+}
+
+export interface PatternSelectionRecord {
+  code: string;
+  domain: PatternDomain;
+  label: string;
+  explanation: string;
+  strength: Exclude<DomainScoreRecord['strength'], 'NOT_AVAILABLE'>;
+  dataQuality: AnalysisDataQuality;
+  score: number;
+  evidence: string[];
+  limitations: string[];
+}
+
+export interface DecisionRecordRecord {
+  id: string;
+  profileId: string;
+  baselineSessionId: string;
+  featureSnapshotId: string;
+  expertSystemVersion: string;
+  scoringPolicyVersion: string;
+  weeklyActionPolicyVersion: string;
+  status: AnalysisStatus;
+  primaryPatternCode?: string;
+  supportingPatternCodes: string[];
+  selectedActionCode?: string;
+  dataQuality: AnalysisDataQuality;
+  domainScores: DomainScoreRecord[];
+  ruleEvaluations: RuleEvaluationRecord[];
+  limitations: string[];
+  ruleVersions: string[];
+  inputSignature: string;
+  generatedAt: string;
+  supersededAt?: string;
+}
+
+export type PatternMapStatus = AnalysisStatus | 'ACKNOWLEDGED' | 'SUPERSEDED';
+export type PatternMapFeedbackValue = 'VERY_ACCURATE' | 'FAIRLY_ACCURATE' | 'LESS_ACCURATE' | 'UNSURE';
+
+export interface PatternMapRecord {
+  id: string;
+  profileId: string;
+  baselineSessionId: string;
+  featureSnapshotId: string;
+  decisionRecordId: string;
+  status: PatternMapStatus;
+  primaryPattern?: PatternSelectionRecord;
+  supportingPatterns: PatternSelectionRecord[];
+  domains: DomainScoreRecord[];
+  dataQuality: AnalysisDataQuality;
+  limitations: string[];
+  generatedAt: string;
+  acknowledgedAt?: string;
+  feedback?: { value: PatternMapFeedbackValue; notes?: string; createdAt: string };
+  version: number;
+}
+
+export interface WeeklyActionDefinitionRecord {
+  id: string;
+  code: string;
+  version: string;
+  domain: PatternDomain;
+  title: string;
+  description: string;
+  durationDays: number;
+  targetCount: number;
+  ageEligibility: AgeGroup[];
+  safetyRestrictions: SafetyStatus[];
+  requiredEvidence: AnalysisFeatureKey[];
+  actionability: number;
+  active: boolean;
+  requiresExpertValidation: boolean;
+}
+
+export type WeeklyActionAssignmentStatus = 'ACTIVE' | 'COMPLETED' | 'PARTIAL' | 'SKIPPED' | 'REPLACED';
+export type WeeklyActionCompletionSource = 'AUTO_VERIFIED' | 'USER_CONFIRMED';
+
+export interface WeeklyActionCheckInRecord {
+  id: string;
+  assignmentId: string;
+  localDate: string;
+  source: WeeklyActionCompletionSource;
+  evidenceRef?: string;
+  createdAt: string;
+}
+
+export interface WeeklyActionAssignmentRecord {
+  id: string;
+  profileId: string;
+  patternMapId: string;
+  definition: WeeklyActionDefinitionRecord;
+  assignedAt: string;
+  weekStart: string;
+  weekEnd: string;
+  targetCount: number;
+  progress: number;
+  status: WeeklyActionAssignmentStatus;
+  completedAt?: string;
+  reasonCodes: string[];
+  alternatives: Array<{ code: string; title: string }>;
+  selectionVersion: string;
+  why: string;
+  checkIns: WeeklyActionCheckInRecord[];
+}
+
+export interface Phase7AnalysisResult {
+  featureSnapshot: FeatureSnapshotRecord;
+  decision: DecisionRecordRecord;
+  patternMap: PatternMapRecord;
+  weeklyAction?: WeeklyActionAssignmentRecord;
+  reused: boolean;
+}
+
 export type PrototypeScreenKind =
   | 'form'
   | 'dashboard'

@@ -269,6 +269,11 @@ export type ProfileWhereInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileListRelationFilter
   recipes?: Prisma.RecipeListRelationFilter
   mealPlans?: Prisma.DailyMealPlanListRelationFilter
+  featureSnapshots?: Prisma.FeatureSnapshotListRelationFilter
+  decisionRecords?: Prisma.DecisionRecordListRelationFilter
+  patternMaps?: Prisma.PatternMapListRelationFilter
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackListRelationFilter
+  weeklyActions?: Prisma.WeeklyActionAssignmentListRelationFilter
 }
 
 export type ProfileOrderByWithRelationInput = {
@@ -308,6 +313,11 @@ export type ProfileOrderByWithRelationInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileOrderByRelationAggregateInput
   recipes?: Prisma.RecipeOrderByRelationAggregateInput
   mealPlans?: Prisma.DailyMealPlanOrderByRelationAggregateInput
+  featureSnapshots?: Prisma.FeatureSnapshotOrderByRelationAggregateInput
+  decisionRecords?: Prisma.DecisionRecordOrderByRelationAggregateInput
+  patternMaps?: Prisma.PatternMapOrderByRelationAggregateInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackOrderByRelationAggregateInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentOrderByRelationAggregateInput
 }
 
 export type ProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -350,6 +360,11 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   nutritionTargets?: Prisma.NutritionTargetProfileListRelationFilter
   recipes?: Prisma.RecipeListRelationFilter
   mealPlans?: Prisma.DailyMealPlanListRelationFilter
+  featureSnapshots?: Prisma.FeatureSnapshotListRelationFilter
+  decisionRecords?: Prisma.DecisionRecordListRelationFilter
+  patternMaps?: Prisma.PatternMapListRelationFilter
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackListRelationFilter
+  weeklyActions?: Prisma.WeeklyActionAssignmentListRelationFilter
 }, "id" | "userId">
 
 export type ProfileOrderByWithAggregationInput = {
@@ -426,6 +441,11 @@ export type ProfileCreateInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateInput = {
@@ -464,6 +484,11 @@ export type ProfileUncheckedCreateInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUpdateInput = {
@@ -502,6 +527,11 @@ export type ProfileUpdateInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateInput = {
@@ -540,6 +570,11 @@ export type ProfileUncheckedUpdateInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateManyInput = {
@@ -1035,6 +1070,76 @@ export type ProfileUpdateOneRequiredWithoutDigestiveLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutDigestiveLogsInput, Prisma.ProfileUpdateWithoutDigestiveLogsInput>, Prisma.ProfileUncheckedUpdateWithoutDigestiveLogsInput>
 }
 
+export type ProfileCreateNestedOneWithoutFeatureSnapshotsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutFeatureSnapshotsInput, Prisma.ProfileUncheckedCreateWithoutFeatureSnapshotsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutFeatureSnapshotsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutFeatureSnapshotsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutFeatureSnapshotsInput, Prisma.ProfileUncheckedCreateWithoutFeatureSnapshotsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutFeatureSnapshotsInput
+  upsert?: Prisma.ProfileUpsertWithoutFeatureSnapshotsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutFeatureSnapshotsInput, Prisma.ProfileUpdateWithoutFeatureSnapshotsInput>, Prisma.ProfileUncheckedUpdateWithoutFeatureSnapshotsInput>
+}
+
+export type ProfileCreateNestedOneWithoutDecisionRecordsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutDecisionRecordsInput, Prisma.ProfileUncheckedCreateWithoutDecisionRecordsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutDecisionRecordsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutDecisionRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutDecisionRecordsInput, Prisma.ProfileUncheckedCreateWithoutDecisionRecordsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutDecisionRecordsInput
+  upsert?: Prisma.ProfileUpsertWithoutDecisionRecordsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutDecisionRecordsInput, Prisma.ProfileUpdateWithoutDecisionRecordsInput>, Prisma.ProfileUncheckedUpdateWithoutDecisionRecordsInput>
+}
+
+export type ProfileCreateNestedOneWithoutPatternMapsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutPatternMapsInput, Prisma.ProfileUncheckedCreateWithoutPatternMapsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutPatternMapsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutPatternMapsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutPatternMapsInput, Prisma.ProfileUncheckedCreateWithoutPatternMapsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutPatternMapsInput
+  upsert?: Prisma.ProfileUpsertWithoutPatternMapsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutPatternMapsInput, Prisma.ProfileUpdateWithoutPatternMapsInput>, Prisma.ProfileUncheckedUpdateWithoutPatternMapsInput>
+}
+
+export type ProfileCreateNestedOneWithoutPatternMapFeedbacksInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutPatternMapFeedbacksInput, Prisma.ProfileUncheckedCreateWithoutPatternMapFeedbacksInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutPatternMapFeedbacksInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutPatternMapFeedbacksNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutPatternMapFeedbacksInput, Prisma.ProfileUncheckedCreateWithoutPatternMapFeedbacksInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutPatternMapFeedbacksInput
+  upsert?: Prisma.ProfileUpsertWithoutPatternMapFeedbacksInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutPatternMapFeedbacksInput, Prisma.ProfileUpdateWithoutPatternMapFeedbacksInput>, Prisma.ProfileUncheckedUpdateWithoutPatternMapFeedbacksInput>
+}
+
+export type ProfileCreateNestedOneWithoutWeeklyActionsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutWeeklyActionsInput, Prisma.ProfileUncheckedCreateWithoutWeeklyActionsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutWeeklyActionsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutWeeklyActionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutWeeklyActionsInput, Prisma.ProfileUncheckedCreateWithoutWeeklyActionsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutWeeklyActionsInput
+  upsert?: Prisma.ProfileUpsertWithoutWeeklyActionsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutWeeklyActionsInput, Prisma.ProfileUpdateWithoutWeeklyActionsInput>, Prisma.ProfileUncheckedUpdateWithoutWeeklyActionsInput>
+}
+
 export type ProfileCreateWithoutUserInput = {
   id?: string
   fullName: string
@@ -1070,6 +1175,11 @@ export type ProfileCreateWithoutUserInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutUserInput = {
@@ -1107,6 +1217,11 @@ export type ProfileUncheckedCreateWithoutUserInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutUserInput = {
@@ -1189,6 +1304,11 @@ export type ProfileCreateWithoutConsentsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutConsentsInput = {
@@ -1226,6 +1346,11 @@ export type ProfileUncheckedCreateWithoutConsentsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutConsentsInput = {
@@ -1279,6 +1404,11 @@ export type ProfileUpdateWithoutConsentsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutConsentsInput = {
@@ -1316,6 +1446,11 @@ export type ProfileUncheckedUpdateWithoutConsentsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutGuardianConsentsInput = {
@@ -1353,6 +1488,11 @@ export type ProfileCreateWithoutGuardianConsentsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutGuardianConsentsInput = {
@@ -1390,6 +1530,11 @@ export type ProfileUncheckedCreateWithoutGuardianConsentsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutGuardianConsentsInput = {
@@ -1443,6 +1588,11 @@ export type ProfileUpdateWithoutGuardianConsentsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutGuardianConsentsInput = {
@@ -1480,6 +1630,11 @@ export type ProfileUncheckedUpdateWithoutGuardianConsentsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutSafetySessionsInput = {
@@ -1517,6 +1672,11 @@ export type ProfileCreateWithoutSafetySessionsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutSafetySessionsInput = {
@@ -1554,6 +1714,11 @@ export type ProfileUncheckedCreateWithoutSafetySessionsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutSafetySessionsInput = {
@@ -1607,6 +1772,11 @@ export type ProfileUpdateWithoutSafetySessionsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutSafetySessionsInput = {
@@ -1644,6 +1814,11 @@ export type ProfileUncheckedUpdateWithoutSafetySessionsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutSafetyResultsInput = {
@@ -1681,6 +1856,11 @@ export type ProfileCreateWithoutSafetyResultsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutSafetyResultsInput = {
@@ -1718,6 +1898,11 @@ export type ProfileUncheckedCreateWithoutSafetyResultsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutSafetyResultsInput = {
@@ -1771,6 +1956,11 @@ export type ProfileUpdateWithoutSafetyResultsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutSafetyResultsInput = {
@@ -1808,6 +1998,11 @@ export type ProfileUncheckedUpdateWithoutSafetyResultsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutGoalsInput = {
@@ -1845,6 +2040,11 @@ export type ProfileCreateWithoutGoalsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutGoalsInput = {
@@ -1882,6 +2082,11 @@ export type ProfileUncheckedCreateWithoutGoalsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutGoalsInput = {
@@ -1935,6 +2140,11 @@ export type ProfileUpdateWithoutGoalsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutGoalsInput = {
@@ -1972,6 +2182,11 @@ export type ProfileUncheckedUpdateWithoutGoalsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutQuestionnaireSessionsInput = {
@@ -2009,6 +2224,11 @@ export type ProfileCreateWithoutQuestionnaireSessionsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutQuestionnaireSessionsInput = {
@@ -2046,6 +2266,11 @@ export type ProfileUncheckedCreateWithoutQuestionnaireSessionsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutQuestionnaireSessionsInput = {
@@ -2099,6 +2324,11 @@ export type ProfileUpdateWithoutQuestionnaireSessionsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutQuestionnaireSessionsInput = {
@@ -2136,6 +2366,11 @@ export type ProfileUncheckedUpdateWithoutQuestionnaireSessionsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutProgramPreferenceInput = {
@@ -2173,6 +2408,11 @@ export type ProfileCreateWithoutProgramPreferenceInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutProgramPreferenceInput = {
@@ -2210,6 +2450,11 @@ export type ProfileUncheckedCreateWithoutProgramPreferenceInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutProgramPreferenceInput = {
@@ -2263,6 +2508,11 @@ export type ProfileUpdateWithoutProgramPreferenceInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutProgramPreferenceInput = {
@@ -2300,6 +2550,11 @@ export type ProfileUncheckedUpdateWithoutProgramPreferenceInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutOnboardingProgressInput = {
@@ -2337,6 +2592,11 @@ export type ProfileCreateWithoutOnboardingProgressInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutOnboardingProgressInput = {
@@ -2374,6 +2634,11 @@ export type ProfileUncheckedCreateWithoutOnboardingProgressInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutOnboardingProgressInput = {
@@ -2427,6 +2692,11 @@ export type ProfileUpdateWithoutOnboardingProgressInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutOnboardingProgressInput = {
@@ -2464,6 +2734,11 @@ export type ProfileUncheckedUpdateWithoutOnboardingProgressInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutPreferencesInput = {
@@ -2501,6 +2776,11 @@ export type ProfileCreateWithoutPreferencesInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutPreferencesInput = {
@@ -2538,6 +2818,11 @@ export type ProfileUncheckedCreateWithoutPreferencesInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutPreferencesInput = {
@@ -2591,6 +2876,11 @@ export type ProfileUpdateWithoutPreferencesInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutPreferencesInput = {
@@ -2628,6 +2918,11 @@ export type ProfileUncheckedUpdateWithoutPreferencesInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutBaselineSessionsInput = {
@@ -2665,6 +2960,11 @@ export type ProfileCreateWithoutBaselineSessionsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutBaselineSessionsInput = {
@@ -2702,6 +3002,11 @@ export type ProfileUncheckedCreateWithoutBaselineSessionsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutBaselineSessionsInput = {
@@ -2755,6 +3060,11 @@ export type ProfileUpdateWithoutBaselineSessionsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutBaselineSessionsInput = {
@@ -2792,6 +3102,11 @@ export type ProfileUncheckedUpdateWithoutBaselineSessionsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutDailyRecordsInput = {
@@ -2829,6 +3144,11 @@ export type ProfileCreateWithoutDailyRecordsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutDailyRecordsInput = {
@@ -2866,6 +3186,11 @@ export type ProfileUncheckedCreateWithoutDailyRecordsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutDailyRecordsInput = {
@@ -2919,6 +3244,11 @@ export type ProfileUpdateWithoutDailyRecordsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutDailyRecordsInput = {
@@ -2956,6 +3286,11 @@ export type ProfileUncheckedUpdateWithoutDailyRecordsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutDailyCheckInsInput = {
@@ -2993,6 +3328,11 @@ export type ProfileCreateWithoutDailyCheckInsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutDailyCheckInsInput = {
@@ -3030,6 +3370,11 @@ export type ProfileUncheckedCreateWithoutDailyCheckInsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutDailyCheckInsInput = {
@@ -3083,6 +3428,11 @@ export type ProfileUpdateWithoutDailyCheckInsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutDailyCheckInsInput = {
@@ -3120,6 +3470,11 @@ export type ProfileUncheckedUpdateWithoutDailyCheckInsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutMealLogsInput = {
@@ -3157,6 +3512,11 @@ export type ProfileCreateWithoutMealLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutMealLogsInput = {
@@ -3194,6 +3554,11 @@ export type ProfileUncheckedCreateWithoutMealLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutMealLogsInput = {
@@ -3247,6 +3612,11 @@ export type ProfileUpdateWithoutMealLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutMealLogsInput = {
@@ -3284,6 +3654,11 @@ export type ProfileUncheckedUpdateWithoutMealLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutMealLogItemsInput = {
@@ -3321,6 +3696,11 @@ export type ProfileCreateWithoutMealLogItemsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutMealLogItemsInput = {
@@ -3358,6 +3738,11 @@ export type ProfileUncheckedCreateWithoutMealLogItemsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutMealLogItemsInput = {
@@ -3411,6 +3796,11 @@ export type ProfileUpdateWithoutMealLogItemsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutMealLogItemsInput = {
@@ -3448,6 +3838,11 @@ export type ProfileUncheckedUpdateWithoutMealLogItemsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutNutritionTargetsInput = {
@@ -3485,6 +3880,11 @@ export type ProfileCreateWithoutNutritionTargetsInput = {
   mealLogItems?: Prisma.MealLogItemCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutNutritionTargetsInput = {
@@ -3522,6 +3922,11 @@ export type ProfileUncheckedCreateWithoutNutritionTargetsInput = {
   mealLogItems?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutNutritionTargetsInput = {
@@ -3575,6 +3980,11 @@ export type ProfileUpdateWithoutNutritionTargetsInput = {
   mealLogItems?: Prisma.MealLogItemUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutNutritionTargetsInput = {
@@ -3612,6 +4022,11 @@ export type ProfileUncheckedUpdateWithoutNutritionTargetsInput = {
   mealLogItems?: Prisma.MealLogItemUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutRecipesInput = {
@@ -3649,6 +4064,11 @@ export type ProfileCreateWithoutRecipesInput = {
   mealLogItems?: Prisma.MealLogItemCreateNestedManyWithoutProfileInput
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutRecipesInput = {
@@ -3686,6 +4106,11 @@ export type ProfileUncheckedCreateWithoutRecipesInput = {
   mealLogItems?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutProfileInput
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutRecipesInput = {
@@ -3739,6 +4164,11 @@ export type ProfileUpdateWithoutRecipesInput = {
   mealLogItems?: Prisma.MealLogItemUpdateManyWithoutProfileNestedInput
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutRecipesInput = {
@@ -3776,6 +4206,11 @@ export type ProfileUncheckedUpdateWithoutRecipesInput = {
   mealLogItems?: Prisma.MealLogItemUncheckedUpdateManyWithoutProfileNestedInput
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutMealPlansInput = {
@@ -3813,6 +4248,11 @@ export type ProfileCreateWithoutMealPlansInput = {
   mealLogItems?: Prisma.MealLogItemCreateNestedManyWithoutProfileInput
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutMealPlansInput = {
@@ -3850,6 +4290,11 @@ export type ProfileUncheckedCreateWithoutMealPlansInput = {
   mealLogItems?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutProfileInput
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutMealPlansInput = {
@@ -3903,6 +4348,11 @@ export type ProfileUpdateWithoutMealPlansInput = {
   mealLogItems?: Prisma.MealLogItemUpdateManyWithoutProfileNestedInput
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutMealPlansInput = {
@@ -3940,6 +4390,11 @@ export type ProfileUncheckedUpdateWithoutMealPlansInput = {
   mealLogItems?: Prisma.MealLogItemUncheckedUpdateManyWithoutProfileNestedInput
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutSleepLogsInput = {
@@ -3977,6 +4432,11 @@ export type ProfileCreateWithoutSleepLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutSleepLogsInput = {
@@ -4014,6 +4474,11 @@ export type ProfileUncheckedCreateWithoutSleepLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutSleepLogsInput = {
@@ -4067,6 +4532,11 @@ export type ProfileUpdateWithoutSleepLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutSleepLogsInput = {
@@ -4104,6 +4574,11 @@ export type ProfileUncheckedUpdateWithoutSleepLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutActivityLogsInput = {
@@ -4141,6 +4616,11 @@ export type ProfileCreateWithoutActivityLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutActivityLogsInput = {
@@ -4178,6 +4658,11 @@ export type ProfileUncheckedCreateWithoutActivityLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutActivityLogsInput = {
@@ -4231,6 +4716,11 @@ export type ProfileUpdateWithoutActivityLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutActivityLogsInput = {
@@ -4268,6 +4758,11 @@ export type ProfileUncheckedUpdateWithoutActivityLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutStepRecordsInput = {
@@ -4305,6 +4800,11 @@ export type ProfileCreateWithoutStepRecordsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutStepRecordsInput = {
@@ -4342,6 +4842,11 @@ export type ProfileUncheckedCreateWithoutStepRecordsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutStepRecordsInput = {
@@ -4395,6 +4900,11 @@ export type ProfileUpdateWithoutStepRecordsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutStepRecordsInput = {
@@ -4432,6 +4942,11 @@ export type ProfileUncheckedUpdateWithoutStepRecordsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutBodyMeasurementsInput = {
@@ -4469,6 +4984,11 @@ export type ProfileCreateWithoutBodyMeasurementsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutBodyMeasurementsInput = {
@@ -4506,6 +5026,11 @@ export type ProfileUncheckedCreateWithoutBodyMeasurementsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutBodyMeasurementsInput = {
@@ -4559,6 +5084,11 @@ export type ProfileUpdateWithoutBodyMeasurementsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutBodyMeasurementsInput = {
@@ -4596,6 +5126,11 @@ export type ProfileUncheckedUpdateWithoutBodyMeasurementsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateWithoutDigestiveLogsInput = {
@@ -4633,6 +5168,11 @@ export type ProfileCreateWithoutDigestiveLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutDigestiveLogsInput = {
@@ -4670,6 +5210,11 @@ export type ProfileUncheckedCreateWithoutDigestiveLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
   recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
   mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileCreateOrConnectWithoutDigestiveLogsInput = {
@@ -4723,6 +5268,11 @@ export type ProfileUpdateWithoutDigestiveLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutDigestiveLogsInput = {
@@ -4760,6 +5310,931 @@ export type ProfileUncheckedUpdateWithoutDigestiveLogsInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutFeatureSnapshotsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+  mealLogItems?: Prisma.MealLogItemCreateNestedManyWithoutProfileInput
+  nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
+  recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
+  mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutFeatureSnapshotsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+  mealLogItems?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutProfileInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
+  recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
+  mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutFeatureSnapshotsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutFeatureSnapshotsInput, Prisma.ProfileUncheckedCreateWithoutFeatureSnapshotsInput>
+}
+
+export type ProfileUpsertWithoutFeatureSnapshotsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutFeatureSnapshotsInput, Prisma.ProfileUncheckedUpdateWithoutFeatureSnapshotsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutFeatureSnapshotsInput, Prisma.ProfileUncheckedCreateWithoutFeatureSnapshotsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutFeatureSnapshotsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutFeatureSnapshotsInput, Prisma.ProfileUncheckedUpdateWithoutFeatureSnapshotsInput>
+}
+
+export type ProfileUpdateWithoutFeatureSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+  mealLogItems?: Prisma.MealLogItemUpdateManyWithoutProfileNestedInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
+  recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
+  mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutFeatureSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogItems?: Prisma.MealLogItemUncheckedUpdateManyWithoutProfileNestedInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
+  recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutDecisionRecordsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+  mealLogItems?: Prisma.MealLogItemCreateNestedManyWithoutProfileInput
+  nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
+  recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
+  mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutDecisionRecordsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+  mealLogItems?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutProfileInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
+  recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
+  mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutDecisionRecordsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutDecisionRecordsInput, Prisma.ProfileUncheckedCreateWithoutDecisionRecordsInput>
+}
+
+export type ProfileUpsertWithoutDecisionRecordsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutDecisionRecordsInput, Prisma.ProfileUncheckedUpdateWithoutDecisionRecordsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutDecisionRecordsInput, Prisma.ProfileUncheckedCreateWithoutDecisionRecordsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutDecisionRecordsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutDecisionRecordsInput, Prisma.ProfileUncheckedUpdateWithoutDecisionRecordsInput>
+}
+
+export type ProfileUpdateWithoutDecisionRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+  mealLogItems?: Prisma.MealLogItemUpdateManyWithoutProfileNestedInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
+  recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
+  mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutDecisionRecordsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogItems?: Prisma.MealLogItemUncheckedUpdateManyWithoutProfileNestedInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
+  recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutPatternMapsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+  mealLogItems?: Prisma.MealLogItemCreateNestedManyWithoutProfileInput
+  nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
+  recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
+  mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutPatternMapsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+  mealLogItems?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutProfileInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
+  recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
+  mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutPatternMapsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutPatternMapsInput, Prisma.ProfileUncheckedCreateWithoutPatternMapsInput>
+}
+
+export type ProfileUpsertWithoutPatternMapsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutPatternMapsInput, Prisma.ProfileUncheckedUpdateWithoutPatternMapsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutPatternMapsInput, Prisma.ProfileUncheckedCreateWithoutPatternMapsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutPatternMapsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutPatternMapsInput, Prisma.ProfileUncheckedUpdateWithoutPatternMapsInput>
+}
+
+export type ProfileUpdateWithoutPatternMapsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+  mealLogItems?: Prisma.MealLogItemUpdateManyWithoutProfileNestedInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
+  recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
+  mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutPatternMapsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogItems?: Prisma.MealLogItemUncheckedUpdateManyWithoutProfileNestedInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
+  recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutPatternMapFeedbacksInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+  mealLogItems?: Prisma.MealLogItemCreateNestedManyWithoutProfileInput
+  nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
+  recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
+  mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutPatternMapFeedbacksInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+  mealLogItems?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutProfileInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
+  recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
+  mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutPatternMapFeedbacksInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutPatternMapFeedbacksInput, Prisma.ProfileUncheckedCreateWithoutPatternMapFeedbacksInput>
+}
+
+export type ProfileUpsertWithoutPatternMapFeedbacksInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutPatternMapFeedbacksInput, Prisma.ProfileUncheckedUpdateWithoutPatternMapFeedbacksInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutPatternMapFeedbacksInput, Prisma.ProfileUncheckedCreateWithoutPatternMapFeedbacksInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutPatternMapFeedbacksInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutPatternMapFeedbacksInput, Prisma.ProfileUncheckedUpdateWithoutPatternMapFeedbacksInput>
+}
+
+export type ProfileUpdateWithoutPatternMapFeedbacksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+  mealLogItems?: Prisma.MealLogItemUpdateManyWithoutProfileNestedInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
+  recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
+  mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutPatternMapFeedbacksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogItems?: Prisma.MealLogItemUncheckedUpdateManyWithoutProfileNestedInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
+  recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileCreateWithoutWeeklyActionsInput = {
+  id?: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfilesInput
+  consents?: Prisma.UserConsentCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogCreateNestedManyWithoutProfileInput
+  mealLogItems?: Prisma.MealLogItemCreateNestedManyWithoutProfileInput
+  nutritionTargets?: Prisma.NutritionTargetProfileCreateNestedManyWithoutProfileInput
+  recipes?: Prisma.RecipeCreateNestedManyWithoutOwnerProfileInput
+  mealPlans?: Prisma.DailyMealPlanCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileUncheckedCreateWithoutWeeklyActionsInput = {
+  id?: string
+  userId: string
+  fullName: string
+  dateOfBirth?: Date | string | null
+  gender?: $Enums.Gender | null
+  country?: string
+  timezone?: string
+  preferredLanguage?: string
+  primaryRole?: $Enums.Role | null
+  onboardingStatus?: $Enums.OnboardingStatus
+  onboardingCompletedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  consents?: Prisma.UserConsentUncheckedCreateNestedManyWithoutProfileInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedCreateNestedManyWithoutMinorProfileInput
+  goals?: Prisma.UserGoalUncheckedCreateNestedManyWithoutProfileInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedCreateNestedManyWithoutProfileInput
+  safetyResults?: Prisma.SafetyResultUncheckedCreateNestedManyWithoutProfileInput
+  preferences?: Prisma.AppPreferenceUncheckedCreateNestedManyWithoutProfileInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedCreateNestedManyWithoutProfileInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedCreateNestedOneWithoutProfileInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedCreateNestedOneWithoutProfileInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedCreateNestedManyWithoutProfileInput
+  dailyRecords?: Prisma.DailyRecordUncheckedCreateNestedManyWithoutProfileInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedCreateNestedManyWithoutProfileInput
+  mealLogs?: Prisma.MealLogUncheckedCreateNestedManyWithoutProfileInput
+  sleepLogs?: Prisma.SleepLogUncheckedCreateNestedManyWithoutProfileInput
+  activityLogs?: Prisma.ActivityLogUncheckedCreateNestedManyWithoutProfileInput
+  stepRecords?: Prisma.StepRecordUncheckedCreateNestedManyWithoutProfileInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedCreateNestedManyWithoutProfileInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedCreateNestedManyWithoutProfileInput
+  mealLogItems?: Prisma.MealLogItemUncheckedCreateNestedManyWithoutProfileInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUncheckedCreateNestedManyWithoutProfileInput
+  recipes?: Prisma.RecipeUncheckedCreateNestedManyWithoutOwnerProfileInput
+  mealPlans?: Prisma.DailyMealPlanUncheckedCreateNestedManyWithoutProfileInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedCreateNestedManyWithoutProfileInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedCreateNestedManyWithoutProfileInput
+  patternMaps?: Prisma.PatternMapUncheckedCreateNestedManyWithoutProfileInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfileCreateOrConnectWithoutWeeklyActionsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutWeeklyActionsInput, Prisma.ProfileUncheckedCreateWithoutWeeklyActionsInput>
+}
+
+export type ProfileUpsertWithoutWeeklyActionsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutWeeklyActionsInput, Prisma.ProfileUncheckedUpdateWithoutWeeklyActionsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutWeeklyActionsInput, Prisma.ProfileUncheckedCreateWithoutWeeklyActionsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutWeeklyActionsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutWeeklyActionsInput, Prisma.ProfileUncheckedUpdateWithoutWeeklyActionsInput>
+}
+
+export type ProfileUpdateWithoutWeeklyActionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfilesNestedInput
+  consents?: Prisma.UserConsentUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUpdateManyWithoutProfileNestedInput
+  mealLogItems?: Prisma.MealLogItemUpdateManyWithoutProfileNestedInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
+  recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
+  mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutWeeklyActionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLanguage?: Prisma.StringFieldUpdateOperationsInput | string
+  primaryRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  onboardingStatus?: Prisma.EnumOnboardingStatusFieldUpdateOperationsInput | $Enums.OnboardingStatus
+  onboardingCompletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  consents?: Prisma.UserConsentUncheckedUpdateManyWithoutProfileNestedInput
+  guardianConsents?: Prisma.GuardianConsentUncheckedUpdateManyWithoutMinorProfileNestedInput
+  goals?: Prisma.UserGoalUncheckedUpdateManyWithoutProfileNestedInput
+  safetySessions?: Prisma.SafetyScreeningSessionUncheckedUpdateManyWithoutProfileNestedInput
+  safetyResults?: Prisma.SafetyResultUncheckedUpdateManyWithoutProfileNestedInput
+  preferences?: Prisma.AppPreferenceUncheckedUpdateManyWithoutProfileNestedInput
+  questionnaireSessions?: Prisma.QuestionnaireSessionUncheckedUpdateManyWithoutProfileNestedInput
+  programPreference?: Prisma.ProgramPreferenceUncheckedUpdateOneWithoutProfileNestedInput
+  onboardingProgress?: Prisma.OnboardingProgressUncheckedUpdateOneWithoutProfileNestedInput
+  baselineSessions?: Prisma.BaselineSessionUncheckedUpdateManyWithoutProfileNestedInput
+  dailyRecords?: Prisma.DailyRecordUncheckedUpdateManyWithoutProfileNestedInput
+  dailyCheckIns?: Prisma.DailyCheckInUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogs?: Prisma.MealLogUncheckedUpdateManyWithoutProfileNestedInput
+  sleepLogs?: Prisma.SleepLogUncheckedUpdateManyWithoutProfileNestedInput
+  activityLogs?: Prisma.ActivityLogUncheckedUpdateManyWithoutProfileNestedInput
+  stepRecords?: Prisma.StepRecordUncheckedUpdateManyWithoutProfileNestedInput
+  bodyMeasurements?: Prisma.BodyMeasurementUncheckedUpdateManyWithoutProfileNestedInput
+  digestiveLogs?: Prisma.DigestiveLogUncheckedUpdateManyWithoutProfileNestedInput
+  mealLogItems?: Prisma.MealLogItemUncheckedUpdateManyWithoutProfileNestedInput
+  nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
+  recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
+  mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateManyUserInput = {
@@ -4812,6 +6287,11 @@ export type ProfileUpdateWithoutUserInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutUserInput = {
@@ -4849,6 +6329,11 @@ export type ProfileUncheckedUpdateWithoutUserInput = {
   nutritionTargets?: Prisma.NutritionTargetProfileUncheckedUpdateManyWithoutProfileNestedInput
   recipes?: Prisma.RecipeUncheckedUpdateManyWithoutOwnerProfileNestedInput
   mealPlans?: Prisma.DailyMealPlanUncheckedUpdateManyWithoutProfileNestedInput
+  featureSnapshots?: Prisma.FeatureSnapshotUncheckedUpdateManyWithoutProfileNestedInput
+  decisionRecords?: Prisma.DecisionRecordUncheckedUpdateManyWithoutProfileNestedInput
+  patternMaps?: Prisma.PatternMapUncheckedUpdateManyWithoutProfileNestedInput
+  patternMapFeedbacks?: Prisma.PatternMapFeedbackUncheckedUpdateManyWithoutProfileNestedInput
+  weeklyActions?: Prisma.WeeklyActionAssignmentUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateManyWithoutUserInput = {
@@ -4892,6 +6377,11 @@ export type ProfileCountOutputType = {
   nutritionTargets: number
   recipes: number
   mealPlans: number
+  featureSnapshots: number
+  decisionRecords: number
+  patternMaps: number
+  patternMapFeedbacks: number
+  weeklyActions: number
 }
 
 export type ProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4915,6 +6405,11 @@ export type ProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   nutritionTargets?: boolean | ProfileCountOutputTypeCountNutritionTargetsArgs
   recipes?: boolean | ProfileCountOutputTypeCountRecipesArgs
   mealPlans?: boolean | ProfileCountOutputTypeCountMealPlansArgs
+  featureSnapshots?: boolean | ProfileCountOutputTypeCountFeatureSnapshotsArgs
+  decisionRecords?: boolean | ProfileCountOutputTypeCountDecisionRecordsArgs
+  patternMaps?: boolean | ProfileCountOutputTypeCountPatternMapsArgs
+  patternMapFeedbacks?: boolean | ProfileCountOutputTypeCountPatternMapFeedbacksArgs
+  weeklyActions?: boolean | ProfileCountOutputTypeCountWeeklyActionsArgs
 }
 
 /**
@@ -5067,6 +6562,41 @@ export type ProfileCountOutputTypeCountMealPlansArgs<ExtArgs extends runtime.Typ
   where?: Prisma.DailyMealPlanWhereInput
 }
 
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountFeatureSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FeatureSnapshotWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountDecisionRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DecisionRecordWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountPatternMapsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PatternMapWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountPatternMapFeedbacksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PatternMapFeedbackWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountWeeklyActionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.WeeklyActionAssignmentWhereInput
+}
+
 
 export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -5105,6 +6635,11 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   nutritionTargets?: boolean | Prisma.Profile$nutritionTargetsArgs<ExtArgs>
   recipes?: boolean | Prisma.Profile$recipesArgs<ExtArgs>
   mealPlans?: boolean | Prisma.Profile$mealPlansArgs<ExtArgs>
+  featureSnapshots?: boolean | Prisma.Profile$featureSnapshotsArgs<ExtArgs>
+  decisionRecords?: boolean | Prisma.Profile$decisionRecordsArgs<ExtArgs>
+  patternMaps?: boolean | Prisma.Profile$patternMapsArgs<ExtArgs>
+  patternMapFeedbacks?: boolean | Prisma.Profile$patternMapFeedbacksArgs<ExtArgs>
+  weeklyActions?: boolean | Prisma.Profile$weeklyActionsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profile"]>
 
@@ -5183,6 +6718,11 @@ export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   nutritionTargets?: boolean | Prisma.Profile$nutritionTargetsArgs<ExtArgs>
   recipes?: boolean | Prisma.Profile$recipesArgs<ExtArgs>
   mealPlans?: boolean | Prisma.Profile$mealPlansArgs<ExtArgs>
+  featureSnapshots?: boolean | Prisma.Profile$featureSnapshotsArgs<ExtArgs>
+  decisionRecords?: boolean | Prisma.Profile$decisionRecordsArgs<ExtArgs>
+  patternMaps?: boolean | Prisma.Profile$patternMapsArgs<ExtArgs>
+  patternMapFeedbacks?: boolean | Prisma.Profile$patternMapFeedbacksArgs<ExtArgs>
+  weeklyActions?: boolean | Prisma.Profile$weeklyActionsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -5218,6 +6758,11 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     nutritionTargets: Prisma.$NutritionTargetProfilePayload<ExtArgs>[]
     recipes: Prisma.$RecipePayload<ExtArgs>[]
     mealPlans: Prisma.$DailyMealPlanPayload<ExtArgs>[]
+    featureSnapshots: Prisma.$FeatureSnapshotPayload<ExtArgs>[]
+    decisionRecords: Prisma.$DecisionRecordPayload<ExtArgs>[]
+    patternMaps: Prisma.$PatternMapPayload<ExtArgs>[]
+    patternMapFeedbacks: Prisma.$PatternMapFeedbackPayload<ExtArgs>[]
+    weeklyActions: Prisma.$WeeklyActionAssignmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5650,6 +7195,11 @@ export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.
   nutritionTargets<T extends Prisma.Profile$nutritionTargetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$nutritionTargetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NutritionTargetProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recipes<T extends Prisma.Profile$recipesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$recipesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecipePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   mealPlans<T extends Prisma.Profile$mealPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$mealPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DailyMealPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  featureSnapshots<T extends Prisma.Profile$featureSnapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$featureSnapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeatureSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  decisionRecords<T extends Prisma.Profile$decisionRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$decisionRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DecisionRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  patternMaps<T extends Prisma.Profile$patternMapsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$patternMapsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PatternMapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  patternMapFeedbacks<T extends Prisma.Profile$patternMapFeedbacksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$patternMapFeedbacksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PatternMapFeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  weeklyActions<T extends Prisma.Profile$weeklyActionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$weeklyActionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeeklyActionAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6608,6 +8158,126 @@ export type Profile$mealPlansArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.DailyMealPlanScalarFieldEnum | Prisma.DailyMealPlanScalarFieldEnum[]
+}
+
+/**
+ * Profile.featureSnapshots
+ */
+export type Profile$featureSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FeatureSnapshot
+   */
+  select?: Prisma.FeatureSnapshotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FeatureSnapshot
+   */
+  omit?: Prisma.FeatureSnapshotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FeatureSnapshotInclude<ExtArgs> | null
+  where?: Prisma.FeatureSnapshotWhereInput
+  orderBy?: Prisma.FeatureSnapshotOrderByWithRelationInput | Prisma.FeatureSnapshotOrderByWithRelationInput[]
+  cursor?: Prisma.FeatureSnapshotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FeatureSnapshotScalarFieldEnum | Prisma.FeatureSnapshotScalarFieldEnum[]
+}
+
+/**
+ * Profile.decisionRecords
+ */
+export type Profile$decisionRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DecisionRecord
+   */
+  select?: Prisma.DecisionRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DecisionRecord
+   */
+  omit?: Prisma.DecisionRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DecisionRecordInclude<ExtArgs> | null
+  where?: Prisma.DecisionRecordWhereInput
+  orderBy?: Prisma.DecisionRecordOrderByWithRelationInput | Prisma.DecisionRecordOrderByWithRelationInput[]
+  cursor?: Prisma.DecisionRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DecisionRecordScalarFieldEnum | Prisma.DecisionRecordScalarFieldEnum[]
+}
+
+/**
+ * Profile.patternMaps
+ */
+export type Profile$patternMapsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PatternMap
+   */
+  select?: Prisma.PatternMapSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PatternMap
+   */
+  omit?: Prisma.PatternMapOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PatternMapInclude<ExtArgs> | null
+  where?: Prisma.PatternMapWhereInput
+  orderBy?: Prisma.PatternMapOrderByWithRelationInput | Prisma.PatternMapOrderByWithRelationInput[]
+  cursor?: Prisma.PatternMapWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PatternMapScalarFieldEnum | Prisma.PatternMapScalarFieldEnum[]
+}
+
+/**
+ * Profile.patternMapFeedbacks
+ */
+export type Profile$patternMapFeedbacksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PatternMapFeedback
+   */
+  select?: Prisma.PatternMapFeedbackSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PatternMapFeedback
+   */
+  omit?: Prisma.PatternMapFeedbackOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PatternMapFeedbackInclude<ExtArgs> | null
+  where?: Prisma.PatternMapFeedbackWhereInput
+  orderBy?: Prisma.PatternMapFeedbackOrderByWithRelationInput | Prisma.PatternMapFeedbackOrderByWithRelationInput[]
+  cursor?: Prisma.PatternMapFeedbackWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PatternMapFeedbackScalarFieldEnum | Prisma.PatternMapFeedbackScalarFieldEnum[]
+}
+
+/**
+ * Profile.weeklyActions
+ */
+export type Profile$weeklyActionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WeeklyActionAssignment
+   */
+  select?: Prisma.WeeklyActionAssignmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WeeklyActionAssignment
+   */
+  omit?: Prisma.WeeklyActionAssignmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WeeklyActionAssignmentInclude<ExtArgs> | null
+  where?: Prisma.WeeklyActionAssignmentWhereInput
+  orderBy?: Prisma.WeeklyActionAssignmentOrderByWithRelationInput | Prisma.WeeklyActionAssignmentOrderByWithRelationInput[]
+  cursor?: Prisma.WeeklyActionAssignmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.WeeklyActionAssignmentScalarFieldEnum | Prisma.WeeklyActionAssignmentScalarFieldEnum[]
 }
 
 /**

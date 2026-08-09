@@ -92,4 +92,5 @@ export const createAccountRoutes = (repositories: DataRepositories): FastifyPlug
   });
 
   app.get('/admin/configuration/versions', { preHandler: app.requireRoles(['ADMIN', 'CONTENT_REVIEWER', 'NUTRITION_REVIEWER']) }, async () => success(await repositories.admin.configurationVersions()));
+  app.get('/admin/analysis/configuration/versions', { preHandler: app.requireRoles(['ADMIN', 'CONTENT_REVIEWER', 'NUTRITION_REVIEWER']) }, async () => success(await repositories.analysis.configurationVersions()));
 };

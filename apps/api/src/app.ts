@@ -22,6 +22,7 @@ import { createProgramRoutes } from './routes/programs';
 import { createBaselineRoutes } from './routes/baseline';
 import { createNutritionRoutes } from './routes/nutrition';
 import { createMealPlanningRoutes } from './routes/meal-planning';
+import { createAnalysisRoutes } from './routes/analysis';
 import { SystemClock, type Clock } from '@sarira/baseline';
 
 export interface BuildAppOptions {
@@ -86,6 +87,7 @@ export async function buildApp(options: BuildAppOptions = {}): Promise<FastifyIn
     await v1.register(createBaselineRoutes(repositories, clock));
     await v1.register(createNutritionRoutes(repositories, clock));
     await v1.register(createMealPlanningRoutes(repositories, clock));
+    await v1.register(createAnalysisRoutes(repositories, clock));
   }, { prefix: '/api/v1' });
 
   app.addHook('onClose', async () => { if (prisma) await prisma.$disconnect(); });

@@ -9,7 +9,7 @@ const connectionString = process.env.DATABASE_URL;
 const prisma = connectionString ? createPrismaClient(connectionString) : null;
 const repositories = prisma ? createPrismaRepositories(prisma) : null;
 
-describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–6 integration', () => {
+describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–7 integration', () => {
   let app: FastifyInstance;
   let userId: string | undefined;
   const email = `phase3-integration-${crypto.randomUUID()}@example.test`;
@@ -133,6 +133,34 @@ describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–6 integration', 
     expect(await prisma!.mealPlanConsumption.count({ where: { mealPlanItemId: lunch.id } })).toBe(1);
     expect(await prisma!.recipeVersion.count({ where: { recipeId: personal.id } })).toBe(2);
     expect(await prisma!.recipeVersion.count({ where: { recipeId: personal.id, status: 'RETIRED' } })).toBe(1);
+
+    await prisma!.baselineSession.update({ where: { id: baseline.id }, data: { startLocalDate: new Date('2026-07-27T00:00:00.000Z'), currentDay: 14, status: 'DAY_14_REVIEW_AVAILABLE' } });
+    await prisma!.dailyRecord.updateMany({ where: { baselineSessionId: baseline.id, localDate: new Date(`${baseline.startLocalDate}T00:00:00.000Z`) }, data: { dayIndex: 14 } });
+    for (let dayIndex = 1; dayIndex <= 10; dayIndex += 1) {
+      const localDate = new Date(Date.parse('2026-07-27T00:00:00.000Z') + (dayIndex - 1) * 86_400_000).toISOString().slice(0, 10); const stamp = `${localDate}T08:00:00.000Z`;
+      await repositories!.baseline.putCheckIn(profileId, baseline.id, localDate, dayIndex, { mood: dayIndex % 3 === 0 ? 'LOW' : 'GOOD', hunger: 4, fullness: 4, barriers: [] }, stamp);
+      await repositories!.baseline.createMeal(profileId, baseline.id, dayIndex, { localDate, mealType: 'BREAKFAST', eatenAt: `${localDate}T07:00:00+08:00`, skipped: false, sugaryDrinkConsumed: dayIndex % 2 === 0 }, stamp);
+      await repositories!.baseline.createSleep(profileId, baseline.id, dayIndex, { localDate, sleepStartedAt: `${localDate}T00:30:00+08:00`, wokeUpAt: `${localDate}T06:30:00+08:00`, durationMinutes: 360, perceivedQuality: 'FAIR' }, stamp);
+      await repositories!.baseline.createActivity(profileId, baseline.id, dayIndex, { localDate, activityType: 'WALKING', durationMinutes: 10, perceivedIntensity: 'LIGHT' }, stamp);
+    }
+    const phase7 = await app.inject({ method: 'POST', url: '/api/v1/pattern-maps/generate', headers }); expect(phase7.statusCode, phase7.body).toBe(201); const analysis = phase7.json().data;
+    expect(analysis.patternMap.primaryPattern).toBeDefined(); expect(analysis.weeklyAction).toBeDefined(); expect(analysis.decision.ruleEvaluations).toHaveLength(13);
+    expect(await prisma!.featureSnapshot.count({ where: { profileId, baselineSessionId: baseline.id } })).toBe(1);
+    expect(await prisma!.decisionRecord.count({ where: { profileId, baselineSessionId: baseline.id } })).toBe(1);
+    expect(await prisma!.patternMap.count({ where: { profileId, baselineSessionId: baseline.id } })).toBe(1);
+    expect(await prisma!.weeklyActionAssignment.count({ where: { profileId } })).toBe(1);
+    expect(await prisma!.ruleEvaluation.count({ where: { decisionRecordId: analysis.decision.id as string } })).toBe(13);
+    const phase7Repeat = await app.inject({ method: 'POST', url: '/api/v1/pattern-maps/generate', headers }); expect(phase7Repeat.statusCode).toBe(200); expect(phase7Repeat.json().data).toMatchObject({ reused: true, decision: { id: analysis.decision.id }, patternMap: { id: analysis.patternMap.id } });
+    const checkIn = await app.inject({ method: 'POST', url: `/api/v1/weekly-actions/${analysis.weeklyAction.id as string}/check-ins`, headers, payload: { localDate: analysis.weeklyAction.weekStart } }); expect(checkIn.statusCode, checkIn.body).toBe(200); expect(checkIn.json().data.progress).toBe(1);
+    const localDate = '2026-08-06'; const stamp = `${localDate}T08:00:00.000Z`;
+    await repositories!.baseline.putCheckIn(profileId, baseline.id, localDate, 11, { mood: 'GOOD', hunger: 3, fullness: 3, barriers: [] }, stamp);
+    await repositories!.baseline.createMeal(profileId, baseline.id, 11, { localDate, mealType: 'BREAKFAST', eatenAt: `${localDate}T07:00:00+08:00`, skipped: false, sugaryDrinkConsumed: false }, stamp);
+    await repositories!.baseline.createSleep(profileId, baseline.id, 11, { localDate, sleepStartedAt: `${localDate}T00:00:00+08:00`, wokeUpAt: `${localDate}T07:00:00+08:00`, durationMinutes: 420, perceivedQuality: 'GOOD' }, stamp);
+    await repositories!.baseline.createActivity(profileId, baseline.id, 11, { localDate, activityType: 'WALKING', durationMinutes: 25, perceivedIntensity: 'LIGHT' }, stamp);
+    const phase7Reanalysis = await app.inject({ method: 'POST', url: '/api/v1/pattern-maps/generate', headers }); expect(phase7Reanalysis.statusCode, phase7Reanalysis.body).toBe(201);
+    expect(await prisma!.decisionRecord.count({ where: { profileId, baselineSessionId: baseline.id } })).toBe(2); expect(await prisma!.decisionRecord.count({ where: { profileId, supersededAt: null } })).toBe(1);
+    expect(await prisma!.patternMap.count({ where: { profileId, baselineSessionId: baseline.id } })).toBe(2); expect(await prisma!.patternMap.count({ where: { profileId, status: 'SUPERSEDED' } })).toBe(1);
+    expect(await prisma!.weeklyActionAssignment.count({ where: { profileId, status: 'ACTIVE' } })).toBe(1); expect(await prisma!.weeklyActionAssignment.count({ where: { profileId, status: 'REPLACED' } })).toBe(1);
     const extension = await prisma!.$queryRaw<Array<{ extname: string }>>`select extname from pg_extension where extname = 'vector'`;
     expect(extension[0]?.extname).toBe('vector');
   });

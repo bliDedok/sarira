@@ -196,8 +196,8 @@ export function getProgramEligibility(input: { ageGroup: AgeGroup; role: Onboard
   const outsideScope = input.ageGroup === 'UNDER_12' || input.ageGroup === 'OVER_75';
   const reasonCodes = [blocked ? 'SAFETY_RED' : '', supporter ? 'DEPENDENT_PROGRAM_NOT_IN_PHASE_3' : '', outsideScope ? 'AGE_OUTSIDE_MVP' : ''].filter(Boolean);
   return [
-    { code: 'GUIDED_MEAL', label: 'Guided Meal', description: 'Struktur pilihan makan; rekomendasi nutrisi masih demo.', eligible: reasonCodes.length === 0, reasonCodes },
-    { code: 'FLEX_KITCHEN', label: 'Flex Kitchen', description: 'Ruang fleksibel memasak; perhitungan nutrisi masih demo.', eligible: reasonCodes.length === 0, reasonCodes },
+    { code: 'GUIDED_MEAL', label: 'Guided Meal', description: 'Struktur pilihan makan dengan rekomendasi deterministik dan Nutrition Engine yang sama.', eligible: reasonCodes.length === 0, reasonCodes },
+    { code: 'FLEX_KITCHEN', label: 'Flex Kitchen', description: 'Ruang fleksibel memasak dengan perhitungan nutrisi real-time.', eligible: reasonCodes.length === 0, reasonCodes },
   ];
 }
 
@@ -244,3 +244,5 @@ export function validateOnboardingCompletion(state: CompletionState): string[] {
   if (!state.programPreferenceCompleted) issues.push('PROGRAM_PREFERENCE_MISSING');
   return issues;
 }
+
+export * from './phase7';

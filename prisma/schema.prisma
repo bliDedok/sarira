@@ -386,6 +386,56 @@ enum MealPlanItemStatus {
   SKIPPED
 }
 
+enum PatternDomain {
+  PORTION_INTAKE
+  SUGARY_ENERGY_DENSE
+  SLEEP
+  ACTIVITY_SEDENTARY
+  CONTEXTUAL_EATING
+  MEAL_BALANCE_REGULARITY
+}
+
+enum AnalysisDataQuality {
+  HIGH
+  MEDIUM
+  LOW
+  INSUFFICIENT
+}
+
+enum AnalysisStatus {
+  READY
+  PARTIAL
+  INSUFFICIENT_DATA
+}
+
+enum PatternMapStatus {
+  READY
+  PARTIAL
+  INSUFFICIENT_DATA
+  ACKNOWLEDGED
+  SUPERSEDED
+}
+
+enum PatternMapFeedbackValue {
+  VERY_ACCURATE
+  FAIRLY_ACCURATE
+  LESS_ACCURATE
+  UNSURE
+}
+
+enum WeeklyActionAssignmentStatus {
+  ACTIVE
+  COMPLETED
+  PARTIAL
+  SKIPPED
+  REPLACED
+}
+
+enum WeeklyActionCompletionSource {
+  AUTO_VERIFIED
+  USER_CONFIRMED
+}
+
 enum AuditEvent {
   USER_REGISTERED
   USER_LOGGED_IN
@@ -437,6 +487,12 @@ enum AuditEvent {
   PERSONAL_RECIPE_CREATED
   PERSONAL_RECIPE_UPDATED
   PERSONAL_RECIPE_ARCHIVED
+  FEATURE_SNAPSHOT_GENERATED
+  PATTERN_MAP_GENERATED
+  PATTERN_MAP_FEEDBACK_SAVED
+  WEEKLY_ACTION_ASSIGNED
+  WEEKLY_ACTION_CHECKED_IN
+  WEEKLY_ACTION_CHECKIN_REMOVED
 }
 
 model User {
@@ -498,6 +554,11 @@ model Profile {
   nutritionTargets      NutritionTargetProfile[]
   recipes               Recipe[]
   mealPlans             DailyMealPlan[]
+  featureSnapshots      FeatureSnapshot[]
+  decisionRecords       DecisionRecord[]
+  patternMaps           PatternMap[]
+  patternMapFeedbacks   PatternMapFeedback[]
+  weeklyActions         WeeklyActionAssignment[]
 
   @@index([onboardingStatus])
 }
@@ -949,6 +1010,9 @@ model BaselineSession {
   day7Checkpoint      Day7Checkpoint?
   day7Feedback        Day7Feedback?
   readinessResult     BaselineReadinessResult?
+  featureSnapshots    FeatureSnapshot[]
+  decisionRecords     DecisionRecord[]
+  patternMaps         PatternMap[]
 
   @@index([profileId, status])
   @@index([profileId, startedAt])
@@ -1704,4 +1768,229 @@ model BaselineReadinessResult {
   createdAt         DateTime                @default(now()) @db.Timestamptz(3)
   updatedAt         DateTime                @updatedAt @db.Timestamptz(3)
   baselineSession   BaselineSession         @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+}
+
+model FeatureSnapshot {
+  id                   String           @id @default(uuid()) @db.Uuid
+  profileId            String           @db.Uuid
+  baselineSessionId    String           @db.Uuid
+  featureEngineVersion String
+  periodStart          DateTime         @db.Date
+  periodEnd            DateTime         @db.Date
+  generatedAt          DateTime         @db.Timestamptz(3)
+  inputCompleteness    Float
+  features             Json
+  missingFeatures      String[]
+  warnings             String[]
+  inputSignature       String
+  createdAt            DateTime         @default(now()) @db.Timestamptz(3)
+  profile              Profile          @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  baselineSession      BaselineSession  @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  decisions            DecisionRecord[]
+  patternMaps          PatternMap[]
+
+  @@unique([baselineSessionId, featureEngineVersion, inputSignature])
+  @@index([profileId, generatedAt])
+  @@index([baselineSessionId, createdAt])
+}
+
+model PatternScoringPolicy {
+  id                       String        @id @default(uuid()) @db.Uuid
+  code                     String
+  version                  String
+  configuration            Json
+  effectiveFrom            DateTime      @db.Date
+  effectiveTo              DateTime?     @db.Date
+  active                   Boolean       @default(true)
+  requiresExpertValidation Boolean       @default(true)
+  validationLabel          String
+  createdAt                DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime      @updatedAt @db.Timestamptz(3)
+
+  @@unique([code, version])
+  @@index([active, effectiveFrom, effectiveTo])
+}
+
+model PatternRuleDefinition {
+  id                       String           @id @default(uuid()) @db.Uuid
+  ruleId                   String
+  version                  String
+  domain                   PatternDomain
+  description              String
+  requiredFeatures         String[]
+  condition                Json
+  contribution             Float
+  strengthCategory         String
+  evidenceRequirement      Json
+  exclusions               String[]
+  actionCandidateCodes     String[]
+  agePacks                 String[]
+  active                   Boolean          @default(true)
+  requiresExpertValidation Boolean          @default(true)
+  validationLabel          String
+  createdAt                DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime          @updatedAt @db.Timestamptz(3)
+  evaluations              RuleEvaluation[]
+
+  @@unique([ruleId, version])
+  @@index([domain, active])
+}
+
+model DecisionRecord {
+  id                        String              @id @default(uuid()) @db.Uuid
+  profileId                 String              @db.Uuid
+  baselineSessionId         String              @db.Uuid
+  featureSnapshotId         String              @db.Uuid
+  expertSystemVersion       String
+  scoringPolicyVersion      String
+  weeklyActionPolicyVersion String
+  status                    AnalysisStatus
+  primaryPatternCode        String?
+  supportingPatternCodes    String[]
+  selectedActionCode        String?
+  dataQuality               AnalysisDataQuality
+  domainScores              Json
+  limitations               String[]
+  ruleVersions              String[]
+  inputSignature            String
+  generatedAt               DateTime            @db.Timestamptz(3)
+  supersededAt              DateTime?            @db.Timestamptz(3)
+  createdAt                 DateTime            @default(now()) @db.Timestamptz(3)
+  profile                   Profile             @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  baselineSession           BaselineSession     @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  featureSnapshot           FeatureSnapshot     @relation(fields: [featureSnapshotId], references: [id], onDelete: Cascade)
+  ruleEvaluations           RuleEvaluation[]
+  patternMap                PatternMap?
+
+  @@unique([featureSnapshotId, expertSystemVersion, scoringPolicyVersion, weeklyActionPolicyVersion, inputSignature])
+  @@index([profileId, generatedAt])
+  @@index([baselineSessionId, supersededAt])
+}
+
+model RuleEvaluation {
+  id               String                @id @default(uuid()) @db.Uuid
+  decisionRecordId String                @db.Uuid
+  ruleDefinitionId String                @db.Uuid
+  ruleId           String
+  ruleVersion      String
+  domain           PatternDomain
+  matched          Boolean
+  contribution     Float
+  observedValues   Json
+  reasonCodes      String[]
+  evidenceRefs     String[]
+  limitations      String[]
+  createdAt        DateTime              @default(now()) @db.Timestamptz(3)
+  decisionRecord   DecisionRecord        @relation(fields: [decisionRecordId], references: [id], onDelete: Cascade)
+  ruleDefinition   PatternRuleDefinition @relation(fields: [ruleDefinitionId], references: [id], onDelete: Restrict)
+
+  @@unique([decisionRecordId, ruleId, ruleVersion])
+  @@index([ruleId, matched])
+  @@index([domain, matched])
+}
+
+model PatternMap {
+  id                String              @id @default(uuid()) @db.Uuid
+  profileId         String              @db.Uuid
+  baselineSessionId String              @db.Uuid
+  featureSnapshotId String              @db.Uuid
+  decisionRecordId  String              @unique @db.Uuid
+  status            PatternMapStatus
+  primaryPattern    Json?
+  supportingPatterns Json
+  domains           Json
+  dataQuality       AnalysisDataQuality
+  limitations       String[]
+  generatedAt       DateTime            @db.Timestamptz(3)
+  acknowledgedAt    DateTime?           @db.Timestamptz(3)
+  version           Int
+  createdAt         DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime            @updatedAt @db.Timestamptz(3)
+  profile           Profile             @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  baselineSession   BaselineSession     @relation(fields: [baselineSessionId], references: [id], onDelete: Cascade)
+  featureSnapshot   FeatureSnapshot     @relation(fields: [featureSnapshotId], references: [id], onDelete: Restrict)
+  decisionRecord    DecisionRecord      @relation(fields: [decisionRecordId], references: [id], onDelete: Cascade)
+  feedback          PatternMapFeedback[]
+  weeklyAction      WeeklyActionAssignment?
+
+  @@unique([baselineSessionId, version])
+  @@index([profileId, status, generatedAt])
+}
+
+model PatternMapFeedback {
+  id           String                  @id @default(uuid()) @db.Uuid
+  patternMapId String                  @db.Uuid
+  profileId    String                  @db.Uuid
+  value        PatternMapFeedbackValue
+  notes        String?
+  createdAt    DateTime                @default(now()) @db.Timestamptz(3)
+  patternMap   PatternMap              @relation(fields: [patternMapId], references: [id], onDelete: Cascade)
+  profile      Profile                 @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([patternMapId, createdAt])
+  @@index([profileId, createdAt])
+}
+
+model WeeklyActionDefinition {
+  id                       String                   @id @default(uuid()) @db.Uuid
+  code                     String
+  version                  String
+  domain                   PatternDomain
+  title                    String
+  description              String
+  durationDays             Int
+  targetCount              Int
+  ageEligibility           String[]
+  safetyRestrictions       SafetyStatus[]
+  requiredEvidence         String[]
+  actionability            Int
+  active                   Boolean                  @default(true)
+  requiresExpertValidation Boolean                  @default(true)
+  validationLabel          String
+  createdAt                DateTime                 @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime                 @updatedAt @db.Timestamptz(3)
+  assignments              WeeklyActionAssignment[]
+
+  @@unique([code, version])
+  @@index([domain, active])
+}
+
+model WeeklyActionAssignment {
+  id                String                       @id @default(uuid()) @db.Uuid
+  profileId         String                       @db.Uuid
+  patternMapId      String                       @unique @db.Uuid
+  actionDefinitionId String                      @db.Uuid
+  assignedAt        DateTime                     @db.Timestamptz(3)
+  weekStart         DateTime                     @db.Date
+  weekEnd           DateTime                     @db.Date
+  targetCount       Int
+  progress          Int                          @default(0)
+  status            WeeklyActionAssignmentStatus @default(ACTIVE)
+  completedAt       DateTime?                    @db.Timestamptz(3)
+  reasonCodes       String[]
+  alternatives      Json
+  selectionVersion  String
+  why               String
+  createdAt         DateTime                     @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime                     @updatedAt @db.Timestamptz(3)
+  profile           Profile                      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  patternMap        PatternMap                   @relation(fields: [patternMapId], references: [id], onDelete: Cascade)
+  actionDefinition  WeeklyActionDefinition       @relation(fields: [actionDefinitionId], references: [id], onDelete: Restrict)
+  checkIns          WeeklyActionCheckIn[]
+
+  @@index([profileId, status, weekStart])
+  @@index([actionDefinitionId, assignedAt])
+}
+
+model WeeklyActionCheckIn {
+  id           String                       @id @default(uuid()) @db.Uuid
+  assignmentId String                       @db.Uuid
+  localDate    DateTime                     @db.Date
+  source       WeeklyActionCompletionSource
+  evidenceRef  String?
+  createdAt    DateTime                     @default(now()) @db.Timestamptz(3)
+  assignment   WeeklyActionAssignment       @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@unique([assignmentId, localDate])
+  @@index([localDate, source])
 }

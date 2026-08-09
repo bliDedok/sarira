@@ -529,6 +529,77 @@ export const MealPlanItemStatus = {
 export type MealPlanItemStatus = (typeof MealPlanItemStatus)[keyof typeof MealPlanItemStatus]
 
 
+export const PatternDomain = {
+  PORTION_INTAKE: 'PORTION_INTAKE',
+  SUGARY_ENERGY_DENSE: 'SUGARY_ENERGY_DENSE',
+  SLEEP: 'SLEEP',
+  ACTIVITY_SEDENTARY: 'ACTIVITY_SEDENTARY',
+  CONTEXTUAL_EATING: 'CONTEXTUAL_EATING',
+  MEAL_BALANCE_REGULARITY: 'MEAL_BALANCE_REGULARITY'
+} as const
+
+export type PatternDomain = (typeof PatternDomain)[keyof typeof PatternDomain]
+
+
+export const AnalysisDataQuality = {
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW',
+  INSUFFICIENT: 'INSUFFICIENT'
+} as const
+
+export type AnalysisDataQuality = (typeof AnalysisDataQuality)[keyof typeof AnalysisDataQuality]
+
+
+export const AnalysisStatus = {
+  READY: 'READY',
+  PARTIAL: 'PARTIAL',
+  INSUFFICIENT_DATA: 'INSUFFICIENT_DATA'
+} as const
+
+export type AnalysisStatus = (typeof AnalysisStatus)[keyof typeof AnalysisStatus]
+
+
+export const PatternMapStatus = {
+  READY: 'READY',
+  PARTIAL: 'PARTIAL',
+  INSUFFICIENT_DATA: 'INSUFFICIENT_DATA',
+  ACKNOWLEDGED: 'ACKNOWLEDGED',
+  SUPERSEDED: 'SUPERSEDED'
+} as const
+
+export type PatternMapStatus = (typeof PatternMapStatus)[keyof typeof PatternMapStatus]
+
+
+export const PatternMapFeedbackValue = {
+  VERY_ACCURATE: 'VERY_ACCURATE',
+  FAIRLY_ACCURATE: 'FAIRLY_ACCURATE',
+  LESS_ACCURATE: 'LESS_ACCURATE',
+  UNSURE: 'UNSURE'
+} as const
+
+export type PatternMapFeedbackValue = (typeof PatternMapFeedbackValue)[keyof typeof PatternMapFeedbackValue]
+
+
+export const WeeklyActionAssignmentStatus = {
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  PARTIAL: 'PARTIAL',
+  SKIPPED: 'SKIPPED',
+  REPLACED: 'REPLACED'
+} as const
+
+export type WeeklyActionAssignmentStatus = (typeof WeeklyActionAssignmentStatus)[keyof typeof WeeklyActionAssignmentStatus]
+
+
+export const WeeklyActionCompletionSource = {
+  AUTO_VERIFIED: 'AUTO_VERIFIED',
+  USER_CONFIRMED: 'USER_CONFIRMED'
+} as const
+
+export type WeeklyActionCompletionSource = (typeof WeeklyActionCompletionSource)[keyof typeof WeeklyActionCompletionSource]
+
+
 export const AuditEvent = {
   USER_REGISTERED: 'USER_REGISTERED',
   USER_LOGGED_IN: 'USER_LOGGED_IN',
@@ -579,7 +650,13 @@ export const AuditEvent = {
   MEAL_PLAN_ITEM_CONSUMED: 'MEAL_PLAN_ITEM_CONSUMED',
   PERSONAL_RECIPE_CREATED: 'PERSONAL_RECIPE_CREATED',
   PERSONAL_RECIPE_UPDATED: 'PERSONAL_RECIPE_UPDATED',
-  PERSONAL_RECIPE_ARCHIVED: 'PERSONAL_RECIPE_ARCHIVED'
+  PERSONAL_RECIPE_ARCHIVED: 'PERSONAL_RECIPE_ARCHIVED',
+  FEATURE_SNAPSHOT_GENERATED: 'FEATURE_SNAPSHOT_GENERATED',
+  PATTERN_MAP_GENERATED: 'PATTERN_MAP_GENERATED',
+  PATTERN_MAP_FEEDBACK_SAVED: 'PATTERN_MAP_FEEDBACK_SAVED',
+  WEEKLY_ACTION_ASSIGNED: 'WEEKLY_ACTION_ASSIGNED',
+  WEEKLY_ACTION_CHECKED_IN: 'WEEKLY_ACTION_CHECKED_IN',
+  WEEKLY_ACTION_CHECKIN_REMOVED: 'WEEKLY_ACTION_CHECKIN_REMOVED'
 } as const
 
 export type AuditEvent = (typeof AuditEvent)[keyof typeof AuditEvent]

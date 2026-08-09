@@ -1,6 +1,6 @@
 {
   "name": "@sarira/api",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -21,6 +21,7 @@
     "@sarira/baseline": "workspace:*",
     "@sarira/config": "workspace:*",
     "@sarira/expert-system": "workspace:*",
+    "@sarira/feature-engine": "workspace:*",
     "@sarira/logger": "workspace:*",
     "@sarira/nutrition-engine": "workspace:*",
     "@sarira/shared-types": "workspace:*",
