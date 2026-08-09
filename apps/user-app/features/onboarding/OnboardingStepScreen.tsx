@@ -86,7 +86,7 @@ const stepMeta: Record<CanonicalStep, { eyebrow: string; title: string; descript
   'safety-result': { eyebrow: 'Hasil safety', title: 'Jalur program awal', description: 'Status dibuat backend dengan rule deterministik dan selalu disertai label, ikon, dan deskripsi.' },
   'goal-selection': { eyebrow: 'Tujuan', title: 'Apa yang ingin kamu prioritaskan?', description: 'Pilihan difilter berdasarkan usia, peran, dan hasil safety.' },
   'profile-questionnaire': { eyebrow: 'Kuesioner profil', title: 'Kenali rutinitasmu', description: 'Satu kelompok pertanyaan per langkah. Jawaban disimpan otomatis.' },
-  'program-preference': { eyebrow: 'Preferensi program', title: 'Pilih cara yang terasa realistis', description: 'Kalkulasi nutrisi dasar sudah nyata; rekomendasi Guided Meal dan Flex Kitchen masih Demo.' },
+  'program-preference': { eyebrow: 'Preferensi program', title: 'Pilih cara yang terasa realistis', description: 'Guided Meal dan Flex Kitchen memakai kalkulasi nutrisi serta aturan deterministik yang nyata.' },
   'profile-summary': { eyebrow: 'Tinjau', title: 'Ringkasan profilmu', description: 'Periksa data sebelum menyelesaikan onboarding. Setiap bagian dapat diperbaiki.' },
 };
 

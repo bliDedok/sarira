@@ -1,10 +1,10 @@
-# SARIRA — Phase 6 Guided Meal & Flex Kitchen
+# SARIRA — Phase 7 Expert System & Pattern Map
 
-SARIRA Phase 6 extends the real onboarding, 14-day baseline, and Phase 5 Nutrition Engine with deterministic meal planning: versioned recipes, nutrition snapshots, remaining nutrition, Guided Meal hard/soft constraints, alternatives, Cooking Mode, partial/idempotent consumption, Flex Kitchen, substitutions, and private personal recipes.
+SARIRA Phase 7 extends the real onboarding, 14-day baseline, Nutrition Engine, Guided Meal, and Flex Kitchen with a deterministic Feature Engine, six-domain expert system, traceable Pattern Map, and exactly one eligible Weekly Action per week.
 
-Guided Meal and Flex Kitchen use the same `@sarira/nutrition-engine`; there is no AI/LLM/RAG selection and no second nutrition calculator. Development foods, recipes, and policy weights remain clearly synthetic and require expert/product validation.
+Pattern decisions are versioned, reproducible, safety/age/consent aware, and may abstain when domain evidence is insufficient. Rules decide; internal evidence supports; AI explanation is not part of Phase 7.
 
-Nutrition calculations and indicators are real application paths. Development foods and policies are explicitly synthetic and require expert validation. Guided Meal recommendations, Flex Kitchen recommendations, AI/RAG, Pattern Map, Weekly Action, food vision, barcode production, wearables, Motion Coach, growth analysis, and digestive analysis remain clearly labeled Demo or out of scope.
+Feature snapshots, Pattern Maps, Decision Records, feedback, Weekly Action selection, and manual progress are real application paths. Development thresholds, rules, foods, recipes, and policy weights require expert/product validation. AI/RAG, food vision, production barcode lookup, wearables, Motion Coach, growth analysis, and digestive diagnosis remain out of scope.
 
 ## Prerequisites
 
@@ -54,7 +54,7 @@ pnpm migration:check
 
 ## Environment modes
 
-Mock infrastructure is the safe local default and uses the same Phase 6 API contract, repositories, and deterministic engine. Set `EXPO_PUBLIC_USE_MOCK_DATA=false` and `USE_MOCK_DATA=false` only after Supabase/database variables are configured. Public client values use `EXPO_PUBLIC_*` or `NEXT_PUBLIC_*`; service-role keys and database URLs are server-only.
+Mock infrastructure is the safe local default and uses the same Phase 7 API contract and deterministic domain engines. Set `EXPO_PUBLIC_USE_MOCK_DATA=false` and `USE_MOCK_DATA=false` only after Supabase/database variables are configured. Public client values use `EXPO_PUBLIC_*` or `NEXT_PUBLIC_*`; service-role keys and database URLs are server-only.
 
 Templates live in `infrastructure/environments`. Do not commit populated `.env` files.
 
@@ -67,6 +67,7 @@ Templates live in `infrastructure/environments`. Do not commit populated `.env` 
 - Phase 4 baseline implementation and final report: `docs/phase-4`
 - Phase 5 nutrition architecture, provenance, policy, tests, and final report: `docs/phase-5`
 - Phase 6 recipes, meal planning, Flex Kitchen, migrations, tests, and final report: `docs/phase-6`
+- Phase 7 features, expert-system rules, Pattern Map, Weekly Action, migrations, tests, and final report: `docs/phase-7`
 - API contract: `docs/api`
 - Database model/migrations: `docs/database`
 - Historical Phase 2 report: `PHASE_2_FINAL_REPORT.md`
