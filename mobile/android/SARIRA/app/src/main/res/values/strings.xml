@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">SARIRA</string>
+    <string name="splash_title">SARIRA</string>
+    <string name="sarira_tagline">Kenali Polamu, Seimbangkan Tubuhmu</string>
+    <string name="welcome_greeting">Halo, selamat datang!</string>
+    <string name="welcome_description">SARIRA membantumu membangun pola makan, gerak, dan pemulihan yang lebih seimbang—satu langkah kecil setiap hari.</string>
+    <string name="welcome_start">Mulai</string>
+    <string name="welcome_explore">Jelajahi dulu</string>
+    <string name="home_greeting">Selamat pagi, Teman SARIRA</string>
+    <string name="home_summary">Tubuhmu siap untuk hari yang seimbang.</string>
+    <string name="guest_home_greeting">Halo, Teman SARIRA</string>
+    <string name="guest_home_summary">Jelajahi SARIRA atau buat program yang sesuai dengan ritmemu.</string>
+    <string name="navigation_home">Home</string>
+    <string name="navigation_food">Food</string>
+    <string name="navigation_activity">Activity</string>
+    <string name="navigation_progress">Progress</string>
+    <string name="navigation_profile">Profile</string>
+    <string name="placeholder_message">Ruang ini sedang disiapkan untuk pengalaman SARIRA berikutnya.</string>
+    <string name="profile_content_description">Profil</string>
 </resources>
