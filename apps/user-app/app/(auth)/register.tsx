@@ -30,7 +30,7 @@ export default function RegisterPage() {
     <PublicScreen showBack maxWidth={580}>
       <View style={styles.form}>
         <Chip label="LANGKAH 1 DARI 9" tone="lime" />
-        <View style={{ gap: spacing.xs }}><AppText variant="h1">Buat akun</AppText><AppText variant="bodyLarge">Akun, session, dan profil awal dibuat melalui API. Consent versioned diberikan pada tahap khusus setelah tanggal lahir.</AppText></View>
+        <View style={{ gap: spacing.xs }}><AppText variant="h1">Buat akun</AppText><AppText variant="bodyLarge">Mulai dengan identitas dasar. Setelah itu, kamu dapat memilih peran, mengonfirmasi usia, dan mengatur persetujuan data dengan jelas.</AppText></View>
         {error ? <InlineNotice title="Registrasi belum selesai" text={error} tone="danger" /> : null}
         <Field label="Nama panggilan" value={name} onChangeText={setName} autoComplete="name" />
         <Field label="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoComplete="email" />

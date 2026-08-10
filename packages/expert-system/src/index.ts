@@ -1,4 +1,5 @@
 import type {
+  AgeContext,
   AgeGroup,
   GoalCode,
   GoalDefinitionRecord,
@@ -28,8 +29,8 @@ export function calculateAge(dateOfBirth: string, referenceDate = new Date()): n
   return age;
 }
 
-export function classifyAge(dateOfBirth: string, referenceDate = new Date()): AgeGroup {
-  const age = calculateAge(dateOfBirth, referenceDate);
+export function classifyAgeValue(age: number): AgeGroup {
+  if (!Number.isInteger(age) || !Number.isFinite(age)) throw new Error('Usia harus berupa bilangan bulat.');
   if (age < 12) return 'UNDER_12';
   if (age <= 17) return 'TEEN';
   if (age <= 25) return 'YOUNG_ADULT';
@@ -38,7 +39,47 @@ export function classifyAge(dateOfBirth: string, referenceDate = new Date()): Ag
   return 'OVER_75';
 }
 
+export function classifyAge(dateOfBirth: string, referenceDate = new Date()): AgeGroup {
+  return classifyAgeValue(calculateAge(dateOfBirth, referenceDate));
+}
+
 export const requiresGuardianConsent = (dateOfBirth: string, referenceDate = new Date()) => classifyAge(dateOfBirth, referenceDate) === 'TEEN';
+
+export interface AgeResolverInput {
+  declaredAge?: number | null;
+  ageRecordedAt?: string | null;
+  dateOfBirth?: string | null;
+}
+
+/**
+ * Resolves one deterministic age context. A user-confirmed declared age is the
+ * primary source; legacy DOB remains a read-compatible fallback. Declared age
+ * never increments silently. The caller can request reconfirmation after one
+ * year without changing any safety or eligibility result in the background.
+ */
+export function resolveAgeContext(input: AgeResolverInput, referenceDate = new Date()): AgeContext | null {
+  if (input.declaredAge !== undefined && input.declaredAge !== null) {
+    const age = input.declaredAge;
+    if (!Number.isInteger(age) || age < 12 || age > 75) throw new Error('Usia yang dikonfirmasi harus 12–75 tahun.');
+    if (!input.ageRecordedAt) throw new Error('Waktu pencatatan usia diperlukan.');
+    const recordedAt = new Date(input.ageRecordedAt);
+    if (Number.isNaN(recordedAt.getTime()) || recordedAt > referenceDate) throw new Error('Waktu pencatatan usia tidak valid.');
+    const reconfirmAt = new Date(recordedAt);
+    reconfirmAt.setUTCFullYear(reconfirmAt.getUTCFullYear() + 1);
+    return {
+      age,
+      ageGroup: classifyAgeValue(age),
+      source: 'DECLARED',
+      recordedAt: recordedAt.toISOString(),
+      requiresReconfirmation: referenceDate >= reconfirmAt,
+    };
+  }
+  if (!input.dateOfBirth) return null;
+  const age = calculateAge(input.dateOfBirth, referenceDate);
+  return { age, ageGroup: classifyAgeValue(age), source: 'LEGACY_DOB', requiresReconfirmation: false };
+}
+
+export const requiresGuardianConsentForAge = (age: number) => classifyAgeValue(age) === 'TEEN';
 
 export interface SafetyRuleConfiguration {
   ruleId: string;
@@ -220,7 +261,9 @@ export function validateQuestionnaireCompletion(questions: QuestionnaireQuestion
 
 export interface CompletionState {
   roleComplete: boolean;
-  validDateOfBirth: boolean;
+  validAgeContext?: boolean;
+  /** @deprecated Kept for Phase 3–7 callers during the incremental migration. */
+  validDateOfBirth?: boolean;
   ageGroup?: AgeGroup;
   guardianConsentGranted: boolean;
   requiredConsentsGranted: boolean;
@@ -233,7 +276,7 @@ export interface CompletionState {
 export function validateOnboardingCompletion(state: CompletionState): string[] {
   const issues: string[] = [];
   if (!state.roleComplete) issues.push('ROLE_MISSING');
-  if (!state.validDateOfBirth) issues.push('DATE_OF_BIRTH_INVALID');
+  if (!(state.validAgeContext ?? state.validDateOfBirth ?? false)) issues.push('DATE_OF_BIRTH_INVALID');
   if (state.ageGroup === 'UNDER_12') issues.push('AGE_UNDER_MINIMUM');
   if (state.ageGroup === 'OVER_75') issues.push('AGE_OVER_MVP_SCOPE');
   if (state.ageGroup === 'TEEN' && !state.guardianConsentGranted) issues.push('GUARDIAN_CONSENT_MISSING');

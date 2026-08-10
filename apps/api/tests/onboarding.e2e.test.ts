@@ -170,4 +170,27 @@ describe('Phase 3 critical onboarding scenarios', () => {
     expect((await app.inject({ method: 'GET', url: `/api/v1/questionnaire-sessions/${sessionId}`, headers: account.headers })).json().data.answers[0].value).toBe(170);
     expect((await app.inject({ method: 'PUT', url: `/api/v1/questionnaire-sessions/${sessionId}/answers`, headers: account.headers, payload: { answers: [{ questionId: question.id, value: 171 }] } })).json().data.answers[0].value).toBe(171);
   });
+
+  it('SCENARIO I — profil baru memakai declared age tanpa DOB sintetis', async () => {
+    const account = await register('declared-adult');
+    await app.inject({ method: 'PUT', url: '/api/v1/profiles/me/role', headers: account.headers, payload: { role: 'USER' } });
+    const response = await app.inject({ method: 'PATCH', url: '/api/v1/profiles/me', headers: account.headers, payload: { declaredAge: 30 } });
+    expect(response.statusCode, response.body).toBe(200);
+    expect(response.json().data).toMatchObject({ declaredAge: 30, age: 30, ageGroup: 'ADULT_BALANCE', ageSource: 'DECLARED', ageRequiresReconfirmation: false });
+    expect(response.json().data.dateOfBirth).toBeUndefined();
+    expect(response.json().data.ageRecordedAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    expect((await app.inject({ method: 'GET', url: '/api/v1/me', headers: account.headers })).json().data.currentStep).toBe('privacy-consent');
+  });
+
+  it('SCENARIO J — declared age remaja tetap memerlukan guardian dan bounds fail closed', async () => {
+    const account = await register('declared-teen');
+    await app.inject({ method: 'PUT', url: '/api/v1/profiles/me/role', headers: account.headers, payload: { role: 'USER' } });
+    const teen = await app.inject({ method: 'PATCH', url: '/api/v1/profiles/me', headers: account.headers, payload: { declaredAge: 17 } });
+    expect(teen.json().data).toMatchObject({ age: 17, ageGroup: 'TEEN', ageSource: 'DECLARED' });
+    expect((await app.inject({ method: 'GET', url: '/api/v1/me', headers: account.headers })).json().data.currentStep).toBe('guardian-consent');
+    await grantRequired(account.headers);
+    expect((await app.inject({ method: 'POST', url: '/api/v1/safety-screening/sessions', headers: account.headers })).statusCode).toBe(409);
+    expect((await app.inject({ method: 'PATCH', url: '/api/v1/profiles/me', headers: account.headers, payload: { declaredAge: 11 } })).statusCode).toBe(400);
+    expect((await app.inject({ method: 'PATCH', url: '/api/v1/profiles/me', headers: account.headers, payload: { declaredAge: 76 } })).statusCode).toBe(400);
+  });
 });

@@ -103,7 +103,7 @@ export interface DataRepositories {
   profiles: {
     getByUserId(userId: string): Promise<ProfileRecord | null>;
     ensure(userId: string, fullName: string): Promise<ProfileRecord>;
-    update(userId: string, input: Partial<Pick<ProfileRecord, 'fullName' | 'dateOfBirth' | 'gender' | 'country' | 'timezone' | 'preferredLanguage' | 'primaryRole' | 'onboardingStatus' | 'onboardingCompletedAt'>>): Promise<ProfileRecord>;
+    update(userId: string, input: Partial<Pick<ProfileRecord, 'fullName' | 'dateOfBirth' | 'declaredAge' | 'ageRecordedAt' | 'gender' | 'country' | 'timezone' | 'preferredLanguage' | 'primaryRole' | 'onboardingStatus' | 'onboardingCompletedAt'>>): Promise<ProfileRecord>;
   };
   roles: {
     available(): Promise<Array<{ role: OnboardingRole; label: string; description: string }>>;

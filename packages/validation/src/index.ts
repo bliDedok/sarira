@@ -21,12 +21,15 @@ export const dateOfBirthSchema = z
     return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value && date <= new Date();
   }, 'Tanggal lahir tidak valid.');
 
+export const declaredAgeSchema = z.number().int('Usia harus berupa tahun penuh.').min(12, 'Usia minimum SARIRA adalah 12 tahun.').max(75, 'Usia maksimum SARIRA adalah 75 tahun.');
+
 export const genderSchema = z.enum(['FEMALE', 'MALE', 'OTHER', 'UNDISCLOSED']);
 export const onboardingRoleSchema = z.enum(['USER', 'PARENT', 'GUARDIAN', 'CAREGIVER']);
 
 export const profileSchema = z.object({
   fullName: z.string().trim().min(2, 'Nama minimal 2 karakter.').max(100),
   dateOfBirth: dateOfBirthSchema.optional(),
+  declaredAge: declaredAgeSchema.optional(),
   gender: genderSchema.optional(),
   country: z.string().trim().length(2).toUpperCase().default('ID'),
   timezone: z.string().trim().min(3).max(100).default('Asia/Makassar'),

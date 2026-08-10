@@ -37,9 +37,10 @@ describe.runIf(Boolean(connectionString))('PostgreSQL Phase 3–7 integration', 
     const headers = { authorization: `Bearer ${registration.json().data.accessToken as string}` };
 
     expect((await app.inject({ method: 'PUT', url: '/api/v1/profiles/me/role', headers, payload: { role: 'USER' } })).statusCode).toBe(200);
-    const profileResponse = await app.inject({ method: 'PATCH', url: '/api/v1/profiles/me', headers, payload: { dateOfBirth: '1996-01-01', country: 'ID', timezone: 'Asia/Makassar', preferredLanguage: 'id-ID' } });
-    expect(profileResponse.json().data).toMatchObject({ fullName: 'Integration Phase 3', ageGroup: 'ADULT_BALANCE' });
+    const profileResponse = await app.inject({ method: 'PATCH', url: '/api/v1/profiles/me', headers, payload: { declaredAge: 30, country: 'ID', timezone: 'Asia/Makassar', preferredLanguage: 'id-ID' } });
+    expect(profileResponse.json().data).toMatchObject({ fullName: 'Integration Phase 3', declaredAge: 30, age: 30, ageGroup: 'ADULT_BALANCE', ageSource: 'DECLARED' });
     const profileId = profileResponse.json().data.id as string;
+    expect(await prisma!.profile.findUnique({ where: { id: profileId }, select: { dateOfBirth: true, declaredAge: true, ageRecordedAt: true } })).toMatchObject({ dateOfBirth: null, declaredAge: 30, ageRecordedAt: expect.any(Date) });
 
     const required = (await app.inject({ method: 'GET', url: '/api/v1/consents/required', headers })).json().data as Array<{ type: string; version: string }>;
     expect(required.length).toBeGreaterThanOrEqual(3);

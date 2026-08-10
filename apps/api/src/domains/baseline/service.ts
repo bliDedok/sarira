@@ -31,7 +31,7 @@ export async function assertBaselinePreconditions(repositories: DataRepositories
   const summary = await onboardingSummary(repositories, userId);
   const issues: string[] = [];
   if (summary.profile.onboardingStatus !== 'COMPLETED' || !summary.profile.onboardingCompletedAt) issues.push('ONBOARDING_NOT_COMPLETED');
-  if (!summary.profile.fullName || !summary.profile.dateOfBirth || !summary.profile.ageGroup || !summary.profile.timezone) issues.push('PROFILE_INCOMPLETE');
+  if (!summary.profile.fullName || summary.profile.age === undefined || !summary.profile.ageGroup || !summary.profile.timezone) issues.push('PROFILE_INCOMPLETE');
   if (!summary.goal) issues.push('GOAL_MISSING');
   if (!summary.safetyResult) issues.push('SAFETY_SCREENING_MISSING');
   if (!(await requiredConsentsGranted(repositories, userId))) issues.push('REQUIRED_CONSENT_MISSING');

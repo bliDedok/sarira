@@ -30,7 +30,7 @@ export async function requiredConsentsGranted(repositories: DataRepositories, us
 }
 
 export async function programEligibilityForProfile(repositories: DataRepositories, profile: ProfileRecord): Promise<ProgramEligibilityRecord[]> {
-  if (!profile.dateOfBirth || !profile.ageGroup || !profile.primaryRole) return [];
+  if (profile.age === undefined || !profile.ageGroup || !profile.primaryRole) return [];
   const safety = await repositories.safety.latestCompleted(profile.id);
   const goal = await repositories.goals.get(profile.id);
   if (!safety || !goal) return [];
@@ -49,12 +49,12 @@ export async function onboardingSummary(repositories: DataRepositories, userId: 
     requiredConsentsGranted(repositories, userId),
   ]);
   const eligibility = await programEligibilityForProfile(repositories, profile);
-  const goalEligibility = profile.dateOfBirth && profile.ageGroup && profile.primaryRole && safetyResult
+  const goalEligibility = profile.age !== undefined && profile.ageGroup && profile.primaryRole && safetyResult
     ? getGoalEligibility({ age: profile.age!, ageGroup: profile.ageGroup, role: profile.primaryRole as 'USER' | 'PARENT' | 'GUARDIAN' | 'CAREGIVER', safetyStatus: safetyResult.status })
     : [];
   const completionIssues = validateOnboardingCompletion({
     roleComplete: Boolean(profile.primaryRole),
-    validDateOfBirth: Boolean(profile.dateOfBirth),
+    validAgeContext: profile.age !== undefined,
     ageGroup: profile.ageGroup,
     guardianConsentGranted: guardianConsent?.status === 'GRANTED',
     requiredConsentsGranted: requiredGranted,

@@ -157,6 +157,8 @@ export const ProfileScalarFieldEnum = {
   userId: 'userId',
   fullName: 'fullName',
   dateOfBirth: 'dateOfBirth',
+  declaredAge: 'declaredAge',
+  ageRecordedAt: 'ageRecordedAt',
   gender: 'gender',
   country: 'country',
   timezone: 'timezone',

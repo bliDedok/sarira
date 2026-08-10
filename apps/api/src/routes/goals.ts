@@ -10,7 +10,7 @@ export const createGoalRoutes = (repositories: DataRepositories): FastifyPluginA
   const available = async (userId: string) => {
     const profile = await getProfileOrThrow(repositories, userId);
     const safety = await repositories.safety.latestCompleted(profile.id);
-    if (!profile.dateOfBirth || profile.age === undefined || !profile.ageGroup || !profile.primaryRole || !safety) throw new ConflictError('Profil, role, tanggal lahir, dan safety result diperlukan.');
+    if (profile.age === undefined || !profile.ageGroup || !profile.primaryRole || !safety) throw new ConflictError('Profil, role, usia, dan safety result diperlukan.');
     return getGoalEligibility({ age: profile.age, ageGroup: profile.ageGroup, role: profile.primaryRole as 'USER' | 'PARENT' | 'GUARDIAN' | 'CAREGIVER', safetyStatus: safety.status });
   };
 

@@ -14,7 +14,7 @@ import type {
   SafetyTemplateRecord,
   UserGoalRecord,
 } from '@sarira/shared-types';
-import { calculateAge, classifyAge, phase3GoalConfigurations, PHASE_3_CONTENT_STATUS, PHASE_3_RULE_VERSION } from '@sarira/expert-system';
+import { phase3GoalConfigurations, PHASE_3_CONTENT_STATUS, PHASE_3_RULE_VERSION, resolveAgeContext } from '@sarira/expert-system';
 import type { AccountRecord, DataRepositories, ProfileRecord } from '../contracts';
 import { ConflictError, NotFoundError } from '../errors';
 import { createMemoryBaselineRepository } from './phase4-memory';
@@ -141,7 +141,18 @@ export function createMemoryRepositories(): DataRepositories {
       async update(userId, input) {
         const current = getProfile(userId);
         const dateOfBirth = input.dateOfBirth ?? current.dateOfBirth;
-        return putProfile({ ...current, ...input, ...(dateOfBirth ? { dateOfBirth, age: calculateAge(dateOfBirth), ageGroup: classifyAge(dateOfBirth) } : {}), updatedAt: now() });
+        const declaredAge = input.declaredAge ?? current.declaredAge;
+        const ageRecordedAt = input.declaredAge !== undefined ? (input.ageRecordedAt ?? now()) : (input.ageRecordedAt ?? current.ageRecordedAt);
+        const ageContext = resolveAgeContext({ declaredAge, ageRecordedAt, dateOfBirth });
+        return putProfile({
+          ...current,
+          ...input,
+          ...(dateOfBirth ? { dateOfBirth } : {}),
+          ...(declaredAge !== undefined ? { declaredAge } : {}),
+          ...(ageRecordedAt ? { ageRecordedAt } : {}),
+          ...(ageContext ? { age: ageContext.age, ageGroup: ageContext.ageGroup, ageSource: ageContext.source, ageRequiresReconfirmation: ageContext.requiresReconfirmation } : {}),
+          updatedAt: now(),
+        });
       },
     },
     roles: {

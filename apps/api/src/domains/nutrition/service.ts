@@ -132,7 +132,7 @@ function goalEnergyAdjustment(policy: NutritionPolicyRecord): number {
 }
 
 function policyFor(profile: ProfileRecord, policies: NutritionPolicyRecord[]) {
-  if (profile.age === undefined || !profile.ageGroup) throw new TargetUnavailableError('Tanggal lahir dan kelompok usia diperlukan.');
+  if (profile.age === undefined || !profile.ageGroup) throw new TargetUnavailableError('Usia dan kelompok usia diperlukan.');
   const policy = policies.find((item) => profile.age! >= item.ageMin && profile.age! <= item.ageMax && (!item.applicableSex || item.applicableSex === profile.gender));
   if (!policy) throw new PolicyNotAvailableError();
   return policy;

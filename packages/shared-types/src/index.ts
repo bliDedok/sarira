@@ -57,6 +57,16 @@ export type AgeGroup =
   | 'HEALTHY_AGING'
   | 'OVER_75';
 
+export type AgeSource = 'DECLARED' | 'LEGACY_DOB';
+
+export interface AgeContext {
+  age: number;
+  ageGroup: AgeGroup;
+  source: AgeSource;
+  recordedAt?: string;
+  requiresReconfirmation: boolean;
+}
+
 export const consentTypes = [
   'TERMS_OF_SERVICE',
   'PRIVACY_POLICY',
@@ -120,8 +130,12 @@ export interface UserProfile {
   userId: string;
   fullName: string;
   dateOfBirth?: string;
+  declaredAge?: number;
+  ageRecordedAt?: string;
   age?: number;
   ageGroup?: AgeGroup;
+  ageSource?: AgeSource;
+  ageRequiresReconfirmation?: boolean;
   gender?: 'FEMALE' | 'MALE' | 'OTHER' | 'UNDISCLOSED';
   country: string;
   timezone: string;

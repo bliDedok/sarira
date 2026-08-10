@@ -15,7 +15,7 @@ export const createSafetyRoutes = (repositories: DataRepositories): FastifyPlugi
 
   app.post('/safety-screening/sessions', { preHandler: app.authenticate }, async (request, reply) => {
     const profile = await getProfileOrThrow(repositories, request.authUser!.id);
-    if (!profile.dateOfBirth || !profile.ageGroup || profile.ageGroup === 'UNDER_12' || profile.ageGroup === 'OVER_75') throw new ConflictError('Tanggal lahir dan cakupan usia 12–75 harus valid sebelum safety screening.');
+    if (profile.age === undefined || !profile.ageGroup || profile.ageGroup === 'UNDER_12' || profile.ageGroup === 'OVER_75') throw new ConflictError('Usia dan cakupan usia 12–75 harus valid sebelum safety screening.');
     if (!(await requiredConsentsGranted(repositories, request.authUser!.id))) throw new ConflictError('Required consent harus aktif sebelum safety screening.');
     if (profile.ageGroup === 'TEEN' && (await repositories.guardian.get(profile.id))?.status !== 'GRANTED') throw new ConflictError('Guardian consent diperlukan untuk profil remaja.');
     const session = await repositories.safety.createSession(request.authUser!.id, profile.id);
@@ -37,7 +37,7 @@ export const createSafetyRoutes = (repositories: DataRepositories): FastifyPlugi
     if (!session) throw new NotFoundError('Sesi safety tidak ditemukan.');
     if (session.status === 'COMPLETED' && session.result) return success(session.result);
     const profile = await getProfileOrThrow(repositories, request.authUser!.id);
-    if (profile.age === undefined) throw new ConflictError('Tanggal lahir belum tersedia.');
+    if (profile.age === undefined) throw new ConflictError('Usia belum tersedia.');
     const answers = Object.fromEntries(session.answers.map((answer) => [answer.questionCode, answer.answerCode]));
     const evaluation = evaluateSafety({ age: profile.age, answers, requiredQuestionCodes: template.questions.filter((question) => question.required).map((question) => question.code) });
     if (evaluation.status === 'UNKNOWN') throw new ValidationError('Safety screening belum lengkap.', evaluation.triggeredRules.map((code) => ({ code })));

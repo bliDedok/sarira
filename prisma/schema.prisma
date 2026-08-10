@@ -450,6 +450,7 @@ enum AuditEvent {
   ONBOARDING_STARTED
   ROLE_SELECTED
   DATE_OF_BIRTH_UPDATED
+  DECLARED_AGE_UPDATED
   GUARDIAN_CONSENT_GRANTED
   GUARDIAN_CONSENT_REVOKED
   SAFETY_SCREENING_STARTED
@@ -522,6 +523,8 @@ model Profile {
   userId                String                   @unique @db.Uuid
   fullName              String
   dateOfBirth           DateTime?                @db.Date
+  declaredAge           Int?
+  ageRecordedAt         DateTime?                @db.Timestamptz(3)
   gender                Gender?
   country               String                   @default("ID") @db.VarChar(2)
   timezone              String                   @default("Asia/Makassar")

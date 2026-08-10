@@ -1,21 +1,23 @@
 import React, { ReactNode } from 'react';
-import { ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { ChevronLeft } from 'lucide-react-native';
 import { router } from 'expo-router';
 import { breakpoints, colors, spacing } from '@sarira/design-tokens';
 import { AppText, Button, IconButton, SimulatedBadge } from '@sarira/ui';
+import { KeyboardAwareScreen, ScrollableScreen, StickyActionArea } from './MobileFoundation';
 
 export function PublicScreen({
   children,
   showBack = false,
   maxWidth = 1120,
   scroll = true,
+  stickyFooter,
 }: {
   children: ReactNode;
   showBack?: boolean;
   maxWidth?: number;
   scroll?: boolean;
+  stickyFooter?: ReactNode;
 }) {
   const content = (
     <View style={[styles.publicInner, { maxWidth }]}>
@@ -30,15 +32,16 @@ export function PublicScreen({
   );
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <KeyboardAwareScreen>
       {scroll ? (
-        <ScrollView contentContainerStyle={styles.publicScroll} keyboardShouldPersistTaps="handled">
+        <ScrollableScreen contentStyle={styles.publicScroll}>
           {content}
-        </ScrollView>
+        </ScrollableScreen>
       ) : (
         <View style={styles.publicScroll}>{content}</View>
       )}
-    </SafeAreaView>
+      {stickyFooter ? <StickyActionArea maxWidth={maxWidth}>{stickyFooter}</StickyActionArea> : null}
+    </KeyboardAwareScreen>
   );
 }
 
@@ -112,7 +115,6 @@ export function PrototypeFooter({ nextLabel, onNext }: { nextLabel?: string; onN
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.white },
   publicScroll: { flexGrow: 1, alignItems: 'center', backgroundColor: colors.white },
   publicInner: { width: '100%', flex: 1, paddingHorizontal: spacing.lg, paddingVertical: spacing.lg },
   backRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.xl },

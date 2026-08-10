@@ -15,7 +15,7 @@ import type {
   UserGoalRecord,
   UserRole,
 } from '@sarira/shared-types';
-import { calculateAge, classifyAge } from '@sarira/expert-system';
+import { resolveAgeContext } from '@sarira/expert-system';
 import { ConflictError, NotFoundError } from '../errors';
 import { createPrismaBaselineRepository } from './phase4-prisma';
 import { createPrismaNutritionRepository } from './nutrition-prisma';
@@ -41,6 +41,8 @@ const profileRecord = (value: {
   userId: string;
   fullName: string;
   dateOfBirth: Date | null;
+  declaredAge: number | null;
+  ageRecordedAt: Date | null;
   gender: string | null;
   country: string;
   timezone: string;
@@ -52,11 +54,16 @@ const profileRecord = (value: {
   updatedAt: Date;
 }): ProfileRecord => {
   const dob = value.dateOfBirth ? dateOnly(value.dateOfBirth) : undefined;
+  const ageRecordedAt = value.ageRecordedAt?.toISOString();
+  const ageContext = resolveAgeContext({ declaredAge: value.declaredAge, ageRecordedAt, dateOfBirth: dob });
   return {
     id: value.id,
     userId: value.userId,
     fullName: value.fullName,
-    ...(dob ? { dateOfBirth: dob, age: calculateAge(dob), ageGroup: classifyAge(dob) } : {}),
+    ...(dob ? { dateOfBirth: dob } : {}),
+    ...(value.declaredAge !== null ? { declaredAge: value.declaredAge } : {}),
+    ...(ageRecordedAt ? { ageRecordedAt } : {}),
+    ...(ageContext ? { age: ageContext.age, ageGroup: ageContext.ageGroup, ageSource: ageContext.source, ageRequiresReconfirmation: ageContext.requiresReconfirmation } : {}),
     ...(value.gender ? { gender: value.gender as ProfileRecord['gender'] } : {}),
     country: value.country,
     timezone: value.timezone,
@@ -252,6 +259,7 @@ export function createPrismaRepositories(prisma: SariraPrismaClient): DataReposi
         const data = {
           ...(input.fullName !== undefined ? { fullName: input.fullName } : {}),
           ...(input.dateOfBirth !== undefined ? { dateOfBirth: new Date(`${input.dateOfBirth}T00:00:00.000Z`) } : {}),
+          ...(input.declaredAge !== undefined ? { declaredAge: input.declaredAge, ageRecordedAt: new Date(input.ageRecordedAt ?? new Date().toISOString()) } : {}),
           ...(input.gender !== undefined ? { gender: input.gender } : {}),
           ...(input.country !== undefined ? { country: input.country } : {}),
           ...(input.timezone !== undefined ? { timezone: input.timezone } : {}),

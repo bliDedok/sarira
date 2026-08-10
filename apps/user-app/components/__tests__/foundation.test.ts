@@ -10,11 +10,13 @@ describe('production foundation user app', () => {
     expect(zIndex.toast).toBeGreaterThan(zIndex.modal);
     expect(getResponsiveMode(breakpoints.tablet)).toBe('tablet');
     expect(getResponsiveMode(breakpoints.desktop)).toBe('desktop');
+    for (const width of [320, 360, 393, 430]) expect(getResponsiveMode(width)).toBe('mobile');
   });
 
   it('memvalidasi form profile dan email', () => {
     expect(emailSchema.safeParse('bukan-email').success).toBe(false);
     expect(profileSchema.safeParse({ fullName: 'Ayu', dateOfBirth: '1996-04-14' }).success).toBe(true);
+    expect(profileSchema.safeParse({ fullName: 'Ayu', declaredAge: 30 }).success).toBe(true);
     expect(profileSchema.safeParse({ fullName: 'A', dateOfBirth: '2099-01-01' }).success).toBe(false);
   });
 
